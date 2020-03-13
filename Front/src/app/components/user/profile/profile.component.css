@@ -1,0 +1,23 @@
+.main.section{
+    border:1px solid #007bff;
+    background: white;
+}
+
+.profile-header{
+    background: rgb(7,36,0);
+    background: linear-gradient(90deg, rgba(7,36,0,1) 0%, rgba(9,121,82,1) 20%, rgba(87,221,116,1) 66%);
+    height: 150px;
+}
+
+.user-datail{
+    margin: -50px 0 30px 0;
+}
+
+.user-datail img{
+    height: 100px;
+    width: 100px;
+}
+
+.user-datail h5{
+    margin:15px 0px 5px 0px ;
+}

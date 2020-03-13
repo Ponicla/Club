@@ -1,0 +1,41 @@
+<br><br><br>
+<p class="text-center p-3 mb-2 bg-warning text-muted">PLANES SOLO ADMINISTRADOR</p>
+
+
+<button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalPlane"
+(click)="resetForm()">
+  Nuevo
+</button>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th># </th>
+      <th>Clase</th>
+      <th>Descripcion</th>
+      <th>Costo</th>
+      
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr mdbTableCol *ngFor="let el of planes">
+      <th scope="row">{{el.id_plan}}</th>
+      <td>{{el.nombre}}</td>
+      <td>{{el.descripcion}}</td>
+      <td>{{el.costo}}</td>
+
+      
+      <td>
+        <button  type="button" class="btn btn-danger" 
+        (click)="deletePlan(el.id_plan)" href="/admin/planes">Eliminar</button>
+      </td>
+      <td>
+        <button class="btn btn-info" (click)="preActualizarPlan(el)" 
+        data-toggle="modal" data-target="#modalPlane">Modificar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<app-modal-plane></app-modal-plane>

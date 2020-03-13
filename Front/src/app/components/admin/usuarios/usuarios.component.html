@@ -1,0 +1,42 @@
+<br><br><br>
+<p class="text-center p-3 mb-2 bg-warning text-muted">USUARIOS SOLO ADMINISTRADOR</p>
+
+
+<button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalNuevaPersona"
+(click)="resetForm()">
+  Nuevo
+</button>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th># </th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Dni</th>
+      <th>G familiar</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr mdbTableCol *ngFor="let el of personas">
+      <th scope="row">{{el.id_persona}}</th>
+      <td>{{el.nombre}}</td>
+      <td>{{el.apellido}}</td>
+      <td>{{el.dni}}</td>
+
+      <td *ngIf="el.id_gfamiliar == 1">Si</td>
+      <td *ngIf="el.id_gfamiliar == 2">No</td>
+      <td>
+        <button  type="button" class="btn btn-danger" 
+        (click)="deletePersona(el.id_persona)" href="/admin/usuarios">Eliminar</button>
+      </td>
+      <td>
+        <button class="btn btn-info" (click)="preActualizarPersona(el)" 
+        data-toggle="modal" data-target="#modalNuevaPersona">Modificar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<app-modal-nueva-persona></app-modal-nueva-persona>

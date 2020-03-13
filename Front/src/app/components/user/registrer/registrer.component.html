@@ -1,0 +1,39 @@
+<br><br><br>
+<section id="registro" class="mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="col-xs-12 col-sm-6 col-md-4 mx-auto">
+          <div class="card_registro">
+            <div class="card">
+              <div class="card-body text-center">
+                <form #formRegistro="ngForm"(ngSubmit)="onRegistro()" >
+                  <h1 class="h3 mb-3 font-weight-normal">Registro</h1>
+                  
+                  <div class="form-group">
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre"  [(ngModel)]="user.nombre" required>
+                  </div>
+
+                  <div class="form-group">
+                    <input type="mail" id="mail" name="mail" class="form-control" placeholder="Email"  [(ngModel)]="user.mail" required>
+                  </div>
+
+                  <div class="form-group">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña"  [(ngModel)]="user.password" required>
+                  </div>
+                  
+                  <button type="submit" class="btn btn-large btn-primary btn-block">Registrar</button>
+
+                  <div class="form-group">
+                      <a routerLink="/user/login" class="Form-control">Ya tienes cuenta?</a>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

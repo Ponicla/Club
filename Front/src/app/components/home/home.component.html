@@ -1,0 +1,124 @@
+<app-hero></app-hero>
+<br>
+<div class="container">
+  <div class="container">
+    <br>
+    <div class="p-3 mb-2 mr-5 bg-primary text-white">Servicios</div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="../../../assets/s.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Futbol 5</h5>
+            <p class="card-text">Disponemos de nuevas canchas con el mejor tercer tiempo</p>
+            <a href="#" class="btn btn-primary">Mas</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="../../../assets/w.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Paseos</h5>
+            <p class="card-text">Olvidate de pasear a tus mascotas, lo haremos por ti</p>
+            <a href="#" class="btn btn-primary">Mas</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="../../../assets/sa.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Descuentos</h5>
+            <p class="card-text">Aprovecha los beneficios de los comercios adheridos</p>
+            <a href="#" class="btn btn-primary">Mas</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <br><br><br><br>
+
+  <div class="container">
+      <div class="p-3 mb-2 mr-5 bg-danger text-white">Planes</div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="../../../assets/oro.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">ORO</h5>
+            <p class="card-text">Contiene todos los servicios del club</p>
+            <a href="#" class="btn btn-primary">Mas</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="../../../assets/plata.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">PLATA</h5>
+            <p class="card-text">Recorte de servicios agregar una descipcion linda</p>
+            <a href="#" class="btn btn-primary">Mas</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="../../../assets/bronce.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">BRONCE</h5>
+            <p class="card-text">Solo comercios adheridos</p>
+            <a href="#" class="btn btn-primary">Mas</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <!-- <h1>{{mensaje1}}</h1>
+  <h1>{{resultados[1].nombre}}</h1> -->
+  <br><br><br><br><br>
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary float-right mb-3" data-toggle="modal" data-target="#modalClub"
+(click)="resetForm()">
+  Nuevo
+</button>
+
+  <br>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th># </th>
+        <th>Nombre</th>
+        <th>Descuento</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let el of comercios">
+        <th scope="row">{{el.id_comercio}}</th>
+        <td>{{el.nombre}}</td>
+        <td>{{el.descuento}}%</td>
+        <td>
+          <button routerLink="/" type="button" class="btn btn-danger" (click)="deleteComercio(el.id_comercio)"
+            href="/">Eliminar</button>
+        </td>
+        <td>
+          <button class="btn btn-info" (click)="preActualizarComercio(el)"
+          data-toggle="modal" data-target="#modalClub">Modificar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<app-modal></app-modal>

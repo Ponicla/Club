@@ -1,0 +1,39 @@
+<div class="modal fade" id="modalPlane" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Plan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-plan" #formPlan="ngForm" (ngSubmit)="guardarPlan(formPlan)">
+          
+            <!-- <label for="">Hidden ID</label> -->
+          <input type="hidden" id="planId" name="planId" class="form-control"
+            [(ngModel)]="this.servicio.selectedPlan.id_plan">
+          
+          <div class="form-group">
+            <label for="">Clase</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ingrese nombre" class="form-control"
+              [(ngModel)]="this.servicio.selectedPlan.nombre">
+          </div>
+          <div class="form-group">
+            <label for="">Descripcion</label>
+            <input type="text" id="descripcion" name="descripcion" placeholder="Descripcion del plan"
+              class="form-control" [(ngModel)]="this.servicio.selectedPlan.descripcion">
+          </div>
+
+          <div class="form-group">
+            <label for="">Costo</label>
+            <input type="text" id="costo" name="costo" placeholder="$0.00"
+              class="form-control" [(ngModel)]="this.servicio.selectedPlan.costo">
+          </div>
+          <button type="submit" class="btn btn-primary float-right">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

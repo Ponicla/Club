@@ -1,0 +1,5 @@
+INSERT INTO public.plan(
+            id_plan, nombre, descripcion, costo, id_paseo, id_comercio, id_cuota, 
+            id_alquiler)
+    VALUES (DEFAULT, 'basico', 'beneficios comercios', 250.0, DEFAULT, DEFAULT, DEFAULT, 
+            DEFAULT);
