@@ -115,7 +115,7 @@ const createUsuario = async (req, res) => {
     res.json({nombre, mail, password })
 
     var transporter = nodemailer.createTransport({
-        service: 'gmail',
+        service: 'gmail', 
         auth:{
             user: 'clubniceto@gmail.com',
             pass: 'sagueros2'
