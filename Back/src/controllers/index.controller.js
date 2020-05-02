@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const pool = new Pool({
     host: 'localhost',
     user: 'postgres',
-    password: 'root',
+    password: '1234',
     database: 'club',
     port: '5432'
 });
@@ -16,7 +16,7 @@ const createComercio = async (req, res) => {
         descuento
     } = req.body;
 
-    const response = await pool.query('INSERT INTO comercio (nombre, descuento) VALUES ($1, $2)', [nombre, descuento]);
+    const response = await pool.query('INSERT INTO comercios (nombre, descuento) VALUES ($1, $2)', [nombre, descuento]);
     console.log(response);
     res.json(
         `COMERCIO ${nombre.toUpperCase()} ALTA CORRECTA`
@@ -25,7 +25,7 @@ const createComercio = async (req, res) => {
 
 
 const getComercio = async (req, res) => {
-    const response = await pool.query('SELECT * FROM comercio');
+    const response = await pool.query('SELECT * FROM comercios');
     console.log(response.rows);
     res.status(200).json(response.rows);
 };
@@ -33,7 +33,7 @@ const getComercio = async (req, res) => {
 
 const deleteComercio = async (req, res) => {
     const id = req.params.id;
-    const response = await pool.query('DELETE FROM comercio WHERE id_comercio = $1', [id]);
+    const response = await pool.query('DELETE FROM comercios WHERE id_comercio = $1', [id]);
     console.log(response);
     res.json(`Comercio ${id} dado de baja`);
 };
@@ -46,7 +46,7 @@ const updateComercio = async (req, res) => {
     const {
         descuento
     } = req.body;
-    const response = await pool.query('UPDATE comercio SET nombre =$1, descuento = $2 WHERE id_comercio = $3', [nombre, descuento, id]);
+    const response = await pool.query('UPDATE comercios SET nombre =$1, descuento = $2 WHERE id_comercio = $3', [nombre, descuento, id]);
     console.log(response);
     res.json(`${nombre} se ha actualizado`);
 };
@@ -59,25 +59,32 @@ const createPlan = async (req, res) => {
     const {
         nombre,
         descripcion,
-        costo
+        costo,
+        imagen
     } = req.body;
 
-    const response = await pool.query('INSERT INTO plan (nombre, descripcion, costo) VALUES ($1, $2, $3)', [nombre, descripcion, costo]);
+    const response = await pool.query('INSERT INTO planes (nombre, descripcion, costo, imagen) VALUES ($1, $2, $3, $4)', [nombre, descripcion, costo, imagen]);
     console.log(response);
     res.json(
         `PLAN ${nombre.toUpperCase()} ALTA CORRECTA`
     )
 };
 
+const getPlanById = async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('SELECT * FROM planes WHERE id_plan = $1', [id]);
+    res.json(response.rows);
+};
+
 const getPlan = async (req, res) => {
-    const response = await pool.query('SELECT * FROM plan');
+    const response = await pool.query('SELECT * FROM planes');
     console.log(response.rows);
     res.status(200).json(response.rows);
 };
 
 const deletePlan = async (req, res) => {
     const id = req.params.id;
-    const response = await pool.query('DELETE FROM plan WHERE id_plan = $1', [id]);
+    const response = await pool.query('DELETE FROM planes WHERE id_plan = $1', [id]);
     console.log(response);
     res.json(`Plan ${id} dado de baja`);
 };
@@ -93,11 +100,67 @@ const updatePlan = async (req, res) => {
     const {
         costo
     } = req.body;
-    const response = await pool.query('UPDATE plan SET nombre =$1, descripcion = $2, costo = $3 WHERE id_plan = $4', [nombre, descripcion, costo, id]);
+    const {
+        imagen
+    } = req.body;
+    const response = await pool.query('UPDATE planes SET nombre =$1, descripcion = $2, costo = $3, imagen = $4 WHERE id_plan = $5', [nombre, descripcion, costo, imagen, id]);
     console.log(response);
     res.json(`Plan ${nombre} se ha actualizado`);
 };
 // PLAN //
+
+
+// SERVICIO //
+const createServicio = async (req, res) => {
+    const {
+        nombre,
+        descripcion,
+        id_plan,
+        imagen
+    } = req.body;
+
+    const response = await pool.query('INSERT INTO servicios (nombre, descripcion, id_plan, imagen) VALUES ($1, $2, $3, $4)', [nombre, descripcion, id_plan, imagen]);
+    console.log(response);
+    res.json(
+        `SERVICIO ${nombre.toUpperCase()} ALTA CORRECTA`
+    )
+};
+
+const getServicio = async (req, res) => {
+    const response = await pool.query('SELECT * FROM servicios');
+    console.log(response.rows);
+    res.status(200).json(response.rows);
+};
+
+const deleteServicio = async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('DELETE FROM servicios WHERE id_servicio = $1', [id]);
+    console.log(response);
+    res.json(`Servicio ${id} dado de baja`);
+};
+
+const updateServicio = async (req, res) => {
+    const id = req.params.id;
+    const {
+        nombre
+    } = req.body;
+    const {
+        descripcion
+    } = req.body;
+    const {
+        id_plan
+    } = req.body;
+    const {
+        imagen
+    } = req.body;
+    const response = await pool.query('UPDATE servicios SET nombre =$1, descripcion = $2, id_plan = $3, imagen = $4 WHERE id_servicio = $5', [nombre, descripcion, id_plan, imagen, id]);
+    console.log(response);
+    res.json(`Servicios ${nombre} se ha actualizado`);
+};
+// SERVICIO //
+
+
+
 /* = req.body;
 
     const response = await pool.query('INSERT INTO plan (nombre, descripcion, costo) VALUES ($1, $2, $3)', [nombre, descripcion, costo]);
@@ -108,31 +171,31 @@ const updatePlan = async (req, res) => {
 
 // USUARIO //
 const createUsuario = async (req, res) => {
-    const {nombre, mail, password } = req.body;
+    const { nombre, mail, password } = req.body;
 
-    const response = await pool.query('INSERT INTO usuario (nombre, mail, password) VALUES ($1, $2, $3)', [nombre, mail, password]);
-    console.log("respuesta",response);
-    res.json({nombre, mail, password })
+    const response = await pool.query('INSERT INTO usuarios (nombre, mail, password) VALUES ($1, $2, $3)', [nombre, mail, password]);
+    console.log("respuesta", response);
+    res.json({ nombre, mail, password })
 
     var transporter = nodemailer.createTransport({
-        service: 'gmail', 
-        auth:{
+        service: 'gmail',
+        auth: {
             user: 'clubniceto@gmail.com',
             pass: 'sagueros2'
         }
     });
 
     const mailOptions = {
-        from:'clubniceto@gmail.com',
+        from: 'clubniceto@gmail.com',
         to: mail,
         subject: 'Bienvenido al club',
         html: '<h4 class="text-center">Bienvenido</h4><p>Registraste una cuenta en nuestro club</p><span>Estamos muy contentos que estes con nosotros, estamos a tu dispocion</span>'
     }
 
-    transporter.sendMail(mailOptions, function(err, info){
-        if(err){
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err) {
             console.log(err);
-        }else{
+        } else {
             console.log(info);
         }
     });
@@ -140,19 +203,19 @@ const createUsuario = async (req, res) => {
 
 
 const getUsuario = async (req, res) => {
-    const response = await pool.query('SELECT * FROM usuario');
+    const response = await pool.query('SELECT * FROM usuarios');
     console.log(response.rows);
     res.status(200).json(response.rows);
 };
 
 
- const getUsuarioByNombre = async (req, res) => {
-     const{ nombre, password} = req.body;
-     const response = await pool.query('SELECT * FROM usuario WHERE nombre = $1 AND password = $2', [nombre, password]);
-     console.log("RESPUESTA",response);
-     res.status(200).json(response.rows);
+const getUsuarioByNombre = async (req, res) => {
+    const { nombre, password } = req.body;
+    const response = await pool.query('SELECT * FROM usuarios WHERE nombre = $1 AND password = $2', [nombre, password]);
+    console.log("RESPUESTA", response);
+    res.status(200).json(response.rows);
 
- };
+};
 
 
 // USUARIO //
@@ -202,7 +265,7 @@ const createPersona = async (req, res) => {
         id_gfamiliar
     } = req.body;
 
-    const response = await pool.query('INSERT INTO persona (nombre, apellido, dni, id_gfamiliar) VALUES ($1, $2, $3, $4)', [nombre, apellido, dni, id_gfamiliar]);
+    const response = await pool.query('INSERT INTO personas (nombre, apellido, dni, id_gfamiliar) VALUES ($1, $2, $3, $4)', [nombre, apellido, dni, id_gfamiliar]);
     console.log(response);
     res.json(
         `${nombre.toUpperCase()} ${apellido.toUpperCase()} ALTA CORRECTA`
@@ -211,7 +274,7 @@ const createPersona = async (req, res) => {
 
 
 const getPersona = async (req, res) => {
-    const response = await pool.query('SELECT * FROM persona');
+    const response = await pool.query('SELECT * FROM personas');
     console.log(response.rows);
     res.status(200).json(response.rows);
 };
@@ -219,7 +282,7 @@ const getPersona = async (req, res) => {
 
 const deletePersona = async (req, res) => {
     const id = req.params.id;
-    const response = await pool.query('DELETE FROM persona WHERE id_persona = $1', [id]);
+    const response = await pool.query('DELETE FROM personas WHERE id_persona = $1', [id]);
     console.log(response);
     res.json(`Persona ${id} dada de baja`);
 };
@@ -238,7 +301,7 @@ const updatePersona = async (req, res) => {
     const {
         id_gfamiliar
     } = req.body;
-    const response = await pool.query('UPDATE persona SET nombre =$1, apellido = $2, dni = $3, id_gfamiliar = $4 WHERE id_persona = $5', [nombre, apellido, dni, id_gfamiliar, id]);
+    const response = await pool.query('UPDATE personas SET nombre =$1, apellido = $2, dni = $3, id_gfamiliar = $4 WHERE id_persona = $5', [nombre, apellido, dni, id_gfamiliar, id]);
     console.log(response);
     res.json(`${nombre} ${apellido} se ha actualizado`);
 };
@@ -465,5 +528,10 @@ module.exports = {
     createUsuario,
     getUsuario,
     getUsuarioByNombre,
-    emailSend
+    emailSend,
+    createServicio,
+    getServicio,
+    deleteServicio,
+    updateServicio,
+    getPlanById
 }

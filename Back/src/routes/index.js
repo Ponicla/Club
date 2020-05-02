@@ -31,7 +31,12 @@ const {
     createUsuario,
     getUsuario,
     getUsuarioByNombre,
-    emailSend
+    emailSend,
+    createServicio,
+    getServicio,
+    deleteServicio,
+    updateServicio,
+    getPlanById
 } = require('../controllers/index.controller');
 
 router.get('/comercios', getComercio);
@@ -39,6 +44,10 @@ router.post('/comercios', createComercio);
 router.delete('/comercios/:id', deleteComercio);
 router.put('/comercios/:id', updateComercio);
 
+router.get('/servicios', getServicio);
+router.post('/servicios', createServicio);
+router.delete('/servicios/:id', deleteServicio);
+router.put('/servicios/:id', updateServicio);
 
 router.get('/alquiler', getAlquiler);
 router.post('/alquiler', createAlquiler);
@@ -59,11 +68,13 @@ router.get('/persona', getPersona);
 router.post('/persona', createPersona);
 router.delete('/persona/:id', deletePersona);
 router.put('/persona/:id', updatePersona);
+
  
 router.get('/plan', getPlan);
 router.post('/plan', createPlan);
 router.delete('/plan/:id', deletePlan);
 router.put('/plan/:id', updatePlan);
+router.get('/plan/:id', getPlanById);
 
 router.get('/turno', getTurno);
 router.post('/turno', createTurno);
