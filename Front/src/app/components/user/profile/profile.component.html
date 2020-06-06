@@ -1,25 +1,170 @@
-<br><br><br><br>
+<!-- ACA ACTUA SI NO ENCTRA PERSONA VINCULADA -->
 
-<section id="profile" class="container">
-    <div class="row mt-5">
-        <div class="offset-lg-4 col-lg-4 col-sm-6 col-12 main-section text-center card">
-            <div class="row">
-                <div class="col-lg-12 col-sm-12 col-12 profile-header">
-                </div>
-            </div>
-            <br>
-            <div class="row user-details">
-                <div class="col-12">
-                    <br>
-                    <img src="../../../../assets/profile.png" alt="perfil"><br>
-                    <br><br>
-                    <h1 class="text-uppercase">{{user.nombre}}</h1>
-                    <p></p>
-                    <hr>
-                    <span class="text-uppercase">{{user.mail}}</span>
-                    <br>
-                </div>
-            </div>
+<div class="container" *ngIf="persona == false">
+
+
+    <h1>{{user.nombre}}</h1>
+    <h6>{{user.id_usuario}}</h6>
+    <p class="please">* Por favor complete el siguiente formulario</p>
+
+    <form>
+
+        <div class="form-group">
+            <input type="hidden" class="form-control" name="id_usuario" id="id_usuario" value="{{user.id_usuario}}"
+                disabled>
         </div>
+
+        <div class="form-group">
+            <input type="hidden" name="id_persona" id="id_persona" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="">Dni</label>
+            <input type="text" maxlength="8" class="form-control" name="dni" id="dni" placeholder="Dni">
+        </div>
+
+        <div class="form-group">
+            <label for="">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre o nombres">
+        </div>
+
+        <div class="form-group">
+            <label for="">Apellido</label>
+            <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido">
+        </div>
+
+        <div class="form-group">
+            <label for="">Grupo familiar</label>
+            <select class="form-control" name="id_gfamiliar" name="id_gfamiliar" id="id_gfamiliar">
+                <option value="1">Si</option>
+                <option value="2">No</option>
+            </select>
+        </div>
+
+        <button class="btn btn-primary float-right" (click)="guardar()">Cargar</button>
+    </form>
+</div>
+
+
+<!-- ACA ACTUA SI SI ENCTRA PERSONA VINCULADA -->
+
+
+<div class="container" *ngIf="persona == true">
+
+
+    <div class="container emp-profile">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="../../../../assets/profile.png">
+                        <div class="file btn btn-lg btn-primary">
+                            Cambiar foto
+                            <input type="file" name="file" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <h5>
+                            {{controlador[0].nombre}}
+                        </h5>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                    aria-controls="home" aria-selected="true">Planes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                    aria-controls="profile" aria-selected="false">Mis datos</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Plan</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>ORO</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Adquirido el</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>05/05/2020</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Termina el </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>05/06/2020</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Costo</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>$ 1000</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nombre</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{controlador[0].nombre}} {{controlador[0].apellido}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nombre de usuario</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{user.nombre}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Correo electronico</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{user.mail}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Dni registrado</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{controlador[0].dni}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-</section>
+</div>

@@ -1,12 +1,12 @@
 <app-hero></app-hero>
-<br>
+
 <div class="container">
-  <div class="container">
-    <br>
-    <div class="p-3 mb-2 mr-5 bg-primary text-white">Servicios</div>
+  
+    <!-- <br>
+    <div class="p-3 mb-2 mr-0 bg-dark text-white banner">Servicios</div>
     <div class="row">
       <div class="col-sm-4">
-        <div class="card" style="width: 18rem;">
+        <div class="card">
           <img class="card-img-top" src="../../../assets/s.jpg" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">Futbol 5</h5>
@@ -17,7 +17,7 @@
       </div>
 
       <div class="col-sm-4">
-        <div class="card" style="width: 18rem;">
+        <div class="card">
           <img class="card-img-top" src="../../../assets/w.jpg" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">Paseos</h5>
@@ -28,7 +28,7 @@
       </div>
 
       <div class="col-sm-4">
-        <div class="card" style="width: 18rem;">
+        <div class="card">
           <img class="card-img-top" src="../../../assets/sa.jpg" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">Descuentos</h5>
@@ -38,53 +38,50 @@
         </div>
       </div>
 
+    </div> -->
+    
+    <br><br>
+    <div class="p-3 mb-2 mr-0 bg-dark text-white banner">Servicios</div>
+    <div class="card-deck" >
+      <div class="card" *ngFor="let card of servicios">
+        <img class="card-img-top" src="{{card.imagen}}">
+        <div class="card-body text-dark">
+          <h5 class="card-title">{{card.nombre}}</h5>
+          <p class="card-text">{{card.descripcion}}</p>
+        </div>
+        <div class="card-footer bg-white">
+          <a href="#" class="btn btn-sm btn-block btn-outline-dark">Vea mas</a>
+        </div>
+      </div>
     </div>
-  </div>
+  
 
   <br><br><br><br>
-
-  <div class="container">
-      <div class="p-3 mb-2 mr-5 bg-danger text-white">Planes</div>
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="../../../assets/oro.jpg" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">ORO</h5>
-            <p class="card-text">Contiene todos los servicios del club</p>
-            <a href="#" class="btn btn-primary">Mas</a>
+  <div class="p-3 mb-2 mr-0 bg-info text-white banner">Planes</div>
+  <div class="container-imagen">
+    <div class="row fila">
+      <div class="col-sm-4" *ngFor="let card of planes">
+        <div class="card">
+          <img src="{{card.imagen}}">
+          <div class="card-body text-info">
+            <h5 class="card-title">{{card.nombre}}</h5>
+            <p class="card-text">{{card.descripcion}}</p>
+          </div>
+        <div class="card-footer bg-white">
+          <a class="nav-link btn btn-sm btn-block btn-outline-info text-info" 
+            (click)="observarPlan(card)">Contratar
+          </a>
+            <!-- <a href="#" class="btn btn-sm btn-block btn-outline-info">Contratar</a> -->
+          
           </div>
         </div>
       </div>
-
-      <div class="col-sm-4">
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="../../../assets/plata.jpg" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">PLATA</h5>
-            <p class="card-text">Recorte de servicios agregar una descipcion linda</p>
-            <a href="#" class="btn btn-primary">Mas</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-4">
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="../../../assets/bronce.jpg" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">BRONCE</h5>
-            <p class="card-text">Solo comercios adheridos</p>
-            <a href="#" class="btn btn-primary">Mas</a>
-          </div>
-        </div>
-      </div>
-
     </div>
-
   </div>
-  <!-- <h1>{{mensaje1}}</h1>
-  <h1>{{resultados[1].nombre}}</h1> -->
+
   <br><br><br><br><br>
+
+
 
 
 <!-- Button trigger modal -->

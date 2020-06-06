@@ -1,0 +1,39 @@
+
+<br><br><br><br><br>
+
+
+<div class="container main-container animated fadeIn fast" *ngIf="loadingPlan">
+    <div class="row">
+        <div class="col-md-5"><br><br><br>
+            <img src="{{plan[0].imagen}}"> 
+             <!-- class="img-thumbnail img-fluid"> -->
+        </div>
+
+
+        <div class="col-md-7">
+            <h3 class="titulo">PLAN {{plan[0].nombre}}</h3>
+            <hr>
+            <p class="text-center"> <span>{{plan[0].descripcion}}</span></p>
+            <hr>
+            <p>Detalles</p>
+            <p class="text-justify"> <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit quam amet rerum saepe hic vero aperiam laboriosam cupiditate provident doloribus? Quibusdam quaerat quod accusamus asperiores est incidunt fugiat quae velit!</span></p>
+            <hr>
+            <p class="precio">Precio</p>
+            <p class="precio"> <span>$ {{plan[0].costo}} (mensual)* </span></p>
+            <p class="precio"> <span>$ {{plan[0].costo*12-plan[0].costo*12*20/100}} (anual)* </span></p>
+            
+            <p class="ahorro">Comprando pack anual ahorras  <span>$ {{plan[0].costo*12*20/100}}</span></p>
+            <p class="iva">* precios finales iva incluido</p>
+            
+            <div class="botones">
+            <button class="nav-link" routerLink="pago" class="btn btn-outline-success">
+                Comprar
+            </button>
+            &nbsp;
+            <button class="nav-link" routerLink="/" class="btn btn-outline-danger">
+                Cancelar
+            </button>
+        </div>
+        </div>
+    </div>
+</div>

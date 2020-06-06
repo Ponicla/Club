@@ -18,7 +18,10 @@ import { ModalNuevaPersonaComponent } from './components/modal/modal-nueva-perso
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalPlaneComponent } from './components/modal/modal-plane/modal-plane.component';
-
+import { ServiciosComponent } from './components/admin/servicios/servicios.component';
+import { ModalServiciosComponent } from './components/modal/modal-servicios/modal-servicios.component';
+import { PlanComponent } from './components/plan/plan.component';
+import { PagoComponent } from './components/pago/pago.component';
 
 @NgModule({
   declarations: [
@@ -33,9 +36,11 @@ import { ModalPlaneComponent } from './components/modal/modal-plane/modal-plane.
     ModalComponent,
     PlanesComponent,
     ModalNuevaPersonaComponent,
-    ModalPlaneComponent
-
-
+    ModalPlaneComponent,
+    ServiciosComponent,
+    ModalServiciosComponent,
+    PlanComponent,
+    PagoComponent
   ],
   imports: [
     BrowserModule,

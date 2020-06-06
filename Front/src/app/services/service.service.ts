@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
 import { personainterface } from '../models/persona-interface';
 import { comerciointerface } from '../models/comercio-interface';
 import { planinterface } from '../models/plan-interface';
+import { serviciointerface } from '../models/servicio-interface';
+import { usuariointerface } from '../models/usuario-interface';
 
 
 
@@ -23,7 +25,8 @@ export class ServiceService {
     nombre: '',
     apellido: '',
     dni: '',
-    id_gfamiliar: ''
+    id_gfamiliar: '',
+    id_usuario: ''
   };
 
   public selectedComercio: comerciointerface = {
@@ -36,19 +39,33 @@ export class ServiceService {
     id: null,
     nombre: '',
     descripcion: '',
-    costo: ''
+    costo: '',
+    imagen: '',
+  };
+
+  public selectedServicio: serviciointerface = {
+    id: null,
+    nombre: '',
+    descripcion: '',
+    id_plan: '',
+    imagen: '',
   };
 
   
 
-  constructor(private consulta: HttpClient) { }
+  constructor(private consulta: HttpClient,private authService : AuthService) { 
+    this.user = this.authService.getCurrentUser();
+  }
+  user: usuariointerface;
   // headers: HttpHeaders = new HttpHeaders({
   //   'Content-Type': 'application/json',
   //   Authorization: this.authService.getToken()
   // });
   
-  
- 
+  vincularUsuarioPersona(id: String){
+    const url = `http://localhost:3000/usuario/${id}`;
+    return this.consulta.put(url, id).pipe(map(data  => data));
+  }
 
   obtenerTodos() {
     return this.consulta.get('http://localhost:3000/comercios').pipe(map(data  => data));
@@ -76,6 +93,11 @@ export class ServiceService {
     return this.consulta.get('http://localhost:3000/persona').pipe(map(data  => data)); 
   }
 
+  obtenerPersonaById(id: String) {
+    const url = `http://localhost:3000/persona/${id}`;
+    return this.consulta.get(url).pipe(map(data  => data)); 
+  }
+
   eliminarPersona(id: String){
     const url = `http://localhost:3000/persona/${id}`;
     return this.consulta.delete(url).pipe(map(data => data));
@@ -97,6 +119,11 @@ export class ServiceService {
     return this.consulta.get('http://localhost:3000/plan').pipe(map(data  => data)); 
   }
 
+  obtenerPlaneById(id: String) {
+    const url = `http://localhost:3000/plan/${id}`;
+    return this.consulta.get(url).pipe(map(data  => data)); 
+  }
+
   eliminarPlan(id: String){
     const url = `http://localhost:3000/plan/${id}`;
     return this.consulta.delete(url).pipe(map(data => data));
@@ -113,5 +140,26 @@ export class ServiceService {
   }
   //PLANES
   
+
+  //SERVICIOS
+  obtenerServicios() {
+    return this.consulta.get('http://localhost:3000/servicios').pipe(map(data  => data)); 
+  }
+
+  eliminarServicio(id: String){
+    const url = `http://localhost:3000/servicios/${id}`;
+    return this.consulta.delete(url).pipe(map(data => data));
+  }
+
+  agregarServicio(plan){
+    const url = `http://localhost:3000/servicios`;
+    return this.consulta.post(url, plan).pipe(map(data  => data));
+  }
+
+  modificarServicio(servicio, id: String){
+    const url = `http://localhost:3000/servicios/${id}`;
+    return this.consulta.put(url, servicio).pipe(map(data  => data));
+  }
+  //SERVICIOS
 
 }

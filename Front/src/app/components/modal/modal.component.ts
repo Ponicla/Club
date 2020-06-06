@@ -20,6 +20,7 @@ export class ModalComponent implements OnInit {
   guardarComercio(comercioForm: NgForm):void{
     if(comercioForm.value.comercioId == null){
       //NEW
+      console.log(comercioForm.value);
       this.servicio.agregarComercio(comercioForm.value).subscribe(comercio => location.reload());
     }else{
       //UPDATE

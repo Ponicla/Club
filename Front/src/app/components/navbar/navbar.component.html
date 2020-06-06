@@ -18,6 +18,10 @@
             <a class="nav-link" routerLink="/admin/planes">Planes
             </a>
           </li>
+          <li class="nav-item" *ngIf="!isLogged">
+            <a class="nav-link" routerLink="/admin/servicios">Servicios
+            </a>
+          </li>
       </ul> 
 
     <ul class="navbar-nav ml-auto">

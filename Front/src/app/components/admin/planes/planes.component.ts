@@ -41,7 +41,8 @@ export class PlanesComponent implements OnInit {
       id: null,
       nombre: '',
       descripcion: '',
-      costo: '' 
+      costo: '',
+      imagen:''
     }
   }
 

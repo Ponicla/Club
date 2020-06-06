@@ -36,8 +36,14 @@ const {
     getServicio,
     deleteServicio,
     updateServicio,
-    getPlanById
+    getPlanById,
+    updateUsuario,
+    getPersonaById,
+
+    
 } = require('../controllers/index.controller');
+
+
 
 router.get('/comercios', getComercio);
 router.post('/comercios', createComercio);
@@ -68,6 +74,7 @@ router.get('/persona', getPersona);
 router.post('/persona', createPersona);
 router.delete('/persona/:id', deletePersona);
 router.put('/persona/:id', updatePersona);
+router.get('/persona/:id', getPersonaById);
 
  
 router.get('/plan', getPlan);
@@ -82,7 +89,7 @@ router.post('/turno', createTurno);
 router.get('/usuario', getUsuario);
 router.post('/usuario', createUsuario);
 router.post('/usuario/login', getUsuarioByNombre);
-
+router.put('/usuario/:id', updateUsuario);
 router.post('/correo', emailSend);
 
 // router.get('/users', getUser);

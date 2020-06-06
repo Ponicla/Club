@@ -19,7 +19,8 @@ export class RegistrerComponent implements OnInit {
   private user: usuariointerface = {
     nombre: "",
     mail: "",
-    password: ""
+    password: "",
+    
   };
  
   ngOnInit() {}

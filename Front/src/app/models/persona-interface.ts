@@ -4,5 +4,6 @@ export interface personainterface{
     apellido?: string;
     dni?: string;
     id_gfamiliar?: string;
+    id_usuario?: string;
 
 }

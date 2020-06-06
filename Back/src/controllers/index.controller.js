@@ -1,6 +1,10 @@
 const { Pool } = require('pg');
 const nodemailer = require('nodemailer');
 
+// SDK de Mercado Pago
+const mercadopago = require ('mercadopago');
+
+
 const pool = new Pool({
     host: 'localhost',
     user: 'postgres',
@@ -8,6 +12,37 @@ const pool = new Pool({
     database: 'club',
     port: '5432'
 });
+
+
+/* MERCADO PAGO */
+
+// Agrega credenciales
+mercadopago.configure({
+    access_token: 'TEST-3393963390175953-050319-a1eaef6facac505af38f5089fcca8a83-559151398',
+    sandbox:true
+});
+
+// Crea un objeto de preferencia
+let preference = {
+    items: [
+      {
+        title: 'Mi producto',
+        unit_price: 100,
+        quantity: 1,
+      }
+    ]
+  };
+  
+  mercadopago.preferences.create(preference).then(function(response){
+  // Este valor reemplazará el string "$$init_point$$" en tu HTML
+    global.init_point = response.body.init_point;
+  }).catch(function(error){
+    console.log(error);
+  });
+/* MERCADO PAGO */
+
+
+
 
 // COMERCIOS //
 const createComercio = async (req, res) => {
@@ -218,6 +253,17 @@ const getUsuarioByNombre = async (req, res) => {
 };
 
 
+const updateUsuario = async (req, res) => {
+    const id = req.params.id;
+    const {
+        id_persona
+    } = req.body;
+    const response = await pool.query('UPDATE usuarios SET id_persona =$1 WHERE id_usuario = $2', [id_persona, id]);
+    console.log(response);
+    res.json(`Usuario se ha actualizado`);
+};
+
+
 // USUARIO //
 
 
@@ -262,10 +308,11 @@ const createPersona = async (req, res) => {
         nombre,
         apellido,
         dni,
-        id_gfamiliar
+        id_gfamiliar,
+        id_usuario,
     } = req.body;
 
-    const response = await pool.query('INSERT INTO personas (nombre, apellido, dni, id_gfamiliar) VALUES ($1, $2, $3, $4)', [nombre, apellido, dni, id_gfamiliar]);
+    const response = await pool.query('INSERT INTO personas (nombre, apellido, dni, id_gfamiliar, id_usuario) VALUES ($1, $2, $3, $4, $5)', [nombre, apellido, dni, id_gfamiliar, id_usuario]);
     console.log(response);
     res.json(
         `${nombre.toUpperCase()} ${apellido.toUpperCase()} ALTA CORRECTA`
@@ -277,6 +324,12 @@ const getPersona = async (req, res) => {
     const response = await pool.query('SELECT * FROM personas');
     console.log(response.rows);
     res.status(200).json(response.rows);
+};
+
+const getPersonaById= async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('SELECT * FROM personas WHERE id_usuario = $1', [id]);
+    res.json(response.rows);
 };
 
 
@@ -528,10 +581,12 @@ module.exports = {
     createUsuario,
     getUsuario,
     getUsuarioByNombre,
+    updateUsuario,
     emailSend,
     createServicio,
     getServicio,
     deleteServicio,
     updateServicio,
-    getPlanById
+    getPlanById,
+    getPersonaById
 }

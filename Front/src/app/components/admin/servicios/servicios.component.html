@@ -1,0 +1,41 @@
+<br><br><br>
+<p class="text-center p-3 mb-2 bg-warning text-muted">SERVICIOS SOLO ADMINISTRADOR</p>
+
+
+<button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalServicios"
+(click)="resetForm()">
+  Nuevo
+</button>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th># </th>
+      <th>Nombre</th>
+      <th>Descripcion</th>
+      
+      
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr mdbTableCol *ngFor="let el of servicios">
+      <th scope="row">{{el.id_servicio}}</th>
+      <td>{{el.nombre}}</td>
+      <td>{{el.descripcion}}</td>
+      
+
+      
+      <td>
+        <button  type="button" class="btn btn-danger" 
+        (click)="deleteServicio(el.id_servicio)" href="/admin/servicios">Eliminar</button>
+      </td>
+      <td>
+        <button class="btn btn-info" (click)="preActualizarServicio(el)" 
+        data-toggle="modal" data-target="#modalServicios">Modificar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<app-modal-servicios></app-modal-servicios>
