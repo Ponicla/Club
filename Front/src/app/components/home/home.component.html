@@ -50,7 +50,8 @@
           <p class="card-text">{{card.descripcion}}</p>
         </div>
         <div class="card-footer bg-white">
-          <a href="#" class="btn btn-sm btn-block btn-outline-dark">Vea mas</a>
+          <a class="btn btn-sm btn-block btn-outline-dark"
+          (click)="observarServicio(card)">Vea mas</a>
         </div>
       </div>
     </div>
@@ -91,7 +92,7 @@
 </button>
 
   <br>
-  <table class="table">
+  <table id="myTable" class="table">
     <thead class="thead-dark">
       <tr>
         <th># </th>

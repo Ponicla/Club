@@ -22,6 +22,7 @@ import { ServiciosComponent } from './components/admin/servicios/servicios.compo
 import { ModalServiciosComponent } from './components/modal/modal-servicios/modal-servicios.component';
 import { PlanComponent } from './components/plan/plan.component';
 import { PagoComponent } from './components/pago/pago.component';
+import { ContratarServicioComponent } from './components/contratar-servicio/contratar-servicio.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { PagoComponent } from './components/pago/pago.component';
     ServiciosComponent,
     ModalServiciosComponent,
     PlanComponent,
-    PagoComponent
+    PagoComponent,
+    ContratarServicioComponent
   ],
   imports: [
     BrowserModule,

@@ -98,6 +98,12 @@ export class HomeComponent implements OnInit {
     this.router.navigate(["/plan", planId]);
   }
 
+  observarServicio(card: any){
+    let servicio_id;
+    servicio_id = card.id_servicio;
+    this.router.navigate(["/user/contratar-servicio", servicio_id]);
+  }
+
   mostrar(){
     alert('PIKACHU');
   }

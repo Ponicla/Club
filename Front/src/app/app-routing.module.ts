@@ -10,6 +10,7 @@ import { ServiciosComponent } from './components/admin/servicios/servicios.compo
 import { AuthGuard } from './guards/auth.guard';
 import { PlanComponent } from './components/plan/plan.component';
 import { PagoComponent } from './components/pago/pago.component';
+import { ContratarServicioComponent } from './components/contratar-servicio/contratar-servicio.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent, canActivate: [AuthGuard]},
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: "user/profile", component: ProfileComponent, canActivate: [AuthGuard] },
   {path: "plan/:id", component: PlanComponent, canActivate: [AuthGuard] },
   {path: "plan/:id/pago", component: PagoComponent , canActivate: [AuthGuard] },
+  {path: "user/contratar-servicio/:id", component: ContratarServicioComponent , canActivate: [AuthGuard] },
 ];
 
 @NgModule({

@@ -61,6 +61,22 @@ export class ServiceService {
   //   'Content-Type': 'application/json',
   //   Authorization: this.authService.getToken()
   // });
+
+
+  get_estado_paseador(id: String){
+    const url = `http://localhost:3000/usuario_paseador/${id}`;
+    return this.consulta.get(url).pipe(map(data  => data));
+  }
+
+  update_paseador(paseador , id: String){
+    const url = `http://localhost:3000/usuario_paseador/${id}`;
+    return this.consulta.put(url, paseador).pipe(map(data  => data));
+  }
+
+  update_paseador_h(paseador , id: String){
+    const url = `http://localhost:3000/usuario_paseador_h/${id}`;
+    return this.consulta.put(url, paseador).pipe(map(data  => data));
+  }
   
   vincularUsuarioPersona(id: String){
     const url = `http://localhost:3000/usuario/${id}`;
@@ -146,6 +162,11 @@ export class ServiceService {
     return this.consulta.get('http://localhost:3000/servicios').pipe(map(data  => data)); 
   }
 
+  obtenerServicioById(id: String) {
+    const url = `http://localhost:3000/servicio/${id}`;
+    return this.consulta.get(url).pipe(map(data  => data)); 
+  }
+
   eliminarServicio(id: String){
     const url = `http://localhost:3000/servicios/${id}`;
     return this.consulta.delete(url).pipe(map(data => data));
@@ -160,6 +181,19 @@ export class ServiceService {
     const url = `http://localhost:3000/servicios/${id}`;
     return this.consulta.put(url, servicio).pipe(map(data  => data));
   }
+
+  
   //SERVICIOS
+
+  obtener_usuarios(){
+    const url = `http://localhost:3000/usuario`;
+    return this.consulta.get(url).pipe(map(data  => data));
+  }
+
+  //PASEOS
+  agregar_paseo(paseo){
+    const url = `http://localhost:3000/paseo`;
+    return this.consulta.post(url, paseo).pipe(map(data  => data));
+  }
 
 }

@@ -24,18 +24,26 @@ mercadopago.configure({
 
 // Crea un objeto de preferencia
 let preference = {
+
     items: [
       {
         title: 'Mi producto',
         unit_price: 100,
         quantity: 1,
       }
-    ]
+    ],
+
+    "back_urls": {
+        "success": "http://localhost:4200",
+        "failure": "http://www.tu-sitio/failure",
+        "pending": "http://www.tu-sitio/pending"
+    }
+    //"auto_return": "approved"
   };
   
   mercadopago.preferences.create(preference).then(function(response){
-  // Este valor reemplazará el string "$$init_point$$" en tu HTML
     global.init_point = response.body.init_point;
+    console.log(global.init_point);
   }).catch(function(error){
     console.log(error);
   });
@@ -192,6 +200,14 @@ const updateServicio = async (req, res) => {
     console.log(response);
     res.json(`Servicios ${nombre} se ha actualizado`);
 };
+
+const getServicioById= async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('SELECT * FROM servicios WHERE id_servicio = $1', [id]);
+    res.json(response.rows);
+};
+
+
 // SERVICIO //
 
 
@@ -262,6 +278,38 @@ const updateUsuario = async (req, res) => {
     console.log(response);
     res.json(`Usuario se ha actualizado`);
 };
+
+
+const update_paseador = async (req, res) => {
+    const id = req.params.id;
+    const {
+        paseador
+    } = req.body;
+    const response = await pool.query('UPDATE usuarios SET paseador =$1 WHERE id_usuario = $2', [paseador, id]);
+    console.log(response);
+    res.json(`Usuario se ha actualizado`);
+};
+
+const update_habilitacion_paseador = async (req, res) => {
+    const id = req.params.id;
+    const {
+        paseador_habilitado
+    } = req.body;
+    const response = await pool.query('UPDATE usuarios SET paseador_habilitado =$1 WHERE id_usuario = $2', [paseador_habilitado, id]);
+    console.log(response);
+    res.json(`Usuario se ha actualizado`);
+};
+
+
+const get_estado_paseador = async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('SELECT paseador FROM usuarios WHERE id_usuario = $1', [id]);
+    res.status(200).json(response.rows);
+};
+
+
+
+
 
 
 // USUARIO //
@@ -365,17 +413,18 @@ const updatePersona = async (req, res) => {
 const createPaseo = async (req, res) => {
     const {
         cantidad,
-        precio
+        id_paseador,
+        id_rango_h,
+        fecha,
+        direccion
     } = req.body;
-
-    const response = await pool.query('INSERT INTO paseo (cantidad, precio) VALUES ($1, $2)', [cantidad, precio]);
+    const response = await pool.query('INSERT INTO paseo (cantidad, id_paseador, id_rango_h, fecha, direccion) VALUES ($1, $2, $3, $4, $5)', [cantidad, id_paseador, id_rango_h, fecha, direccion]);
     console.log(response);
     res.json({
-        Message: 'USUARIO ADD CORRECTAMENTE',
+        Message: 'PASEO ADD CORRECTO',
         body: {
             comercio: {
-                cantidad,
-                precio
+                cantidad
             }
         }
     })
@@ -588,5 +637,10 @@ module.exports = {
     deleteServicio,
     updateServicio,
     getPlanById,
-    getPersonaById
+    getPersonaById,
+    update_paseador,
+    get_estado_paseador,
+    update_habilitacion_paseador,
+    getServicioById
+
 }

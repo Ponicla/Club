@@ -1,0 +1,266 @@
+<br><br><br><br>
+
+
+<div class="container" *ngIf="loadingServicio">
+
+  <div *ngIf="servicio[0].id_servicio == 4">
+    <div class="row">
+      <div class="col-md-6">
+        <h1 style="text-transform: uppercase;">paseos</h1>
+      </div>
+      <div class="col-md-6 align-self-center" style="text-align: right">
+        <button routerLink="/" class="btn btn-danger ">Volver</button>
+      </div>
+    </div>
+    <hr>
+    <h5>Solicita un turno para pasear a tus mascotas</h5>
+    <br>
+    <br>
+
+    <div class="row">
+      <div class="col-md-6" style="border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border: 1px solid #000000; padding: 10px;">
+
+        <div class="row mb-3 mt-4">
+
+
+          <div class="col-md-12">
+            <div class="alert alert-primary" style="padding:6px; text-align: center">
+              Selecciones entre las opciones y un paseador ira por sus mascotas
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <!-- <label>Seleccione el paseador</label> -->
+            <select style="text-transform: uppercase;" id="select_paseador" class="form-control">
+              <option value='0' selected>Seleccione UN PASEADOR</option>
+              <option *ngFor="let paseador of usuarios_si_paseadores" value={{paseador.id_usuario}}>
+                {{paseador.nombre}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-6">
+            <!-- <label >Seleccione la fecha del paseo</label> -->
+            <input id="select_fecha" class="form-control" type="date">
+          </div>
+          <div class="col-md-6">
+            <!-- <label>Paseo desde las</label> -->
+            <select style="text-transform: uppercase;" id="select_hora" class="form-control">
+              <option value="0" selected>Horario del paseo</option>
+              <option value="1">08:00 - 10:00</option>
+              <option value="2">10:00 - 12:00</option>
+              <option value="3">14:00 - 16:00</option>
+              <option value="4">16:00 - 18:00</option>
+              <option value="5">18:00 - 22:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <input id="direccion" type="text" class="form-control" placeholder="Direccion para retirar sus mascotas">
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-6">
+            <input id="cantidad" type="number" class="form-control" placeholder="Cuantos animales">
+          </div>
+          <div class="col-md-6">
+            <div class="alert alert-primary" style="padding:6px; text-align: center">
+              Tus mascotas <strong>lo disfrutaran</strong>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" style="text-align: right;">
+            <button id="boton" (click)="guardar_paseos()" class="btn btn-primary btn-block">Contratar</button>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="col-md-6" style="text-align: right">
+        <br><br>
+        <img src="https://image.freepik.com/vector-gratis/mujer-joven-que-camina-cinco-perros_102034-82.jpg"
+          style="max-width: 25rem;">
+      </div>
+    </div>
+
+  </div>
+
+
+  <div *ngIf="servicio[0].id_servicio == 2">
+    <div class="row">
+      <div class="col-md-6">
+        <h1 style="text-transform: uppercase;">Futbol 5</h1>
+      </div>
+      <div class="col-md-6 align-self-center" style="text-align: right">
+        <button routerLink="/" class="btn btn-danger ">Volver</button>
+      </div>
+    </div>
+    <hr>
+    <h5>Pedi un turno y rompete un futbol 5 con amigxs</h5>
+    <br>
+    <br>
+
+    <div class="row">
+      <div class="col-md-6" style="border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border: 1px solid #000000; padding: 10px;">
+
+        <div class="row mb-3 mt-4">
+
+
+          <div class="col-md-12">
+            <div class="alert alert-success" style="padding:6px; text-align: center">
+              Selecciones entre las opciones y veni a divertirte un rato
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <select style="text-transform: uppercase;" id="select_cancha" class="form-control">
+              <option value='0' selected>Seleccione una cancha</option>
+              <!-- <option *ngFor="let paseador of usuarios_si_paseadores" value={{paseador.id_usuario}}>
+                {{paseador.nombre}}
+              </option> -->
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-6">
+            <input id="select_fecha_turno_cancha" class="form-control" type="date">
+          </div>
+          <div class="col-md-6">
+            <!-- <label>Paseo desde las</label> -->
+            <select style="text-transform: uppercase;" id="select_hora_turno_cancha" class="form-control">
+              <option value="0" selected>Horario del turno</option>
+              <option value="1">18:00</option>
+              <option value="2">19:00</option>
+              <option value="3">20:0</option>
+              <option value="4">21:00</option>
+              <option value="5">22:00</option>
+              <option value="3">23:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mb-5">
+          
+          <div class="col-md-12">
+            <div class="alert alert-success" style="padding:6px; text-align: center">
+              Contamos con el mejor <strong>tercer tiempo</strong> de la zona
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" style="text-align: right;">
+            <button id="boton_turno"  class="btn btn-success btn-block">Alquilar</button>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="col-md-6" style="text-align: right">
+        <br><br>
+        <img src="https://us.123rf.com/450wm/imogi/imogi1804/imogi180400092/100120151-fondo-de-grunge-de-f%C3%BAtbol-con-la-bola-ilustraci%C3%B3n-vectorial.jpg?ver=6"
+          style="max-width: 25rem;">
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="servicio[0].id_servicio == 3">
+
+    <div class="row">
+      <div class="col-md-6">
+        <h1 style="text-transform: uppercase;">Comercios adheridos</h1>
+      </div>
+      <div class="col-md-6 align-self-center" style="text-align: right">
+        <button routerLink="/" class="btn btn-danger ">Volver</button>
+      </div>
+    </div>
+    <hr>
+    <h5>Estos son los comercios que ofrecen descuentos para ti</h5>
+    <br>
+    <br>
+
+    
+      
+
+      
+    
+
+    <div class="card-deck">
+      <div class="card">
+        <img class="card-img-top" src="https://lh3.googleusercontent.com/proxy/bTED-jW9yN2unKrQYB7AE5LOvPp8Sa2EBuAAmus_0HIL1OveXWSKIm031KvKYLOtW6b7UmuDQp7xI9jq2p8o3-XtuAXYOohVQKijO3dtiMk3WZEOe0udMkdEucPiCOTDxjsLoq8" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">FREEDO HELADOS</h5>
+          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://www.fravega.com/static/logo-fravega@3x.png" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">FRAVEGA</h5>
+          <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisiabo odio soluta similique earum magnam aliquid molestias harum ipsum dolor non alias magni ipsa maiores. This card has supporting text below as a natural lead-in to additional content.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://cervezabigua.com.ar/wp-content/uploads/2018/04/bigua-sin-fondo-3.png" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">BIGUA</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+    </div>
+<br><br>
+    <div class="card-deck">
+      <div class="card">
+        <img class="card-img-top" src="data:image/png;base64,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" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">I ZONE</h5>
+          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://lh3.googleusercontent.com/proxy/UmmNwvs8oMlI-xqQGdaJtcT9fvOwzJ3K_E9f1SpPrEh1gdI8WMlUKgiPXeBgOhYNstQSjRkEZlV9nFo-YUw0EPpDbVaBVC0UjfeY-XJp6flfd1MU" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">CHISAP</h5>
+          <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisiabo odio soluta similique earum magnam aliquid molestias harum ipsum dolor non alias magni ipsa maiores. This card has supporting text below as a natural lead-in to additional content.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="https://iafas.gov.ar/archivos/noticias/2014/07/image_1266.jpg" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">IAFAS</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+    </div>
+
+
+    
+  </div>
+  
+
+
+</div>

@@ -39,6 +39,10 @@ const {
     getPlanById,
     updateUsuario,
     getPersonaById,
+    update_paseador,
+    get_estado_paseador,
+    update_habilitacion_paseador,
+    getServicioById
 
     
 } = require('../controllers/index.controller');
@@ -54,6 +58,8 @@ router.get('/servicios', getServicio);
 router.post('/servicios', createServicio);
 router.delete('/servicios/:id', deleteServicio);
 router.put('/servicios/:id', updateServicio);
+router.get('/servicio/:id', getServicioById);
+
 
 router.get('/alquiler', getAlquiler);
 router.post('/alquiler', createAlquiler);
@@ -91,6 +97,9 @@ router.post('/usuario', createUsuario);
 router.post('/usuario/login', getUsuarioByNombre);
 router.put('/usuario/:id', updateUsuario);
 router.post('/correo', emailSend);
+router.put('/usuario_paseador/:id', update_paseador);
+router.get('/usuario_paseador/:id', get_estado_paseador);
+router.put('/usuario_paseador_h/:id', update_habilitacion_paseador);
 
 // router.get('/users', getUser);
 

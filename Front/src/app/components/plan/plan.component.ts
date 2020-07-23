@@ -30,7 +30,6 @@ export class PlanComponent implements OnInit{
       .subscribe(data  =>  {
         console.log(data);
         this.plan = data; 
-  
         this.loadingPlan = true;
       })
     })
