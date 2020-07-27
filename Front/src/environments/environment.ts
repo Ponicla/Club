@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig : {
+    apiKey: "AIzaSyBjfoMPPldhQVVWNE60lep1d4zUJCM5be0",
+    authDomain: "club-niceto.firebaseapp.com",
+    databaseURL: "https://club-niceto.firebaseio.com",
+    projectId: "club-niceto",
+    storageBucket: "club-niceto.appspot.com",
+    messagingSenderId: "1067786401746",
+    appId: "1:1067786401746:web:f2209859e309aad00efa0b"
+  }
 };
 
 /*

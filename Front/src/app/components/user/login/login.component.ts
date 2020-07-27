@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  bodyTag: HTMLBodyElement = document.getElementsByTagName('body')[0];
+  htmlTag: HTMLElement = document.getElementsByTagName('html')[0];
+
 
   constructor(private authService: AuthService, private router: Router) { }
   private user: usuariointerface ={
@@ -17,7 +20,26 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.bodyTag.classList.add('bg-color-gradient');
+     this.htmlTag.classList.add('bg-color-gradient');
+  }
+  ngOnDestroy() {
+    
+    this.bodyTag.classList.remove('bg-color-gradient');
+    this.htmlTag.classList.remove('bg-color-gradient');
+  }
+
+  onLoginGoogle(){
+    console.log('google');
+    try{
+      this.authService.login_google();
+    }
+    catch(error){
+      console.log(error);
+    }
+    
+  }
 
   onLogin(){
     return this.authService.loginUser(this.user.nombre, this.user.password).subscribe(user =>{ 

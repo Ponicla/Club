@@ -1,4 +1,3 @@
-<br><br><br>
 <section id="login" class="mb-5">
   <div class="container">
     <div class="row">
@@ -7,21 +6,30 @@
           <div class="card_login">
             <div class="card">
               <div class="card-body text-center">
-                <form #formLogin="ngForm"(ngSubmit)="onLogin()">
+                <form #formLogin="ngForm" (ngSubmit)="onLogin()">
                   <h1 class="h3 mb-3 font-weight-normal">Login</h1>
-                  
+
                   <div class="form-group">
-                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre"  [(ngModel)]="user.nombre" required>
+                    <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre"
+                      [(ngModel)]="user.nombre" required>
                   </div>
 
                   <div class="form-group">
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña"  [(ngModel)]="user.password" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña"
+                      [(ngModel)]="user.password" required>
                   </div>
-                  
-                  <button type="submit" class="btn btn-large btn-primary btn-block">Ingresar</button>
+
+                  <button type="submit" class="btn btn-large btn-primary btn-block"><i class="fa fa-user-o"></i>&nbsp;&nbsp;Ingresar</button>
+                  <br>
+                  <a href="#" class="google btn btn-large btn-block" ><i class="fa fa-google fa-fw">
+                  </i> Ingresar con Google
+                </a>
+                  <!-- <a href="#" class="google btn btn-large btn-block" (click)="onLoginGoogle()"><i class="fa fa-google fa-fw">
+                    </i> Ingresar con Google
+                  </a> -->
                   <br>
                   <div class="form-group">
-                      <a routerLink="/user/registrer" class="Form-control">No tienes cuenta?</a>
+                    <a routerLink="/user/registrer" class="Form-control">No tienes cuenta?</a>
                   </div>
 
                 </form>

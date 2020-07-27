@@ -1,34 +1,57 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 import { usuariointerface } from '../models/usuario-interface';
+import { auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    public afAuth: AngularFireAuth
+    ) { }
+
   headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/JSON"
   });
 
-  registerUser(nombre: String, mail: String, password:String) {
+  async login_google(){
+    try{
+      console.log(this.afAuth.signInWithPopup(new auth.GoogleAuthProvider()));
+      // return this.afAuth.signInWithPopup(new auth.GoogleAuthProvider());
+    }catch(error){
+      console.log(error);
+  }
+ }
+
+  registerUser(nombre: string, mail: string, password:string) {
+    
     const url = 'http://localhost:3000/usuario';
     return this.http.post(url, {nombre, mail, password}, {headers: this.headers}).pipe(map(data => data)
     )
   }
 
-  loginUser(nombre: String, password: String): Observable<any> {
+  loginUser(nombre: string, password: string): Observable<any> {
+    
     const url = 'http://localhost:3000/usuario/login';
     return this.http.post(url, {nombre, password}, {headers: this.headers}).pipe(map(data => data));
   }
 
-  setUser(user):void {
-    let user_string = JSON.stringify(user);
-    localStorage.setItem("currentUser", user_string);
+  setUser(user):void { 
+    let user_local = {
+      "id_usuario":user.id_usuario,
+      "nombre":user.nombre,
+      "mail":user.mail,
+      "rol":user.rol
+    }
+    
+    localStorage.setItem("currentUser",JSON.stringify(user_local));
   }
 
 
@@ -41,6 +64,7 @@ export class AuthService {
   }
 
   getCurrentUser(){
+    console.log(this.afAuth.authState.pipe(first()).toPromise());
     let user_string = localStorage.getItem("currentUser");
     if (!isNullOrUndefined(user_string)){
       let user = JSON.parse(user_string);

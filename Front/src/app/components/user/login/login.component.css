@@ -1,0 +1,19 @@
+#login {
+  margin-top: 15%;
+}
+
+.card {
+  -webkit-box-shadow: 10px 10px 11px 6px rgba(0, 0, 0, 0.32);
+  -moz-box-shadow: 10px 10px 11px 6px rgba(0, 0, 0, 0.32);
+  box-shadow: 10px 10px 11px 6px rgba(0, 0, 0, 0.32);
+}
+.google {
+  background-color: #dd4b39;
+  color: white;
+  
+}
+.google:hover {
+  background-color: #c33624;
+  color: white;
+  
+}

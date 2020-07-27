@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "club-niceto": {
+      "hosting": {
+        "Club": [
+          "club-niceto"
+        ]
+      }
+    }
+  }
+}

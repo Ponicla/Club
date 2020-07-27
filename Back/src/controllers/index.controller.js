@@ -224,7 +224,7 @@ const getServicioById= async (req, res) => {
 const createUsuario = async (req, res) => {
     const { nombre, mail, password } = req.body;
 
-    const response = await pool.query('INSERT INTO usuarios (nombre, mail, password) VALUES ($1, $2, $3)', [nombre, mail, password]);
+    const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol, paseador, paseador_habilitado) VALUES ($1, $2, $3, $4, $5, $6)', [nombre, mail, password, 2, 'false', 'false']);
     console.log("respuesta", response);
     res.json({ nombre, mail, password })
 

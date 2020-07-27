@@ -8,8 +8,8 @@ import { comerciointerface } from '../models/comercio-interface';
 import { planinterface } from '../models/plan-interface';
 import { serviciointerface } from '../models/servicio-interface';
 import { usuariointerface } from '../models/usuario-interface';
-
-
+import { auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable()
 
@@ -53,7 +53,11 @@ export class ServiceService {
 
   
 
-  constructor(private consulta: HttpClient,private authService : AuthService) { 
+  constructor(
+    private consulta: HttpClient,
+    private authService : AuthService,
+    public afAuth: AngularFireAuth
+    ) { 
     this.user = this.authService.getCurrentUser();
   }
   user: usuariointerface;
@@ -62,6 +66,13 @@ export class ServiceService {
   //   Authorization: this.authService.getToken()
   // });
 
+  // async login_google(){
+  //    try{
+  //      return this.afAuth.signInWithPopup(new auth.GoogleAuthProvider());
+  //    }catch(error){
+  //      console.log(error);
+  //  }
+  // }
 
   get_estado_paseador(id: String){
     const url = `http://localhost:3000/usuario_paseador/${id}`;

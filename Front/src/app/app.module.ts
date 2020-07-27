@@ -23,6 +23,9 @@ import { ModalServiciosComponent } from './components/modal/modal-servicios/moda
 import { PlanComponent } from './components/plan/plan.component';
 import { PagoComponent } from './components/pago/pago.component';
 import { ContratarServicioComponent } from './components/contratar-servicio/contratar-servicio.component';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,10 @@ import { ContratarServicioComponent } from './components/contratar-servicio/cont
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgxSpinnerModule,BrowserAnimationsModule
+    NgxSpinnerModule,
+    BrowserAnimationsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule,
   ],
   providers: [ServiceService],
   bootstrap: [AppComponent]
