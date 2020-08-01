@@ -6,6 +6,8 @@ import { NgForm } from '@angular/forms';
 import { usuariointerface } from 'src/app/models/usuario-interface';
 import { AuthService } from 'src/app/services/auth.service';
 import $ from 'jquery';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuarios',
@@ -17,13 +19,11 @@ export class UsuariosComponent implements OnInit {
   @Input() items: any[] = [];
   personas: any[];
   usuarios: any[];
-  usuarios_no: any[];
-  usuarios_si: any[] = [];
-  paseador_bool: boolean;
-
+  rol: number;
   
 
   constructor(
+    private router : Router,
     private servicio: ServiceService, 
     private location: Location,
     private authService : AuthService
@@ -33,9 +33,23 @@ export class UsuariosComponent implements OnInit {
   user: usuariointerface;
 
   ngOnInit() {
+    this.user = this.authService.getCurrentUser();
+    this.rol = this.user['rol'];
+
+    if(this.rol != 1){
+      Swal.fire({
+        title: 'Forro',
+        text: 'Por que quiere meter tus putas narices aqui, vete a la verga',
+        icon: 'question',
+        confirmButtonText: 'Decido marcharme'
+      })
+      this.router.navigate(['/']);
+
+    }
+
     this.getListaPersonas();
     this.getLista_usuarios();
-    this.obtener_lista_personas_solicitud_paseador();
+
   }
 
   getListaPersonas() {
@@ -50,18 +64,7 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  obtener_lista_personas_solicitud_paseador(){
-    this.servicio.obtener_usuarios().subscribe((data: any) => {
-      this.usuarios_no = data; 
-      for (let i = 0; i < this.usuarios_no.length; i++) {
-        let element = this.usuarios_no[i];
-        if(element.paseador == true){
-          this.usuarios_si.push(element);
-        }
-      };
-    })
 
-  }
 
   deletePersona(id: string){
     if (confirm("Estas seguro de eliminar?")){
@@ -84,29 +87,5 @@ export class UsuariosComponent implements OnInit {
       id_usuario: '',
     }
   }
-
-  alta_paseador(id){
-    console.log('ALTA', id);
-    this.paseador_bool = true;
-    var objeto_booleano_paseador_h = {
-      paseador_habilitado: this.paseador_bool
-    }
-    this.servicio.update_paseador_h(objeto_booleano_paseador_h, id).subscribe();
-      
-    
-  }
-
-  baja_paseador(id){
-    console.log('BAJA', id);
-    this.paseador_bool = false;
-    var objeto_booleano_paseador_h = {
-      paseador_habilitado: this.paseador_bool
-    }
-    this.servicio.update_paseador_h(objeto_booleano_paseador_h, id).subscribe();
-    
-  }
-
-
-  
 
 }

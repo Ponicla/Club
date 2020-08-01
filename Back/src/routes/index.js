@@ -42,11 +42,18 @@ const {
     update_paseador,
     get_estado_paseador,
     update_habilitacion_paseador,
-    getServicioById
+    getServicioById,
+    createAlquilerCancha,
+    get_plan_usuario,
+    contratar_plan,
+    pagar
 
     
 } = require('../controllers/index.controller');
 
+router.post('/payment', pagar);
+
+router.post('/plan_usuario', get_plan_usuario);
 
 
 router.get('/comercios', getComercio);
@@ -62,7 +69,7 @@ router.get('/servicio/:id', getServicioById);
 
 
 router.get('/alquiler', getAlquiler);
-router.post('/alquiler', createAlquiler);
+router.post('/alquiler', createAlquilerCancha);
 
 router.get('/cancha', getCancha);
 router.post('/cancha', createCancha);
@@ -88,6 +95,7 @@ router.post('/plan', createPlan);
 router.delete('/plan/:id', deletePlan);
 router.put('/plan/:id', updatePlan);
 router.get('/plan/:id', getPlanById);
+router.put('/contratar_plan', contratar_plan);
 
 router.get('/turno', getTurno);
 router.post('/turno', createTurno);

@@ -165,6 +165,11 @@ export class ServiceService {
     const url = `http://localhost:3000/plan/${id}`;
     return this.consulta.put(url, plan).pipe(map(data  => data));
   }
+
+  contratar_plan(objeto_contratar){
+    const url = `http://localhost:3000/contratar_plan`;
+    return this.consulta.put(url, objeto_contratar).pipe(map(data  => data));
+  }
   //PLANES
   
 
@@ -205,6 +210,45 @@ export class ServiceService {
   agregar_paseo(paseo){
     const url = `http://localhost:3000/paseo`;
     return this.consulta.post(url, paseo).pipe(map(data  => data));
+  }
+
+  ///CANCHAS 
+  obtener_canchas() {
+    return this.consulta.get('http://localhost:3000/cancha').pipe(map(data  => data));
+  }
+
+  // agregarComercio(comercio){
+  //   const url = `http://localhost:3000/comercios`;
+  //   return this.consulta.post(url, comercio).pipe(map(data  => data));
+    
+  // }
+
+  // modificarComercio(comercio, id: String){
+  //   const url = `http://localhost:3000/comercios/${id}`;
+  //   return this.consulta.put(url, comercio).pipe(map(data  => data));
+  // }
+
+  // eliminarComercio(id: String){
+  //   const url = `http://localhost:3000/comercios/${id}`;
+  //   return this.consulta.delete(url).pipe(map(data => data));
+  // }
+
+
+  //PASEOS
+  agregar_alquiler(alquiler){
+    const url = `http://localhost:3000/alquiler`;
+    return this.consulta.post(url, alquiler).pipe(map(data  => data));
+  }
+
+  //PLAN SERVICIOS USUARIO
+  obtener_servicios_plan_usuario(objeto_id_plan){
+    const url = `http://localhost:3000/plan_usuario`;
+    return this.consulta.post(url, objeto_id_plan).pipe(map(data  => data));
+  }
+
+  pagar(objeto_pagar){
+    const url = `http://localhost:3000/payment`;
+    return this.consulta.post(url, objeto_pagar).pipe(map(data  => data));
   }
 
 }

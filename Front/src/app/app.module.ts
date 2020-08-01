@@ -26,6 +26,10 @@ import { ContratarServicioComponent } from './components/contratar-servicio/cont
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { CanchasComponent } from './components/admin/canchas/canchas.component';
+import { PaseosComponent } from './components/admin/paseos/paseos.component';
+import { ComerciosComponent } from './components/admin/comercios/comercios.component';
+import { DevolucionPagoComponent } from './components/devolucion-pago/devolucion-pago.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,11 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
     ModalServiciosComponent,
     PlanComponent,
     PagoComponent,
-    ContratarServicioComponent
+    ContratarServicioComponent,
+    CanchasComponent,
+    PaseosComponent,
+    ComerciosComponent,
+    DevolucionPagoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+<br><br><br>
+<div class="container">
+  <p class="text-center p-3 mb-2 bg-info text-white">ADMINISTRACION COMERCIOS </p>
+  <h1> Comercios</h1>
+
+  <!-- Button trigger modal  CLASS FLOAT_RIGTH PARA ALINEAR A DERECHA -->
+  <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalClub"
+    (click)="resetForm()">
+    Nuevo
+  </button>
+
+  <br>
+  <table id="myTable" class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th># </th>
+        <th>Nombre</th>
+        <th>Descuento</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let el of comercios">
+        <th scope="row">{{el.id_comercio}}</th>
+        <td style="text-transform: uppercase;">{{el.nombre}}</td>
+        <td style="text-transform: uppercase;">{{el.descuento}}%</td>
+        <td>
+          <button routerLink="/" type="button" class="btn btn-danger" (click)="deleteComercio(el.id_comercio)"
+            href="/">Eliminar</button>
+        </td>
+        <td>
+          <button class="btn btn-info" (click)="preActualizarComercio(el)" data-toggle="modal"
+            data-target="#modalClub">Modificar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-modal></app-modal>

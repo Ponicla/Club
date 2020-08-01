@@ -22,31 +22,71 @@ mercadopago.configure({
     sandbox:true
 });
 
-// Crea un objeto de preferencia
-let preference = {
+const pagar = async (req, res) => {
+    const {
+        precio,
+        nombre,
+        cantidad
+    } = req.body;
 
-    items: [
-      {
-        title: 'Mi producto',
-        unit_price: 100,
-        quantity: 1,
-      }
-    ],
 
-    "back_urls": {
-        "success": "http://localhost:4200",
-        "failure": "http://www.tu-sitio/failure",
-        "pending": "http://www.tu-sitio/pending"
-    }
-    //"auto_return": "approved"
-  };
+    let preference = {
+
+        items: [
+          {
+            title: nombre,
+            unit_price: precio,
+            quantity: cantidad,
+          }
+        ],
+        "back_urls": {
+            "success": "http://localhost:4200/user/pago_s",
+            "failure": "http://localhost:4200/",
+            "pending": "http://localhost:4200/"
+        },
+        "auto_return": "approved"
+      };
+      const response = mercadopago.preferences.create(preference).then(function(response){
+        global.init_point = response.body.init_point;
+        res.json(
+            global.init_point
+        );
+      }).catch(function(error){
+        console.log(error);
+      });
+    
+};
+
+
+
+// var precio = 1000;
+// var nombre = 'PLAN ORO CLUB NICETO';
+// var cantidad = 1;
+// // Crea un objeto de preferencia
+// let preference = {
+
+//     items: [
+//       {
+//         title: nombre,
+//         unit_price: precio,
+//         quantity: cantidad,
+//       }
+//     ],
+
+//     "back_urls": {
+//         "success": "http://localhost:4200",
+//         "failure": "http://www.tu-sitio/failure",
+//         "pending": "http://www.tu-sitio/pending"
+//     }
+//     //"auto_return": "approved"
+//   };
   
-  mercadopago.preferences.create(preference).then(function(response){
-    global.init_point = response.body.init_point;
-    console.log(global.init_point);
-  }).catch(function(error){
-    console.log(error);
-  });
+//   mercadopago.preferences.create(preference).then(function(response){
+//     global.init_point = response.body.init_point;
+//     console.log(global.init_point);
+//   }).catch(function(error){
+//     console.log(error);
+//   });
 /* MERCADO PAGO */
 
 
@@ -131,6 +171,8 @@ const deletePlan = async (req, res) => {
     console.log(response);
     res.json(`Plan ${id} dado de baja`);
 };
+
+
 
 const updatePlan = async (req, res) => {
     const id = req.params.id;
@@ -416,9 +458,10 @@ const createPaseo = async (req, res) => {
         id_paseador,
         id_rango_h,
         fecha,
-        direccion
+        direccion,
+        fk_id_usuario
     } = req.body;
-    const response = await pool.query('INSERT INTO paseo (cantidad, id_paseador, id_rango_h, fecha, direccion) VALUES ($1, $2, $3, $4, $5)', [cantidad, id_paseador, id_rango_h, fecha, direccion]);
+    const response = await pool.query('INSERT INTO paseo (cantidad, id_paseador, id_rango_h, fecha, direccion, fk_id_usuario) VALUES ($1, $2, $3, $4, $5, $6)', [cantidad, id_paseador, id_rango_h, fecha, direccion, fk_id_usuario]);
     console.log(response);
     res.json({
         Message: 'PASEO ADD CORRECTO',
@@ -522,22 +565,33 @@ const getCancha = async (req, res) => {
     console.log(response.rows);
     res.status(200).json(response.rows);
 };
+
+
+
+
+
 // CANCHA //
 
 
 // ALQUILER//
-const createAlquiler = async (req, res) => {
+const createAlquilerCancha= async (req, res) => {
     const {
-        precio
+        horario,
+        fecha,
+        fk_id_usuario,
+        id_cancha
     } = req.body;
 
-    const response = await pool.query('INSERT INTO alquiler (precio) VALUES ($1)', [precio]);
+    const response = await pool.query('INSERT INTO alquiler_futbol (horario, fecha, fk_id_usuario, id_cancha) VALUES ($1, $2, $3, $4)', [horario, fecha, fk_id_usuario, id_cancha]);
     console.log(response);
     res.json({
-        Message: 'ALQUILER ADD CORRECTAMENTE',
+        Message: 'ALQUILER DE CANCHA F5 ADD CORRECTAMENTE',
         body: {
-            comercio: {
-                precio
+            alquiler_cancha: {
+                horario,
+                fecha,
+                fk_id_usuario,
+                id_cancha
             }
         }
     })
@@ -550,6 +604,30 @@ const getAlquiler = async (req, res) => {
     res.status(200).json(response.rows);
 };
 // ALQUILER //
+
+
+
+//PLAN DEL USUARIO//
+const get_plan_usuario = async (req, res) => {
+    const {
+        id_plan
+    } = req.body;
+    const response = await pool.query('SELECT p.nombre, s.nombre, s.descripcion, s.id_servicio as ID_SERVICIO FROM plan_servicio as ps, planes as p, servicios as s WHERE  ps.fk_id_plan = p.id_plan AND ps.fk_id_servicio = s.id_servicio AND p.id_plan = $1', [id_plan]);
+    console.log(response.rows);
+    res.status(200).json(response.rows);
+
+};
+
+const contratar_plan = async (req, res) => {
+    const {
+        id_usuario,
+        id_plan
+    } = req.body;
+    const response = await pool.query('UPDATE usuarios SET fk_id_plan = $1 WHERE id_usuario = $2', [id_plan, id_usuario]);
+    console.log(response.rows);
+    res.status(200).json(response.rows);
+};
+
 
 
 
@@ -607,7 +685,6 @@ module.exports = {
     getComercio,
     deleteComercio,
     updateComercio,
-    createAlquiler,
     getAlquiler,
     createCancha,
     getCancha,
@@ -641,6 +718,10 @@ module.exports = {
     update_paseador,
     get_estado_paseador,
     update_habilitacion_paseador,
-    getServicioById
+    getServicioById,
+    createAlquilerCancha,
+    get_plan_usuario,
+    contratar_plan,
+    pagar
 
 }

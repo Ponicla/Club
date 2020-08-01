@@ -132,10 +132,10 @@
         <div class="row mb-5">
           <div class="col-md-12">
             <select style="text-transform: uppercase;" id="select_cancha" class="form-control">
-              <option value='0' selected>Seleccione una cancha</option>
-              <!-- <option *ngFor="let paseador of usuarios_si_paseadores" value={{paseador.id_usuario}}>
-                {{paseador.nombre}}
-              </option> -->
+              <option value='' selected disabled>Seleccione una cancha</option>
+              <option *ngFor="let cancha of canchas" value={{cancha.id_cancha}}>
+                {{cancha.nombre}}
+              </option> 
             </select>
           </div>
         </div>
@@ -147,10 +147,10 @@
           <div class="col-md-6">
             <!-- <label>Paseo desde las</label> -->
             <select style="text-transform: uppercase;" id="select_hora_turno_cancha" class="form-control">
-              <option value="0" selected>Horario del turno</option>
+              <option value="" selected>Horario del turno</option>
               <option value="1">18:00</option>
               <option value="2">19:00</option>
-              <option value="3">20:0</option>
+              <option value="3">20:00</option>
               <option value="4">21:00</option>
               <option value="5">22:00</option>
               <option value="3">23:00</option>
@@ -168,7 +168,7 @@
         </div>
         <div class="row">
           <div class="col-md-12" style="text-align: right;">
-            <button id="boton_turno"  class="btn btn-success btn-block">Alquilar</button>
+            <button id="boton_turno" (click)="guardar_turno()" class="btn btn-success btn-block">Alquilar</button>
           </div>
         </div>
 
@@ -206,7 +206,7 @@
 
     <div class="card-deck">
       <div class="card">
-        <img class="card-img-top" src="https://lh3.googleusercontent.com/proxy/bTED-jW9yN2unKrQYB7AE5LOvPp8Sa2EBuAAmus_0HIL1OveXWSKIm031KvKYLOtW6b7UmuDQp7xI9jq2p8o3-XtuAXYOohVQKijO3dtiMk3WZEOe0udMkdEucPiCOTDxjsLoq8" alt="Card image cap">
+        <img class="card-img-top" src="https://canalabierto.com.ar/wp-content/uploads/2017/11/1111-667x500.jpg" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">FREEDO HELADOS</h5>
           <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -241,9 +241,9 @@
         </div>
       </div>
       <div class="card">
-        <img class="card-img-top" src="https://lh3.googleusercontent.com/proxy/UmmNwvs8oMlI-xqQGdaJtcT9fvOwzJ3K_E9f1SpPrEh1gdI8WMlUKgiPXeBgOhYNstQSjRkEZlV9nFo-YUw0EPpDbVaBVC0UjfeY-XJp6flfd1MU" alt="Card image cap">
+        <img class="card-img-top" src="https://scontent.faep24-1.fna.fbcdn.net/v/t31.0-0/p370x247/15874919_760268740793458_1966188093377375004_o.jpg?_nc_cat=109&_nc_sid=85a577&_nc_ohc=X5je8lGAVb8AX8wt2dW&_nc_ht=scontent.faep24-1.fna&_nc_tp=6&oh=25442bf339309a5c4f1fdbabbcb3c03d&oe=5F458CD4" alt="Card image cap">
         <div class="card-body">
-          <h5 class="card-title">CHISAP</h5>
+          <h5 class="card-title">LA PANCHERIA</h5>
           <p class="card-text">Lorem ipsum dolor, sit amet consectetur adipisiabo odio soluta similique earum magnam aliquid molestias harum ipsum dolor non alias magni ipsa maiores. This card has supporting text below as a natural lead-in to additional content.</p>
           <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
         </div>

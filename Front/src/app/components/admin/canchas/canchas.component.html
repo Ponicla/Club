@@ -1,0 +1,60 @@
+<app-navbar></app-navbar>
+<br><br><br>
+<div class="container">
+    <p class="text-center p-3 mb-2 bg-success" style="color: white">GESTION DE CANCHAS ADMIN</p>
+
+    <table id="test-table-datatable" class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Estado</th>
+            <th>TEST</th>
+            <th>Editar</th>
+            <th>Quitar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr mdbTableCol *ngFor="let cancha of canchas"> 
+            <th scope="row">{{cancha.id_cancha}}</th>
+            <td style="text-transform: uppercase;">{{cancha.nombre}}</td>
+            <td *ngIf ="cancha.estado == 1 ">HABILITADA</td>
+            <td *ngIf ="cancha.estado == 2 ">MANTENIMIENTO</td>
+            <td *ngIf ="cancha.estado == 3 ">FUERA DE SERVICIO</td>
+                  <td>
+                    <select class="form-control" id="cambio_estado_cancha">
+                      <option value=1>HABILITADA</option>
+                      <option value=2>SUSPENDIDA</option>
+                      <option value=3>EN REFORMA</option>
+                  </select>
+                </td>
+              <td>
+                <button class="btn btn-info">Modificar</button>
+              </td>
+            <td>
+                <button  type="button" class="btn btn-danger">Eliminar</button>
+              </td>
+            <!-- <td>{{el.dni}}</td> -->
+      
+            <!-- <td *ngIf="el.id_gfamiliar == 1">Si</td>
+            <td *ngIf="el.id_gfamiliar == 2">No</td> -->
+            <!-- <td>
+              <button  type="button" class="btn btn-danger" 
+              (click)="deletePersona(el.id_persona)" href="/admin/usuarios">Eliminar</button>
+            </td>
+            <td>
+              <button class="btn btn-info" (click)="preActualizarPersona(el)" 
+              data-toggle="modal" data-target="#modalNuevaPersona">Modificar</button>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="row" style="text-align: left">
+        <div class="col-md-12">
+          <button class="btn btn-primary">
+            Confirmar cambios
+          </button>
+        </div>
+      </div>
+</div>

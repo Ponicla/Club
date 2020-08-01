@@ -11,6 +11,10 @@ import { AuthGuard } from './guards/auth.guard';
 import { PlanComponent } from './components/plan/plan.component';
 import { PagoComponent } from './components/pago/pago.component';
 import { ContratarServicioComponent } from './components/contratar-servicio/contratar-servicio.component';
+import { CanchasComponent } from './components/admin/canchas/canchas.component';
+import { PaseosComponent } from './components/admin/paseos/paseos.component';
+import { ComerciosComponent } from './components/admin/comercios/comercios.component';
+import { DevolucionPagoComponent } from './components/devolucion-pago/devolucion-pago.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent, canActivate: [AuthGuard]},
@@ -23,6 +27,11 @@ const routes: Routes = [
   {path: "plan/:id", component: PlanComponent, canActivate: [AuthGuard] },
   {path: "plan/:id/pago", component: PagoComponent , canActivate: [AuthGuard] },
   {path: "user/contratar-servicio/:id", component: ContratarServicioComponent , canActivate: [AuthGuard] },
+  {path: "admin/canchas", component: CanchasComponent , canActivate: [AuthGuard] },
+  {path: "admin/paseos", component: PaseosComponent , canActivate: [AuthGuard] },
+  {path: "admin/comercios", component: ComerciosComponent , canActivate: [AuthGuard] },
+  {path: "user/pago_s", component: DevolucionPagoComponent , canActivate: [AuthGuard] },
+  
 ];
 
 @NgModule({

@@ -3,5 +3,6 @@ export interface usuariointerface{
     nombre?: string;
     mail?: string;
     password?: string;
+    id_plan? : number;
     
 }

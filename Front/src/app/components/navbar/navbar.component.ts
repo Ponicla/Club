@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/services/auth.service';
+import { usuariointerface } from 'src/app/models/usuario-interface';
 
 @Component({
   selector: 'app-navbar',
@@ -9,10 +11,21 @@ import Swal from 'sweetalert2';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private router : Router) { }
+  user: usuariointerface;
+  rol: number;
+
+  constructor(
+    private router : Router,
+    private authService : AuthService,
+    ) { }
+    
   public app_name = "Club";
+
   ngOnInit() {
+    this.user = this.authService.getCurrentUser();
+    this.rol = this.user['rol'];
   }
+
   onLogout(){
     localStorage.removeItem("currentUser");
 
@@ -25,4 +38,5 @@ export class NavbarComponent implements OnInit {
       this.router.navigate(['/user/login']);
     
   }
+  
 }

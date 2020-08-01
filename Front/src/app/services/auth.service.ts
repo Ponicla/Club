@@ -45,10 +45,12 @@ export class AuthService {
 
   setUser(user):void { 
     let user_local = {
+
       "id_usuario":user.id_usuario,
       "nombre":user.nombre,
       "mail":user.mail,
-      "rol":user.rol
+      "rol":user.rol,
+      "id_plan" : user.fk_id_plan
     }
     
     localStorage.setItem("currentUser",JSON.stringify(user_local));
@@ -64,7 +66,7 @@ export class AuthService {
   }
 
   getCurrentUser(){
-    console.log(this.afAuth.authState.pipe(first()).toPromise());
+    // console.log(this.afAuth.authState.pipe(first()).toPromise());
     let user_string = localStorage.getItem("currentUser");
     if (!isNullOrUndefined(user_string)){
       let user = JSON.parse(user_string);

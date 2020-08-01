@@ -3,6 +3,10 @@ import { NgForm } from '@angular/forms';
 import { ServiceService } from 'src/app/services/service.service';
 import { Location } from '@angular/common';
 import { serviciointerface } from 'src/app/models/servicio-interface';
+import { AuthService } from 'src/app/services/auth.service';
+import { usuariointerface } from 'src/app/models/usuario-interface';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-servicios',
@@ -12,9 +16,30 @@ import { serviciointerface } from 'src/app/models/servicio-interface';
 export class ServiciosComponent implements OnInit {
   @Input() items: any[] = [];
   servicios: any[];
-  constructor(private servicio: ServiceService, private location: Location) { }
+  rol: number;
+  user: usuariointerface;
+
+  constructor(
+    private router : Router,
+    private servicio: ServiceService, 
+    private location: Location,
+    private authService : AuthService
+    ) { }
 
   ngOnInit() {
+    this.user = this.authService.getCurrentUser();
+    this.rol = this.user['rol'];
+
+    if(this.rol != 1){
+      Swal.fire({
+        title: 'Forro',
+        text: 'Por que quiere meter tus putas narices aqui, vete a la verga',
+        icon: 'question',
+        confirmButtonText: 'Decido marcharme'
+      })
+      this.router.navigate(['/']);
+    }
+    
     this.getListaServicios();
   }
 
