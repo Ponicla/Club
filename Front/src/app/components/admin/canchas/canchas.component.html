@@ -15,17 +15,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr mdbTableCol *ngFor="let cancha of canchas"> 
+          <tr mdbTableCol *ngFor="let cancha of canchas; let i= index"> 
             <th scope="row">{{cancha.id_cancha}}</th>
             <td style="text-transform: uppercase;">{{cancha.nombre}}</td>
-            <td *ngIf ="cancha.estado == 1 ">HABILITADA</td>
-            <td *ngIf ="cancha.estado == 2 ">MANTENIMIENTO</td>
-            <td *ngIf ="cancha.estado == 3 ">FUERA DE SERVICIO</td>
+            <td id='e_cancha' *ngIf ="cancha.estado == 1 ">HABILITADA</td>
+            <td id='e_cancha' *ngIf ="cancha.estado == 2 ">MANTENIMIENTO</td>
+            <td id='e_cancha' *ngIf ="cancha.estado == 3 ">FUERA DE SERVICIO</td>
                   <td>
-                    <select class="form-control" id="cambio_estado_cancha">
+                    <select (change)="cambio_estado($event.target.value, cancha.id_cancha, $event, i+1)" class="form-control" id="cambio_estado_cancha">
+                      <option value='' selected disabled>SELECCIONE</option>
                       <option value=1>HABILITADA</option>
-                      <option value=2>SUSPENDIDA</option>
-                      <option value=3>EN REFORMA</option>
+                      <option value=2>MANTENIMIENTO</option>
+                      <option value=3>FUERA DE SERVICIO</option>
                   </select>
                 </td>
               <td>
@@ -52,9 +53,7 @@
 
       <div class="row" style="text-align: left">
         <div class="col-md-12">
-          <button class="btn btn-primary">
-            Confirmar cambios
-          </button>
+          <button class="btn btn-primary" (click)="confirmar_cambios()"> Confirmar cambios </button>
         </div>
       </div>
 </div>

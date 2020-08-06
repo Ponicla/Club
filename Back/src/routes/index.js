@@ -46,15 +46,16 @@ const {
     createAlquilerCancha,
     get_plan_usuario,
     contratar_plan,
-    pagar
+    pagar,
+    update_estado_cancha,
+    get_servicios_contratados
 
     
 } = require('../controllers/index.controller');
 
 router.post('/payment', pagar);
-
 router.post('/plan_usuario', get_plan_usuario);
-
+router.post('/servicios_del_usuarios', get_servicios_contratados)
 
 router.get('/comercios', getComercio);
 router.post('/comercios', createComercio);
@@ -73,6 +74,7 @@ router.post('/alquiler', createAlquilerCancha);
 
 router.get('/cancha', getCancha);
 router.post('/cancha', createCancha);
+router.put('/estado_cancha', update_estado_cancha); 
 
 router.get('/cuota', getCuota);
 router.post('/cuota', createCuota);

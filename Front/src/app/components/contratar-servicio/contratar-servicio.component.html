@@ -133,7 +133,7 @@
           <div class="col-md-12">
             <select style="text-transform: uppercase;" id="select_cancha" class="form-control">
               <option value='' selected disabled>Seleccione una cancha</option>
-              <option *ngFor="let cancha of canchas" value={{cancha.id_cancha}}>
+              <option *ngFor="let cancha of canchas_habilitadas" value={{cancha.id_cancha}}>
                 {{cancha.nombre}}
               </option> 
             </select>

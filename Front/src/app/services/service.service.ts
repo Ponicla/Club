@@ -217,6 +217,13 @@ export class ServiceService {
     return this.consulta.get('http://localhost:3000/cancha').pipe(map(data  => data));
   }
 
+  actualizar_estado_cancha(objeto_estado_cancha){
+    const url = `http://localhost:3000/estado_cancha`;
+    return this.consulta.put(url, objeto_estado_cancha).pipe(map(data  => data));
+  }
+
+
+
   // agregarComercio(comercio){
   //   const url = `http://localhost:3000/comercios`;
   //   return this.consulta.post(url, comercio).pipe(map(data  => data));

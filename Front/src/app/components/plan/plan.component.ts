@@ -21,6 +21,7 @@ export class PlanComponent implements OnInit {
     private router: ActivatedRoute,
   ) {}
   ngOnInit() {
+
     this.user = this.authService.getCurrentUser();
     this.loadingPlan = false;
     this.router.params.subscribe((params) => {
@@ -31,16 +32,7 @@ export class PlanComponent implements OnInit {
     });
   }
   contratar_plan() {
-    // console.log('ID USER: ',this.user.id_usuario);
-    // console.log('ID PLAN: ',this.plan[0].id_plan);
-
-    var objeto_contratar = {
-      id_plan: this.plan[0].id_plan,
-      id_usuario: this.user.id_usuario,
-    };
-
     
-
     Swal.fire({
       title: "ESTA POR CONTRATAR EL PLAN " + this.plan[0].nombre.toUpperCase(),
       text: "Revise su pedido",
