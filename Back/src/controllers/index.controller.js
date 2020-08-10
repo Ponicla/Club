@@ -311,7 +311,7 @@ function lanzarSiempreALaHora(hora, minutos, tarea) {
     }, momento.getTime() - ahora.getTime());
 }
 
-lanzarSiempreALaHora(18, 15, tarea);
+lanzarSiempreALaHora(18, 23, tarea);
 
 
 /* MERCADO PAGO */
@@ -920,59 +920,77 @@ const contratar_plan = async (req, res) => {
 
 
 const get_servicios_contratados = async (req, res) => {
-            const {
-                id_usuario
+    const {
+        id_usuario
+    } = req.body;
+    const response = await pool.query('SELECT a.id_alquiler AS IDENTIDAD, a.horario AS HORA, a.fecha as FECHA, a.id_cancha as ID_LUGAR_O_PASEADOR, c.nombre as NOMBRE_PASEADOR_O_CANCHA, 0 as CANTIDAD, 1 as TIPO_SERVICIO FROM alquiler_futbol as a, cancha as c WHERE a.fk_id_usuario = $1 AND a.id_cancha = c.id_cancha UNION SELECT p.id_paseo AS IDENTIDAD, p.id_rango_h AS HORA, p.fecha as FECHA, p.id_paseador as ID_LUGAR_O_PASEADOR, ux.nombre as NOMBRE_PASEADOR_O_CANCHA, p.cantidad as CANTIDAD, 2 as TIPO_SERVICIO FROM paseo as p, usuarios as ux WHERE p.fk_id_usuario = $1 AND ux.paseador = true AND ux.paseador_habilitado = true AND p.id_paseador = ux.id_usuario ', [id_usuario]);
+    console.log(response);
+    res.status(200).json(response.rows);
+};
 
-            } = req.body;
-            const response = await pool.query('SELECT a.horario AS HORA, a.fecha as FECHA, a.id_cancha as ID_LUGAR_O_PASEADOR, c.nombre as NOMBRE_PASEADOR_O_CANCHA, 0 as CANTIDAD, 1 as TIPO_SERVICIO FROM alquiler_futbol as a, cancha as c WHERE a.fk_id_usuario = $1 AND a.id_cancha = c.id_cancha UNION SELECT p.id_rango_h AS HORA, p.fecha as FECHA, p.id_paseador as ID_LUGAR_O_PASEADOR, ux.nombre as NOMBRE_PASEADOR_O_CANCHA, p.cantidad as CANTIDAD, 2 as TIPO_SERVICIO FROM paseo as p, usuarios as ux WHERE p.fk_id_usuario = $1 AND ux.paseador = true AND ux.paseador_habilitado = true AND p.id_paseador = ux.id_usuario ',[id_usuario]);
-                console.log(response); res.status(200).json(response.rows);
-            };
+
+const cancelar_paseo = async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('DELETE FROM paseo WHERE id_paseo = $1', [id]);
+        console.log(response.rows);
+    res.status(200).json(response.rows);
+};
 
 
-            module.exports = {
-                get_servicios_contratados,
-                createComercio,
-                getComercio,
-                deleteComercio,
-                updateComercio,
-                getAlquiler,
-                createCancha,
-                getCancha,
-                createCuota,
-                getCuota,
-                createGFamiliar,
-                getGFamiliar,
-                createPaseo,
-                getPaseo,
-                createPersona,
-                getPersona,
-                deletePersona,
-                updatePersona,
-                createPlan,
-                getPlan,
-                deletePlan,
-                updatePlan,
-                createTurno,
-                getTurno,
-                createUsuario,
-                getUsuario,
-                getUsuarioByNombre,
-                updateUsuario,
-                emailSend,
-                createServicio,
-                getServicio,
-                deleteServicio,
-                updateServicio,
-                getPlanById,
-                getPersonaById,
-                update_paseador,
-                get_estado_paseador,
-                update_habilitacion_paseador,
-                getServicioById,
-                createAlquilerCancha,
-                get_plan_usuario,
-                contratar_plan,
-                pagar,
-                update_estado_cancha
+const cancelar_cancha = async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('DELETE FROM alquiler_futbol WHERE id_alquiler = $1', [id]);
+        console.log(response.rows);
+    res.status(200).json(response.rows);
+};
 
-            }
+
+module.exports = {
+    get_servicios_contratados,
+    createComercio,
+    getComercio,
+    deleteComercio,
+    updateComercio,
+    getAlquiler,
+    createCancha,
+    getCancha,
+    createCuota,
+    getCuota,
+    createGFamiliar,
+    getGFamiliar,
+    createPaseo,
+    getPaseo,
+    createPersona,
+    getPersona,
+    deletePersona,
+    updatePersona,
+    createPlan,
+    getPlan,
+    deletePlan,
+    updatePlan,
+    createTurno,
+    getTurno,
+    createUsuario,
+    getUsuario,
+    getUsuarioByNombre,
+    updateUsuario,
+    emailSend,
+    createServicio,
+    getServicio,
+    deleteServicio,
+    updateServicio,
+    getPlanById,
+    getPersonaById,
+    update_paseador,
+    get_estado_paseador,
+    update_habilitacion_paseador,
+    getServicioById,
+    createAlquilerCancha,
+    get_plan_usuario,
+    contratar_plan,
+    pagar,
+    update_estado_cancha,
+    cancelar_paseo,
+    cancelar_cancha
+
+}

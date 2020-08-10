@@ -1,0 +1,46 @@
+<app-navbar></app-navbar>
+<br><br><br>
+<div class="container mt-4">
+
+  <p class="text-center p-3 mb-2 bg-dark text-white" style="border-radius: 5px;">Paseos de mascotas contratados</p>
+  <div class="row card-group">
+    <div class="col-4 mb-4 index_card_paseo" *ngFor="let el of servicios_paseo; let i = index" id="{{i}}">
+      <div  class="card text-white bg-primary" style="width: 20.5rem; text-transform: uppercase;">
+        <div class="card-body text-white bg-primary">
+          <h5 class="card-title" style="text-transform: uppercase;">Paseo</h5>
+          <p class="card-text" style="font-size: small; text-transform: initial;">Detalles del paseo</p>
+        </div>
+
+        <p class="list-group-item text-white bg-primary">Dia de paseo: {{el.fecha}}</p>
+        <p class="list-group-item text-white bg-primary">Entre las: {{el.hora}}</p>
+        <p class="list-group-item text-white bg-primary">Su paseador es: {{el.nombre_paseador_o_cancha}}</p>
+
+        <div class="card-body text-white bg-primary">
+          <button class=" btn btn-light btn-block card-link" (click)="cancelar_paseo(el.identidad, i)" style="color: #0275d8">Cancelarlo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+
+  <p class="text-center p-3 mb-2 bg-dark text-white" style="border-radius: 5px;">Paseos de mascotas contratados</p>
+  <div class="row card-group">
+    <div class="col-4 mb-4 index_card_cancha" *ngFor="let el of servicios_cancha; let o = index" id="{{o}}">
+      
+      <div class="card text-white bg-success" style="width: 20.5rem; text-transform: uppercase;">
+        <div class="card-body text-white bg-success">
+          <h5 class="card-title" style="text-transform: uppercase;">Futbol 5</h5>
+          <p class="card-text" style="font-size: small; text-transform: initial;">Detalles del turno</p>
+        </div>
+        <p class="list-group-item text-white bg-success">El: {{el.fecha}}</p>
+        <p class="list-group-item text-white bg-success">Turno a las: {{el.hora}}</p>
+        <p class="list-group-item text-white bg-success">En la cancha: {{el.nombre_paseador_o_cancha}}</p>
+
+        <div class="card-body text-white bg-success">
+          <button href="#" class=" btn btn-light btn-block card-link" (click)="cancelar_cancha(el.identidad, o)" style="color: #16710A ">Cancelar turno</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

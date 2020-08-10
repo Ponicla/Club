@@ -30,6 +30,7 @@ import { CanchasComponent } from './components/admin/canchas/canchas.component';
 import { PaseosComponent } from './components/admin/paseos/paseos.component';
 import { ComerciosComponent } from './components/admin/comercios/comercios.component';
 import { DevolucionPagoComponent } from './components/devolucion-pago/devolucion-pago.component';
+import { MisServiciosComponent } from './components/mis-servicios/mis-servicios.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { DevolucionPagoComponent } from './components/devolucion-pago/devolucion
     CanchasComponent,
     PaseosComponent,
     ComerciosComponent,
-    DevolucionPagoComponent
+    DevolucionPagoComponent,
+    MisServiciosComponent
   ],
   imports: [
     BrowserModule,

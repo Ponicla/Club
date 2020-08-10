@@ -48,14 +48,16 @@ const {
     contratar_plan,
     pagar,
     update_estado_cancha,
-    get_servicios_contratados
+    get_servicios_contratados,
+    cancelar_paseo,
+    cancelar_cancha
 
     
 } = require('../controllers/index.controller');
 
 router.post('/payment', pagar);
 router.post('/plan_usuario', get_plan_usuario);
-router.post('/servicios_del_usuarios', get_servicios_contratados)
+router.post('/servicios_del_usuarios', get_servicios_contratados);
 
 router.get('/comercios', getComercio);
 router.post('/comercios', createComercio);
@@ -74,6 +76,7 @@ router.post('/alquiler', createAlquilerCancha);
 
 router.get('/cancha', getCancha);
 router.post('/cancha', createCancha);
+router.delete('/cancha/:id', cancelar_cancha); 
 router.put('/estado_cancha', update_estado_cancha); 
 
 router.get('/cuota', getCuota);
@@ -84,6 +87,7 @@ router.post('/gfamiliar', createGFamiliar);
 
 router.get('/paseo', getPaseo);
 router.post('/paseo', createPaseo);
+router.delete('/paseo/:id', cancelar_paseo);
 
 router.get('/persona', getPersona);
 router.post('/persona', createPersona);

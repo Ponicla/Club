@@ -15,6 +15,9 @@ import { CanchasComponent } from './components/admin/canchas/canchas.component';
 import { PaseosComponent } from './components/admin/paseos/paseos.component';
 import { ComerciosComponent } from './components/admin/comercios/comercios.component';
 import { DevolucionPagoComponent } from './components/devolucion-pago/devolucion-pago.component';
+import { MisServiciosComponent } from './components/mis-servicios/mis-servicios.component';
+
+
 
 const routes: Routes = [
   {path: "", component: HomeComponent, canActivate: [AuthGuard]},
@@ -31,6 +34,7 @@ const routes: Routes = [
   {path: "admin/paseos", component: PaseosComponent , canActivate: [AuthGuard] },
   {path: "admin/comercios", component: ComerciosComponent , canActivate: [AuthGuard] },
   {path: "user/pago_s", component: DevolucionPagoComponent , canActivate: [AuthGuard] },
+  {path: "user/mis_servicios", component: MisServiciosComponent , canActivate: [AuthGuard] },
   
 ];
 
