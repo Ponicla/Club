@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/services/auth.service";
 import { Location } from "@angular/common";
 import { ServiceService } from "src/app/services/service.service";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
 import { usuariointerface } from "src/app/models/usuario-interface";
 import Swal from "sweetalert2";
 import $ from "jquery";
@@ -65,20 +65,61 @@ export class MisServiciosComponent implements OnInit {
   }
 
   cancelar_paseo(elemento, index) {
-    this.router2.navigateByUrl('/', {skipLocationChange: true}).then(()=>
-      this.router2.navigate(["/user/mis_servicios"]));
-      this.servicio.cancelar_paseo(elemento.toString()).subscribe((data) => {
-        $(".index_card_paseo").remove("#" + index + "");
-      });
+    Swal.fire({
+      title: "Realmente desea dar de baja el paseo?",
+      text: "Confirme si asi lo desea",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, cancelar",
+    }).then((result) => {
+      if (result.value) {
+        this.servicio.cancelar_paseo(elemento.toString()).subscribe(() => {
+          $(".index_card_paseo").remove("#" + index + "");
+        });
+        this.router2
+          .navigateByUrl("/", { skipLocationChange: false })
+          .then(() => this.router2.navigate(["/user/mis_servicios"]));
+        Swal.fire({
+          timer: 1500,
+          title: "Paseo cancelado",
+          icon: "success",
+        });
+      }
+    });
   }
-
 
   cancelar_cancha(elemento, index) {
-    this.router2.navigateByUrl('/DummyComponent', {skipLocationChange: true}).then(()=>
-      this.router2.navigate(["mis-servicios"]));
-
-    // this.servicio.cancelar_cancha(elemento.toString()).subscribe((data) => {
-    //   $(".index_card_cancha").remove("#" + index + "");
-    // });
+    Swal.fire({
+      title: "Realmente desea Cancelar el turno?",
+      text: "Confirme si asi lo desea",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, cancelar",
+    }).then((result) => {
+      if (result.value) {
+        this.servicio.cancelar_cancha(elemento.toString()).subscribe(() => {
+          $(".index_card_cancha").remove("#" + index + "");
+        });
+        this.router2 .navigateByUrl("/", { skipLocationChange: false }).then(() => 
+        this.router2.navigate(["/user/mis_servicios"]));
+        Swal.fire({
+          timer: 1500,
+          title: "Turno cancelado",
+          icon: "success",
+        });
+      }
+    });   
   }
+  ir_alquiler(id){
+    this.router2.navigate(["/user/contratar-servicio", id]);
+  }
+
+  ir_paseos(id){
+    this.router2.navigate(["/user/contratar-servicio", id]);
+  }
+  
 }

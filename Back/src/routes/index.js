@@ -50,7 +50,11 @@ const {
     update_estado_cancha,
     get_servicios_contratados,
     cancelar_paseo,
-    cancelar_cancha
+    cancelar_cancha,
+    deleteCancha,
+    createUsuarioAdmin,
+    getUsuarioAdmin,
+    getUsuarioNormal
 
     
 } = require('../controllers/index.controller');
@@ -77,6 +81,7 @@ router.post('/alquiler', createAlquilerCancha);
 router.get('/cancha', getCancha);
 router.post('/cancha', createCancha);
 router.delete('/cancha/:id', cancelar_cancha); 
+router.delete('/eliminar_cancha/:id', deleteCancha); 
 router.put('/estado_cancha', update_estado_cancha); 
 
 router.get('/cuota', getCuota);
@@ -108,9 +113,12 @@ router.post('/turno', createTurno);
 
 router.get('/usuario', getUsuario);
 router.post('/usuario', createUsuario);
+router.post('/usuario_admin', createUsuarioAdmin);
 router.post('/usuario/login', getUsuarioByNombre);
 router.put('/usuario/:id', updateUsuario);
 router.post('/correo', emailSend);
+router.get('/obtener_usuario_admin', getUsuarioAdmin);
+router.get('/obtener_usuario_normal', getUsuarioNormal);
 router.put('/usuario_paseador/:id', update_paseador);
 router.get('/usuario_paseador/:id', get_estado_paseador);
 router.put('/usuario_paseador_h/:id', update_habilitacion_paseador);

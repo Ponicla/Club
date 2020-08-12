@@ -3,6 +3,7 @@
 <div class="container mt-4">
 
   <p class="text-center p-3 mb-2 bg-dark text-white" style="border-radius: 5px;">Paseos de mascotas contratados</p>
+  <div class="btn btn-dark btn-sm" (click)="ir_paseos(4)">Solicitar un nuevo paseo</div><hr>
   <div class="row card-group">
     <div class="col-4 mb-4 index_card_paseo" *ngFor="let el of servicios_paseo; let i = index" id="{{i}}">
       <div  class="card text-white bg-primary" style="width: 20.5rem; text-transform: uppercase;">
@@ -23,7 +24,8 @@
   </div>
   <br><br>
 
-  <p class="text-center p-3 mb-2 bg-dark text-white" style="border-radius: 5px;">Paseos de mascotas contratados</p>
+  <p class="text-center p-3 mb-2 bg-dark text-white" style="border-radius: 5px;">Turnos en las canchas</p>
+  <div class="btn btn-dark btn-sm" (click)="ir_alquiler(2)">Alquilar otra cancha</div><hr>
   <div class="row card-group">
     <div class="col-4 mb-4 index_card_cancha" *ngFor="let el of servicios_cancha; let o = index" id="{{o}}">
       

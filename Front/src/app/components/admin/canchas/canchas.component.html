@@ -3,14 +3,25 @@
 <div class="container">
     <p class="text-center p-3 mb-2 bg-success" style="color: white">GESTION DE CANCHAS ADMIN</p>
 
-    <table id="test-table-datatable" class="table">
+  
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <input class="form-control" type="text" id="nombre_nueva_cancha" placeholder="Ingrese nombre de la cancha">
+      </div>
+      <div class="col-md-3 mb-4">
+        <button class="btn btn-success" (click)="agregar_nueva_cancha()" id="boton_nueva_cancha">Agregar</button>
+      </div>
+    </div>
+  
+
+    <table id="tabla_cancha" class="table">
         <thead class="thead-dark">
           <tr>
             <th>#</th>
             <th>Nombre</th>
             <th>Estado</th>
             <th>TEST</th>
-            <th>Editar</th>
+            <!-- <th>Editar</th> -->
             <th>Quitar</th>
           </tr>
         </thead>
@@ -29,11 +40,11 @@
                       <option value=3>FUERA DE SERVICIO</option>
                   </select>
                 </td>
-              <td>
+              <!-- <td>
                 <button class="btn btn-info">Modificar</button>
-              </td>
+              </td> -->
             <td>
-                <button  type="button" class="btn btn-danger">Eliminar</button>
+                <button  type="button" class="btn btn-danger" (click)="eliminar_cancha(cancha)">Eliminar</button>
               </td>
             <!-- <td>{{el.dni}}</td> -->
       

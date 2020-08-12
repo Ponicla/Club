@@ -514,22 +514,24 @@ const getServicioById = async (req, res) => {
 
 
 
-/* = req.body;
-
-    const response = await pool.query('INSERT INTO plan (nombre, descripcion, costo) VALUES ($1, $2, $3)', [nombre, descripcion, costo]);
-    console.log(response);
-    res.json(
-        `PLAN ${nombre.toUpperCase()} ALTA CORRECTA`
-    ) */
-
 // USUARIO //
+
+const generate_password = (length) => {
+    var result = '';
+    var characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
 const createUsuario = async (req, res) => {
     const {
         nombre,
         mail,
         password
     } = req.body;
-
     const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol, paseador, paseador_habilitado) VALUES ($1, $2, $3, $4, $5, $6)', [nombre, mail, password, 2, 'false', 'false']);
     console.log("respuesta", response);
     res.json({
@@ -592,6 +594,57 @@ const updateUsuario = async (req, res) => {
     res.json(`Usuario se ha actualizado`);
 };
 
+
+const createUsuarioAdmin = async (req, res) => {
+    const {
+        nombre,
+        mail,
+    } = req.body;
+    password = generate_password(5);
+    const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol) VALUES ($1, $2, $3, 1)', [nombre, mail, password]);
+    console.log("respuesta", response);
+    res.json({
+        nombre,
+        mail,
+        password
+    })
+
+     var transporter = nodemailer.createTransport({
+         service: 'gmail',
+         auth: {
+             user: 'clubniceto@gmail.com',
+             pass: 'sagueros2'
+         }
+     });
+
+     const mailOptions = {
+         from: 'clubniceto@gmail.com',
+         to: mail,
+         subject: 'Eres un admin de club niceto',
+         html: `<h4 class="text-center">Bienvenido</h4><p>Registraron una cuenta administrado para ti</p> <br> <br> <span>Sabemos que daras lo mejor de ti, para crecer junto con club niceto</span>  <br> <br> <span>Nombre de usuario asignado: ${nombre}</span> <br> <span> Contraseña asignada: ${password}</span> </span> <br> <br> <span> - Club niceto -</span>`
+     }
+
+     transporter.sendMail(mailOptions, function (err, info) {
+         if (err) {
+             console.log(err);
+         } else {
+             console.log(info);
+         }
+     });
+}
+
+const getUsuarioAdmin = async (req, res) => {
+    const response = await pool.query('SELECT id_usuario, nombre, mail FROM usuarios WHERE rol = 1');
+    res.json(response.rows);
+};
+
+const getUsuarioNormal = async (req, res) => {
+    const response = await pool.query('SELECT id_usuario, nombre, mail FROM usuarios WHERE rol = 2');
+    res.json(response.rows);
+};
+
+
+// --------------------------------------------  USUARIOS FIN ----------------------------------------------------------------------------------------
 
 const update_paseador = async (req, res) => {
     const id = req.params.id;
@@ -813,21 +866,25 @@ const getCuota = async (req, res) => {
 
 
 // CANCHA //
+
+const deleteCancha = async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('DELETE FROM cancha WHERE id_cancha = $1', [id]);
+    console.log(response);
+    res.json(`Cancha ${id} dada de baja`);
+};
+
+
 const createCancha = async (req, res) => {
     const {
         nombre
     } = req.body;
 
-    const response = await pool.query('INSERT INTO cancha (nombre) VALUES ($1)', [nombre]);
+    const response = await pool.query('INSERT INTO cancha (nombre, estado) VALUES ($1, 1) RETURNING id_cancha', [nombre]);
     console.log(response);
-    res.json({
-        Message: 'CANCHA ADD CORRECTAMENTE',
-        body: {
-            comercio: {
-                nombre
-            }
-        }
-    })
+    res.json(
+        response.rows[0]
+    )
 };
 
 
@@ -932,7 +989,7 @@ const get_servicios_contratados = async (req, res) => {
 const cancelar_paseo = async (req, res) => {
     const id = req.params.id;
     const response = await pool.query('DELETE FROM paseo WHERE id_paseo = $1', [id]);
-        console.log(response.rows);
+    console.log(response.rows);
     res.status(200).json(response.rows);
 };
 
@@ -940,7 +997,7 @@ const cancelar_paseo = async (req, res) => {
 const cancelar_cancha = async (req, res) => {
     const id = req.params.id;
     const response = await pool.query('DELETE FROM alquiler_futbol WHERE id_alquiler = $1', [id]);
-        console.log(response.rows);
+    console.log(response.rows);
     res.status(200).json(response.rows);
 };
 
@@ -991,6 +1048,10 @@ module.exports = {
     pagar,
     update_estado_cancha,
     cancelar_paseo,
-    cancelar_cancha
+    cancelar_cancha,
+    deleteCancha,
+    createUsuarioAdmin,
+    getUsuarioAdmin,
+    getUsuarioNormal
 
 }

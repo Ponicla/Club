@@ -10,6 +10,7 @@ import { serviciointerface } from '../models/servicio-interface';
 import { usuariointerface } from '../models/usuario-interface';
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { usuarioAdmininterface } from '../models/usuarioadmin-interface';
 
 @Injectable()
 
@@ -49,6 +50,13 @@ export class ServiceService {
     descripcion: '',
     id_plan: '',
     imagen: '',
+  };
+
+  public selectedUsuarioAdmin: usuarioAdmininterface = {
+    id_usuario: null,
+    mail: '',
+    nombre: '',
+    password: '',
   };
 
   
@@ -213,6 +221,18 @@ export class ServiceService {
   }
 
   ///CANCHAS 
+
+  eliminar_cancha(id: String){
+    const url = `http://localhost:3000/eliminar_cancha/${id}`;
+    return this.consulta.delete(url).pipe(map(data => data));
+  }
+
+
+  nueva_cancha(objeto_nueva_cancha){
+    const url = `http://localhost:3000/cancha`;
+    return this.consulta.post(url, objeto_nueva_cancha).pipe(map(data  => data));
+  }
+
   obtener_canchas() {
     return this.consulta.get('http://localhost:3000/cancha').pipe(map(data  => data));
   }
@@ -222,23 +242,6 @@ export class ServiceService {
     return this.consulta.put(url, objeto_estado_cancha).pipe(map(data  => data));
   }
 
-
-
-  // agregarComercio(comercio){
-  //   const url = `http://localhost:3000/comercios`;
-  //   return this.consulta.post(url, comercio).pipe(map(data  => data));
-    
-  // }
-
-  // modificarComercio(comercio, id: String){
-  //   const url = `http://localhost:3000/comercios/${id}`;
-  //   return this.consulta.put(url, comercio).pipe(map(data  => data));
-  // }
-
-  // eliminarComercio(id: String){
-  //   const url = `http://localhost:3000/comercios/${id}`;
-  //   return this.consulta.delete(url).pipe(map(data => data));
-  // }
 
 
   //PASEOS
@@ -271,6 +274,23 @@ export class ServiceService {
   cancelar_cancha(id: String){
     const url = `http://localhost:3000/cancha/${id}`;
     return this.consulta.delete(url).pipe(map(data => data));
+  }
+
+
+  // USER ADMIN REGISTER
+  create_usuario_admin(objeto_u_admin){
+    const url = `http://localhost:3000/usuario_admin`;
+    return this.consulta.post(url, objeto_u_admin).pipe(map(data  => data));
+  }
+
+  obtener_usuarios_admin(){
+    const url = `http://localhost:3000/obtener_usuario_admin`;
+    return this.consulta.get(url).pipe(map(data  => data));
+  }
+
+  obtener_usuarios_normal(){
+    const url = `http://localhost:3000/obtener_usuario_normal`;
+    return this.consulta.get(url).pipe(map(data  => data));
   }
 
 }

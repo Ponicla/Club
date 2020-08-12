@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { usuariointerface } from 'src/app/models/usuario-interface';
 import Swal from 'sweetalert2';
 import $ from "jquery";
-import { LoginComponent } from '../../user/login/login.component';
+
 
 @Component({
   selector: 'app-canchas',
@@ -60,7 +60,7 @@ export class CanchasComponent implements OnInit {
 
        this.servicio.actualizar_estado_cancha(objeto_estado_cancha).subscribe(data => {
         let i_f = parseInt(id_fila);                          
-        $("#test-table-datatable").find("tr:eq("+i_f+")").find("td:eq(1)").html(estado);
+        $("#tabla_cancha").find("tr:eq("+i_f+")").find("td:eq(1)").html(estado);
        });
        
   }
@@ -73,5 +73,29 @@ export class CanchasComponent implements OnInit {
     this.servicio.obtener_canchas().subscribe((data: any) => {
       this.canchas = data; 
     });
+  }
+
+  agregar_nueva_cancha(){
+    console.log($('#nombre_nueva_cancha').val());
+    let objeto_nueva_cancha = {
+      nombre: $('#nombre_nueva_cancha').val()
+    }
+      this.servicio.nueva_cancha(objeto_nueva_cancha).subscribe( () => {
+        $('#nombre_nueva_cancha').val('');
+        Swal.fire({
+          title: 'Agregada correctamente',
+          showConfirmButton: false,
+          timer: 1500,
+          icon: 'success'
+        });
+        location.reload()
+      });
+  }
+
+  eliminar_cancha(elemento){
+    // console.log(elemento.id_cancha);
+     this.servicio.eliminar_cancha(elemento.id_cancha).subscribe(() => {
+       location.reload()
+     });
   }
 }

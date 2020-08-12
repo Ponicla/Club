@@ -2,17 +2,62 @@
 <br><br><br>
 
 <div class="container">
-  <p class="text-center p-3 mb-2 bg-warning text-white">USUARIOS SOLO ADMINISTRADOR</p>
-<h1>Personas</h1>
-<button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalNuevaPersona"
+<p style="border-radius: 10px" class="text-center p-3 mb-2 bg-danger text-white">USUARIOS ADMINISTRADORES</p>
+
+<button  (click)="nuevo_admin()" data-toggle="modal" data-target="#modalNuevoAdmin" type="button" class="btn btn-outline-danger btn-sm mb-3"> + USER ADMIN
+</button>
+<br>
+<table class="table" style="text-transform: uppercase">
+  <thead class="thead-dark">
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Mail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr mdbTableCol *ngFor="let ua of usuarios_admines" >
+      <th scope="row">{{ua.id_usuario}}</th>
+      <td>{{ua.nombre}}</td>
+      <td>{{ua.mail}}</td>
+ 
+    </tr>
+  </tbody>
+</table>
+
+
+
+  <p style="border-radius: 10px" class="text-center p-3 mb-2 bg-danger text-white">USUARIOS COMUNES</p>
+  <br>
+  <table class="table" style="text-transform: uppercase">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Mail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr mdbTableCol *ngFor="let un of usuarios_normales" >
+        <th scope="row">{{un.id_usuario}}</th>
+        <td>{{un.nombre}}</td>
+        <td>{{un.mail}}</td>
+   
+      </tr>
+    </tbody>
+  </table>
+
+  
+<p style="border-radius: 10px" class="text-center p-3 mb-2 bg-danger text-white">DATOS DE PERSONAS [USUARIOS]</p>
+<button type="button" class="btn btn-outline-danger btn-sm mb-3" data-toggle="modal" data-target="#modalNuevaPersona"
 (click)="resetForm()">
-  Nuevo
+  + PERSONA
 </button>
 
 <table id="test-table-datatable" class="table">
   <thead class="thead-dark">
     <tr>
-      <th># </th>
+      <th>#</th>
       <th>Nombre</th>
       <th>Apellido</th>
       <th>Dni</th>
@@ -22,7 +67,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr mdbTableCol *ngFor="let el of personas">
+    <tr mdbTableCol *ngFor="let el of personas" >
       <th scope="row">{{el.id_persona}}</th>
       <td>{{el.nombre}}</td>
       <td>{{el.apellido}}</td>
@@ -43,3 +88,4 @@
 </table>
 </div>
 <app-modal-nueva-persona></app-modal-nueva-persona>
+<app-modal-new-useradmin></app-modal-new-useradmin>

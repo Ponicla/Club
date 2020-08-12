@@ -31,6 +31,7 @@ import { PaseosComponent } from './components/admin/paseos/paseos.component';
 import { ComerciosComponent } from './components/admin/comercios/comercios.component';
 import { DevolucionPagoComponent } from './components/devolucion-pago/devolucion-pago.component';
 import { MisServiciosComponent } from './components/mis-servicios/mis-servicios.component';
+import { ModalNewUseradminComponent } from './components/modal/modal-new-useradmin/modal-new-useradmin.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { MisServiciosComponent } from './components/mis-servicios/mis-servicios.
     PaseosComponent,
     ComerciosComponent,
     DevolucionPagoComponent,
-    MisServiciosComponent
+    MisServiciosComponent,
+    ModalNewUseradminComponent
   ],
   imports: [
     BrowserModule,

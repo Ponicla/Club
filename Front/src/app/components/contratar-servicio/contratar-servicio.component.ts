@@ -20,6 +20,7 @@ export class ContratarServicioComponent implements OnInit {
   user: usuariointerface;
   plan_servicios_user: any[];
   todas_las_canchas: any[];
+  comercios: any[];
   canchas_habilitadas: any[] = [];
 
   constructor(
@@ -30,7 +31,6 @@ export class ContratarServicioComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
-
     this.loadingServicio = false;
     this.router.params.subscribe((params) => {
       this.service.obtenerServicioById(params.id).subscribe((data) => {
@@ -42,7 +42,7 @@ export class ContratarServicioComponent implements OnInit {
     });
 
     this.obtener_lista_personas_paseadoras();
-    // this.obtener_lista_canchas();
+    this.obtener_comercios();
 
     this.obtener_lista_canchas_habilitadas();
   }
@@ -191,9 +191,10 @@ export class ContratarServicioComponent implements OnInit {
     });
   }
 
-  // obtener_lista_canchas() {
-  //   this.service.obtener_canchas().subscribe((data: any) => {
-  //     this.canchas = data;
-  //   });
-  // }
+  obtener_comercios(){
+    this.service.obtenerTodos().subscribe((data: any) => {
+      this.comercios = data;
+      // console.log(this.comercios);
+    });
+  }
 }

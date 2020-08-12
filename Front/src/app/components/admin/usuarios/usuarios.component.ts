@@ -19,6 +19,8 @@ export class UsuariosComponent implements OnInit {
   @Input() items: any[] = [];
   personas: any[];
   usuarios: any[];
+  usuarios_admines: any[];
+  usuarios_normales: any[];
   rol: number;
   
 
@@ -49,6 +51,8 @@ export class UsuariosComponent implements OnInit {
 
     this.getListaPersonas();
     this.getLista_usuarios();
+    this.obtener_users_admin();
+    this.obtener_users_normales();
 
   }
 
@@ -86,6 +90,23 @@ export class UsuariosComponent implements OnInit {
       id_gfamiliar: '',
       id_usuario: '',
     }
+  }
+
+  nuevo_admin(){
+  }
+
+  obtener_users_admin(){
+    this.servicio.obtener_usuarios_admin().subscribe((data:any) => {
+      this.usuarios_admines = data;
+      // console.log(this.usuarios_admines);
+    })
+  }
+
+  obtener_users_normales(){
+    this.servicio.obtener_usuarios_normal().subscribe((data:any) => {
+      this.usuarios_normales = data;
+      // console.log(this.usuarios_normales);
+    })
   }
 
 }

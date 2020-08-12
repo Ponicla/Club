@@ -98,7 +98,6 @@
 
   </div>
 
-
   <div *ngIf="servicio[0].id_servicio == 2">
     <div class="row">
       <div class="col-md-6">
@@ -135,7 +134,7 @@
               <option value='' selected disabled>Seleccione una cancha</option>
               <option *ngFor="let cancha of canchas_habilitadas" value={{cancha.id_cancha}}>
                 {{cancha.nombre}}
-              </option> 
+              </option>
             </select>
           </div>
         </div>
@@ -159,7 +158,7 @@
         </div>
 
         <div class="row mb-5">
-          
+
           <div class="col-md-12">
             <div class="alert alert-success" style="padding:6px; text-align: center">
               Contamos con el mejor <strong>tercer tiempo</strong> de la zona
@@ -177,7 +176,8 @@
 
       <div class="col-md-6" style="text-align: right">
         <br><br>
-        <img src="https://us.123rf.com/450wm/imogi/imogi1804/imogi180400092/100120151-fondo-de-grunge-de-f%C3%BAtbol-con-la-bola-ilustraci%C3%B3n-vectorial.jpg?ver=6"
+        <img
+          src="https://us.123rf.com/450wm/imogi/imogi1804/imogi180400092/100120151-fondo-de-grunge-de-f%C3%BAtbol-con-la-bola-ilustraci%C3%B3n-vectorial.jpg?ver=6"
           style="max-width: 25rem;">
       </div>
     </div>
@@ -198,13 +198,29 @@
     <br>
     <br>
 
-    
-      
+  
+    <div class="row card-group">
+      <div class="col-4 mb-4 index_card_paseo" *ngFor="let comercio of comercios">
+        <div class="card text-white bg-dark" style="width: 20.5rem; text-transform: uppercase;">
+          <div class="card-body text-white bg-dark">
+            <h5 class="card-title" style="text-transform: uppercase;">{{comercio.nombre}}</h5>
+            <p class="card-text" style="font-size: small; text-transform: initial;">Detalles del comercio</p>
+          </div>
+          <p class="list-group-item text-white bg-dark">Desuento ofrecido {{comercio.descuento}}</p>
+          <div class="card-body text-white bg-dark">
+            <button class=" btn btn-light btn-block card-link"
+              style="color: #000000">+ Info</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      
-    
 
-    <div class="card-deck">
+
+
+
+
+    <!-- <div class="card-deck">
       <div class="card">
         <img class="card-img-top" src="https://canalabierto.com.ar/wp-content/uploads/2017/11/1111-667x500.jpg" alt="Card image cap">
         <div class="card-body">
@@ -256,12 +272,9 @@
           <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
         </div>
       </div>
-    </div>
-
-
-    
+    </div> -->
   </div>
-  
+
 
 
 </div>
