@@ -7,7 +7,7 @@
 <button  (click)="nuevo_admin()" data-toggle="modal" data-target="#modalNuevoAdmin" type="button" class="btn btn-outline-danger btn-sm mb-3"> + USER ADMIN
 </button>
 <br>
-<table class="table" style="text-transform: uppercase">
+<table id="test_datatable_angular" class="table display" style="text-transform: uppercase">
   <thead class="thead-dark">
     <tr>
       <th>#</th>
@@ -16,22 +16,21 @@
     </tr>
   </thead>
   <tbody>
-    <tr mdbTableCol *ngFor="let ua of usuarios_admines" >
+    <tr  mdbTableCol *ngFor="let ua of usuarios_admines" >
       <th scope="row">{{ua.id_usuario}}</th>
       <td>{{ua.nombre}}</td>
       <td>{{ua.mail}}</td>
- 
     </tr>
   </tbody>
 </table>
-
+<br>
 
   
   <p style="border-radius: 10px" class="text-center p-3 mb-2 bg-danger text-white">USUARIOS COMUNES</p>
 <!--   <br>
   <p>pindonga</p> -->
   <br>
-  <table class="table" style="text-transform: uppercase">
+  <table id="test_datatable_angular2" class="table" style="text-transform: uppercase">
     <thead class="thead-dark">
       <tr>
         <th>#</th>
@@ -48,7 +47,7 @@
       </tr>
     </tbody>
   </table>
-
+<br>
   
 <p style="border-radius: 10px" class="text-center p-3 mb-2 bg-danger text-white">DATOS DE PERSONAS [USUARIOS]</p>
 <button type="button" class="btn btn-outline-danger btn-sm mb-3" data-toggle="modal" data-target="#modalNuevaPersona"
@@ -56,7 +55,7 @@
   + PERSONA
 </button>
 
-<table id="test-table-datatable" class="table">
+<table id="test_datatable_angular3" class="table">
   <thead class="thead-dark">
     <tr>
       <th>#</th>

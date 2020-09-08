@@ -4,3 +4,9 @@
     background-color:#5DADE2;
 
 }
+
+.btn-group, .btn-group-vertical {
+    position: absolute !important;
+    
+}
+

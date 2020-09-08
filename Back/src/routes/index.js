@@ -54,10 +54,18 @@ const {
     deleteCancha,
     createUsuarioAdmin,
     getUsuarioAdmin,
-    getUsuarioNormal
-
-    
+    getUsuarioNormal,
+    check_user_mail_google,
+    obtener_user_para_local_storage,
+    create_usuario_registrado_con_google
+ 
 } = require('../controllers/index.controller');
+
+// GOOGLE
+router.post('/create_usuario_registrado_con_google', create_usuario_registrado_con_google);
+router.post('/verificar_mail_google', check_user_mail_google);
+router.post('/obtener_user_para_local_storage', obtener_user_para_local_storage);
+// GOOGLE
 
 router.post('/payment', pagar);
 router.post('/plan_usuario', get_plan_usuario);

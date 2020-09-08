@@ -14,7 +14,10 @@ export class LoginComponent implements OnInit {
   htmlTag: HTMLElement = document.getElementsByTagName('html')[0];
 
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService, 
+    private router: Router
+    ) { }
   private user: usuariointerface ={
     nombre:'',
     password: ''
@@ -30,10 +33,11 @@ export class LoginComponent implements OnInit {
     this.htmlTag.classList.remove('bg-color-gradient');
   }
 
-  onLoginGoogle(){
-    console.log('google');
+  async onLoginGoogle(){
+    
     try{
-      this.authService.login_google();
+     await this.authService.login_google();
+     await this.authService.getCurrentUserGoogle();
     }
     catch(error){
       console.log(error);

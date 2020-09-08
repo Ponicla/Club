@@ -6,7 +6,6 @@ const nodemailer = require('nodemailer');
 
 const mercadopago = require('mercadopago');
 
-
 const pool = new Pool({
     host: 'localhost',
     user: 'postgres',
@@ -347,7 +346,6 @@ const pagar = async (req, res) => {
     });
 
 };
-
 /* MERCADO PAGO */
 
 
@@ -393,7 +391,6 @@ const updateComercio = async (req, res) => {
     console.log(response);
     res.json(`${nombre} se ha actualizado`);
 };
-
 // COMERCIOS //
 
 
@@ -431,8 +428,6 @@ const deletePlan = async (req, res) => {
     console.log(response);
     res.json(`Plan ${id} dado de baja`);
 };
-
-
 
 const updatePlan = async (req, res) => {
     const id = req.params.id;
@@ -508,14 +503,11 @@ const getServicioById = async (req, res) => {
     const response = await pool.query('SELECT * FROM servicios WHERE id_servicio = $1', [id]);
     res.json(response.rows);
 };
-
-
 // SERVICIO //
 
 
 
 // USUARIO //
-
 const generate_password = (length) => {
     var result = '';
     var characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -564,13 +556,11 @@ const createUsuario = async (req, res) => {
     });
 }
 
-
 const getUsuario = async (req, res) => {
     const response = await pool.query('SELECT * FROM usuarios');
     console.log(response.rows);
     res.status(200).json(response.rows);
 };
-
 
 const getUsuarioByNombre = async (req, res) => {
     const {
@@ -583,7 +573,6 @@ const getUsuarioByNombre = async (req, res) => {
 
 };
 
-
 const updateUsuario = async (req, res) => {
     const id = req.params.id;
     const {
@@ -593,7 +582,6 @@ const updateUsuario = async (req, res) => {
     console.log(response);
     res.json(`Usuario se ha actualizado`);
 };
-
 
 const createUsuarioAdmin = async (req, res) => {
     const {
@@ -643,9 +631,10 @@ const getUsuarioNormal = async (req, res) => {
     res.json(response.rows);
 };
 
+// USUARIOS //
 
-// --------------------------------------------  USUARIOS FIN ----------------------------------------------------------------------------------------
 
+// PASEADOR //
 const update_paseador = async (req, res) => {
     const id = req.params.id;
     const {
@@ -666,19 +655,12 @@ const update_habilitacion_paseador = async (req, res) => {
     res.json(`Usuario se ha actualizado`);
 };
 
-
 const get_estado_paseador = async (req, res) => {
     const id = req.params.id;
     const response = await pool.query('SELECT paseador FROM usuarios WHERE id_usuario = $1', [id]);
     res.status(200).json(response.rows);
 };
-
-
-
-
-
-
-// USUARIO //
+// PASEADOR //
 
 
 // TURNO //
@@ -699,7 +681,6 @@ const createTurno = async (req, res) => {
     })
 };
 
-
 const getTurno = async (req, res) => {
     const response = await pool.query('SELECT * FROM turno');
     console.log(response.rows);
@@ -713,8 +694,6 @@ const emailSend = (req, res) => {
     console.log("CHICHA");
     res.send('RECIBIDO')
 }
-
-
 
 // PERSONA //
 const createPersona = async (req, res) => {
@@ -733,7 +712,6 @@ const createPersona = async (req, res) => {
     )
 };
 
-
 const getPersona = async (req, res) => {
     const response = await pool.query('SELECT * FROM personas');
     console.log(response.rows);
@@ -745,7 +723,6 @@ const getPersonaById = async (req, res) => {
     const response = await pool.query('SELECT * FROM personas WHERE id_usuario = $1', [id]);
     res.json(response.rows);
 };
-
 
 const deletePersona = async (req, res) => {
     const id = req.params.id;
@@ -797,7 +774,6 @@ const createPaseo = async (req, res) => {
     })
 };
 
-
 const getPaseo = async (req, res) => {
     const response = await pool.query('SELECT * FROM paseo');
     console.log(response.rows);
@@ -824,7 +800,6 @@ const createGFamiliar = async (req, res) => {
         }
     })
 };
-
 
 const getGFamiliar = async (req, res) => {
     const response = await pool.query('SELECT * FROM gfamiliar');
@@ -856,7 +831,6 @@ const createCuota = async (req, res) => {
     })
 };
 
-
 const getCuota = async (req, res) => {
     const response = await pool.query('SELECT * FROM cuota');
     console.log(response.rows);
@@ -866,14 +840,12 @@ const getCuota = async (req, res) => {
 
 
 // CANCHA //
-
 const deleteCancha = async (req, res) => {
     const id = req.params.id;
     const response = await pool.query('DELETE FROM cancha WHERE id_cancha = $1', [id]);
     console.log(response);
     res.json(`Cancha ${id} dada de baja`);
 };
-
 
 const createCancha = async (req, res) => {
     const {
@@ -886,7 +858,6 @@ const createCancha = async (req, res) => {
         response.rows[0]
     )
 };
-
 
 const getCancha = async (req, res) => {
     const response = await pool.query('SELECT * FROM cancha');
@@ -903,11 +874,6 @@ const update_estado_cancha = async (req, res) => {
     // console.log(response.rows);
     res.status(200).json(response.rows);
 };
-
-
-
-
-
 // CANCHA //
 
 
@@ -934,7 +900,6 @@ const createAlquilerCancha = async (req, res) => {
         }
     })
 };
-
 
 const getAlquiler = async (req, res) => {
     const response = await pool.query('SELECT * FROM alquiler');
@@ -972,10 +937,6 @@ const contratar_plan = async (req, res) => {
     res.status(200).json(response.rows);
 };
 
-
-
-
-
 const get_servicios_contratados = async (req, res) => {
     const {
         id_usuario
@@ -985,7 +946,6 @@ const get_servicios_contratados = async (req, res) => {
     res.status(200).json(response.rows);
 };
 
-
 const cancelar_paseo = async (req, res) => {
     const id = req.params.id;
     const response = await pool.query('DELETE FROM paseo WHERE id_paseo = $1', [id]);
@@ -993,16 +953,69 @@ const cancelar_paseo = async (req, res) => {
     res.status(200).json(response.rows);
 };
 
-
 const cancelar_cancha = async (req, res) => {
     const id = req.params.id;
     const response = await pool.query('DELETE FROM alquiler_futbol WHERE id_alquiler = $1', [id]);
     console.log(response.rows);
     res.status(200).json(response.rows);
 };
+//PLAN DEL USUARIO//
 
+
+// GOOGLE //
+const check_user_mail_google = async (req, res) => {
+    const { id } = req.body;
+    const response = await pool.query('SELECT id_usuario, mail, cuenta_g FROM usuarios');
+    console.log(response.rows);
+    res.status(200).json(response.rows);
+}
+
+const obtener_user_para_local_storage = async (req, res) => {
+    const { id } = req.body;
+    const response = await pool.query('SELECT id_usuario, nombre, mail, rol, fk_id_plan FROM usuarios WHERE id_usuario = $1', [id]);
+    console.log('Obtenido para local G');
+    res.status(200).json(response.rows);
+}
+
+const create_usuario_registrado_con_google = async (req, res) => {
+    const {
+        mail
+    } = req.body;
+    const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol, paseador, paseador_habilitado, cuenta_g) VALUES ($1, $2, $3, $4, $5, $6, $7)', [mail, mail, null, 2, 'false', 'false', 'true']);
+    const response2 = await pool.query('SELECT * FROM usuarios WHERE mail = $1', [mail]);
+    console.log("OK");
+    res.status(200).json(response2.rows);
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'clubniceto@gmail.com',
+            pass: 'sagueros2'
+        }
+    });
+
+    const mailOptions = {
+        from: 'clubniceto@gmail.com',
+        to: mail,
+        subject: 'Bienvenido al club',
+        html: '<h4 class="text-center">Bienvenido</h4><p>Registraste una cuenta en nuestro club</p><span>Estamos muy contentos que estes con nosotros, estamos a tu dispocion</span>'
+    }
+
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(info);
+        }
+    });
+}
+
+// GOOGLE //
 
 module.exports = {
+    create_usuario_registrado_con_google,
+    obtener_user_para_local_storage,
+    check_user_mail_google,
     get_servicios_contratados,
     createComercio,
     getComercio,

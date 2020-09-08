@@ -293,4 +293,6 @@ export class ServiceService {
     return this.consulta.get(url).pipe(map(data  => data));
   }
 
+  
+
 }

@@ -32,6 +32,8 @@ import { ComerciosComponent } from './components/admin/comercios/comercios.compo
 import { DevolucionPagoComponent } from './components/devolucion-pago/devolucion-pago.component';
 import { MisServiciosComponent } from './components/mis-servicios/mis-servicios.component';
 import { ModalNewUseradminComponent } from './components/modal/modal-new-useradmin/modal-new-useradmin.component';
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import 'firebase/auth';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,7 @@ import { ModalNewUseradminComponent } from './components/modal/modal-new-useradm
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   providers: [ServiceService],
   bootstrap: [AppComponent]
