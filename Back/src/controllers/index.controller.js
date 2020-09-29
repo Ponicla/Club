@@ -508,6 +508,13 @@ const getServicioById = async (req, res) => {
 
 
 // USUARIO //
+const check_user_unique_mail = async (req, res) => {
+    const response = await pool.query('SELECT mail FROM usuarios');
+    console.log(response.rows);
+    res.status(200).json(response.rows);
+};
+
+
 const generate_password = (length) => {
     var result = '';
     var characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -524,6 +531,7 @@ const createUsuario = async (req, res) => {
         mail,
         password
     } = req.body;
+
     const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol, paseador, paseador_habilitado) VALUES ($1, $2, $3, $4, $5, $6)', [nombre, mail, password, 2, 'false', 'false']);
     console.log("respuesta", response);
     res.json({
@@ -1010,9 +1018,24 @@ const create_usuario_registrado_con_google = async (req, res) => {
     });
 }
 
+
+const reporte_uno = async (req, res) => {
+    const {
+        fecha
+    } = req.body;
+    const response = await pool.query("SELECT public.usuarios.nombre, public.usuarios.mail FROM public.usuarios WHERE public.usuarios.fecha_baja_plan < $1 OR public.usuarios.fecha_baja_plan IS NULL", [fecha]);
+    console.log('GET REPORTE 1');
+    res.status(200).json(response.rows);
+}
+
 // GOOGLE //
 
+
+
+
 module.exports = {
+    check_user_unique_mail,
+    reporte_uno,
     create_usuario_registrado_con_google,
     obtener_user_para_local_storage,
     check_user_mail_google,

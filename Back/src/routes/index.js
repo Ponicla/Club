@@ -57,7 +57,9 @@ const {
     getUsuarioNormal,
     check_user_mail_google,
     obtener_user_para_local_storage,
-    create_usuario_registrado_con_google
+    create_usuario_registrado_con_google,
+    reporte_uno,
+    check_user_unique_mail
  
 } = require('../controllers/index.controller');
 
@@ -66,6 +68,12 @@ router.post('/create_usuario_registrado_con_google', create_usuario_registrado_c
 router.post('/verificar_mail_google', check_user_mail_google);
 router.post('/obtener_user_para_local_storage', obtener_user_para_local_storage);
 // GOOGLE
+
+
+// REPORTES
+router.post('/reporte_uno', reporte_uno);
+// REPORTES
+
 
 router.post('/payment', pagar);
 router.post('/plan_usuario', get_plan_usuario);
@@ -81,6 +89,8 @@ router.post('/servicios', createServicio);
 router.delete('/servicios/:id', deleteServicio);
 router.put('/servicios/:id', updateServicio);
 router.get('/servicio/:id', getServicioById);
+
+router.get('/check_user_unique_mail', check_user_unique_mail);
 
 
 router.get('/alquiler', getAlquiler);

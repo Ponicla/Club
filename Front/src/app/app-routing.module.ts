@@ -16,7 +16,7 @@ import { PaseosComponent } from './components/admin/paseos/paseos.component';
 import { ComerciosComponent } from './components/admin/comercios/comercios.component';
 import { DevolucionPagoComponent } from './components/devolucion-pago/devolucion-pago.component';
 import { MisServiciosComponent } from './components/mis-servicios/mis-servicios.component';
-
+import { ReportesComponent } from './components/admin/reportes/reportes.component'
 
 
 const routes: Routes = [
@@ -35,7 +35,7 @@ const routes: Routes = [
   {path: "admin/comercios", component: ComerciosComponent , canActivate: [AuthGuard] },
   {path: "user/pago_s", component: DevolucionPagoComponent , canActivate: [AuthGuard] },
   {path: "user/mis_servicios", component: MisServiciosComponent , canActivate: [AuthGuard] },
-  
+  {path: "admin/reportes", component: ReportesComponent , canActivate: [AuthGuard] },
 ];
 
 @NgModule({

@@ -293,6 +293,10 @@ export class ServiceService {
     return this.consulta.get(url).pipe(map(data  => data));
   }
 
-  
+
+  reporte_uno(fecha){
+    const url = `http://localhost:3000/reporte_uno`;
+    return this.consulta.post(url, fecha).pipe(map(data  => data));
+  }
 
 }

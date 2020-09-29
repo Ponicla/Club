@@ -14,7 +14,10 @@ export class RegistrerComponent implements OnInit {
   bodyTag: HTMLBodyElement = document.getElementsByTagName('body')[0];
   htmlTag: HTMLElement = document.getElementsByTagName('html')[0];
   
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+      private authService: AuthService, 
+      private router: Router
+    ) {}
 
   private user: usuariointerface = {
     nombre: "",
@@ -33,18 +36,36 @@ export class RegistrerComponent implements OnInit {
   }
 
   onRegistro(): void {
-    this.authService.registerUser(this.user.nombre, this.user.mail, this.user.password).subscribe((user) => {
-        this.authService.setUser(user);
-        Swal.fire({
-          icon: "success",
-          title: "Registro con exito",
-          text: "Por favor revise su casilla de correo electronico",
-        }).then((result) => {
-          this.router.navigate(["/user/login"]);
-          /* window.location.href =  */
-        });
-      });
 
-    //console.log(this.user);
+    this.authService.check_user_unique_mail().subscribe( (data : any) => {
+      var count = false;
+      for (let i = 0; i < data.length; i++) {
+        const element = data[i];
+        if(this.user.mail == element.mail){
+          count = true;
+        }
+      }
+      if(count == false){ 
+          this.authService.registerUser(this.user.nombre, this.user.mail, this.user.password).subscribe((user) => {
+              this.authService.setUser(user);
+              Swal.fire({
+                icon: "success",
+                title: "Registro con exito",
+                text: "Por favor revise su casilla de correo electronico",
+              }).then((result) => {
+                this.router.navigate(["/user/login"]);
+              });
+          });
+       }else if (count == true){
+        Swal.fire({
+          icon: 'error',
+          title: 'Momento',
+          text: 'Correo ya creado, intente con otro o recuerda tu contraseña',
+        })
+       }
+    });
+
+
+    
   }
 }

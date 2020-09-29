@@ -22,7 +22,7 @@ export class ContratarServicioComponent implements OnInit {
   todas_las_canchas: any[];
   comercios: any[];
   canchas_habilitadas: any[] = [];
-
+  
   constructor(
     private router: ActivatedRoute,
     public service: ServiceService,

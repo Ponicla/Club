@@ -47,6 +47,13 @@ export class AuthService {
   }
 
 
+  
+  check_user_unique_mail(){
+    const url = `http://localhost:3000/check_user_unique_mail`;
+    return this.http.get(url).pipe(map(data  => data));
+  }
+
+
 
   loginUser(nombre: string, password: string): Observable<any> {
     
@@ -196,4 +203,7 @@ logoutUser(){
     const url = `http://localhost:3000/obtener_user_para_local_storage`;
     return this.http.post(url, objeto_id_pls).pipe(map(data  => data));
   }
+
+
+  
 }
