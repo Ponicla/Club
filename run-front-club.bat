@@ -1,2 +1,2 @@
-C:\Users\Juanc\Desktop\WORKSPACE\Club\Front
+cd C:\Users\Juanc\Desktop\Club\Front
 ng serve

@@ -58,7 +58,7 @@ const {
     check_user_mail_google,
     obtener_user_para_local_storage,
     create_usuario_registrado_con_google,
-    reporte_uno,
+    reporte_uno, reporte_dos, reporte_tres, reporte_cuatro,
     check_user_unique_mail
  
 } = require('../controllers/index.controller');
@@ -72,6 +72,9 @@ router.post('/obtener_user_para_local_storage', obtener_user_para_local_storage)
 
 // REPORTES
 router.post('/reporte_uno', reporte_uno);
+router.get('/reporte_dos', reporte_dos);
+router.post('/reporte_tres', reporte_tres);
+router.post('/reporte_cuatro', reporte_cuatro);
 // REPORTES
 
 

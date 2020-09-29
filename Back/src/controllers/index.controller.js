@@ -1028,6 +1028,30 @@ const reporte_uno = async (req, res) => {
     res.status(200).json(response.rows);
 }
 
+const reporte_dos = async (req, res) => {
+    const response = await pool.query("SELECT public.usuarios.nombre, public.usuarios.mail FROM public.usuarios WHERE public.usuarios.paseador = TRUE AND public.usuarios.paseador_habilitado = TRUE");
+    console.log('GET REPORTE 2');
+    res.status(200).json(response.rows);
+}
+
+const reporte_tres = async (req, res) => {
+    const {
+        fecha
+    } = req.body;
+    const response = await pool.query("SELECT public.alquiler_futbol.fecha, public.cancha.nombre FROM public.cancha INNER JOIN public.alquiler_futbol ON public.cancha.id_cancha = public.alquiler_futbol.id_cancha WHERE public.alquiler_futbol.fecha > $1 ORDER BY nombre", [fecha]);
+    console.log('GET REPORTE 3');
+    res.status(200).json(response.rows);
+}
+
+const reporte_cuatro = async (req, res) => {
+    const {
+        fecha
+    } = req.body;
+    const response = await pool.query("SELECT nombre, fecha_alta_como_usuario FROM usuarios WHERE fecha_alta_como_usuario > $12", [fecha]);
+    console.log('GET REPORTE 4');
+    res.status(200).json(response.rows);
+}
+
 // GOOGLE //
 
 
@@ -1035,7 +1059,7 @@ const reporte_uno = async (req, res) => {
 
 module.exports = {
     check_user_unique_mail,
-    reporte_uno,
+    reporte_uno, reporte_dos, reporte_tres, reporte_cuatro,
     create_usuario_registrado_con_google,
     obtener_user_para_local_storage,
     check_user_mail_google,
