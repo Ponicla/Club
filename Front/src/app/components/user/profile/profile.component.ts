@@ -47,7 +47,8 @@ export class ProfileComponent implements OnInit {
 
     this.servicio.get_estado_paseador(this.user.id_usuario).subscribe(data  =>  {  
       var e_p = data[0].paseador;
-      if (e_p === true){
+      // console.log('ESTADO PASEADOR ', e_p);
+      if (e_p == true){
         $('#check_paseador').prop('checked', true);
       }else{
         $('#check_paseador').prop('checked', false);
@@ -112,10 +113,31 @@ export class ProfileComponent implements OnInit {
         timer: 1500,
       })
     }
-    var objeto_booleano_paseador = {
-      paseador: this.paseador_bool
+
+    var obj_id_user = {
+      "id_usuario" : this.user.id_usuario
     }
-    this.servicio.update_paseador(objeto_booleano_paseador, this.user.id_usuario).subscribe();
+    
+
+    this.servicio.verifacar_ratoneada_paseador(obj_id_user).subscribe((data : any) => {
+      console.log(data.length);
+      if(data.length > 0){
+        Swal.fire({
+          icon: 'error',
+          title: 'ALTO RATA INMUNDA',
+          text: 'Tienes paseos activos, no puedes darte de baja ahora'
+        });    
+      }else{
+        var objeto_booleano_paseador = {
+          paseador: this.paseador_bool
+        }
+        this.servicio.update_paseador(objeto_booleano_paseador, this.user.id_usuario).subscribe();
+      }
+    });
+
+
+
+    
 
 
     

@@ -267,23 +267,35 @@ integrity='sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7
     });
 }
 
-const plan_vence = async (req, res) => {
-    const response = await pool.query('SELECT mail, fecha_aviso_plan, fecha_ultimo_aviso_plan, fecha_baja_plan FROM usuarios');
-    console.log(response.rows);
-    console.log(fecha_hoy());
+const dar_de_baja_el_plan = async (id) => {
+    // console.log('ENTRO PINDO', cadena);
+    // console.log('ID PINDO', id);
+    const response = await pool.query('UPDATE usuarios SET fk_id_plan = null, fecha_inicio_plan = null, fecha_fin_plan = null, fecha_aviso_plan = null, fecha_ultimo_aviso_plan = null WHERE id_usuario =  $1', [id]);
+    console.log('Plan dado de baja para el usario con ID numero: ', id);
 
+    const respuesta = await pool.query('SELECT * FROM usuarios');
+    console.log(respuesta.rows);
+    
+}
+
+
+lanzarSiempreALaHora(20, 53, tarea);
+
+
+const plan_vence = async (req, res) => {
+    const response = await pool.query('SELECT id_usuario, mail, fecha_aviso_plan, fecha_ultimo_aviso_plan, fecha_baja_plan FROM usuarios');
+    // console.log(response.rows);
     response.rows.forEach(element => {
         if (element.fecha_aviso_plan == null) {
-            console.log('Quieres enviar un mail a un usuario sin plan');
+            let mu = 1;
         } else {
             if (element.fecha_aviso_plan.toLocaleDateString('fr-CA') == fecha_hoy()) {
-                mail_primero_aviso(element.mail);
-
+                // mail_primero_aviso(element.mail);
             } else if (element.fecha_ultimo_aviso_plan.toLocaleDateString('fr-CA') == fecha_hoy()) {
-                mail_ultimo_aviso(element.mail);
-
+                // mail_ultimo_aviso(element.mail);
             } else if (element.fecha_baja_plan.toLocaleDateString('fr-CA') == fecha_hoy()) {
-                mail_baja(element.mail);
+                // mail_baja(element.mail);
+                dar_de_baja_el_plan(element.id_usuario);
             }
         }
     });
@@ -310,7 +322,6 @@ function lanzarSiempreALaHora(hora, minutos, tarea) {
     }, momento.getTime() - ahora.getTime());
 }
 
-lanzarSiempreALaHora(18, 23, tarea);
 
 
 /* MERCADO PAGO */
@@ -349,7 +360,6 @@ const pagar = async (req, res) => {
 /* MERCADO PAGO */
 
 
-
 // COMERCIOS //
 const createComercio = async (req, res) => {
     const {
@@ -364,13 +374,11 @@ const createComercio = async (req, res) => {
     )
 };
 
-
 const getComercio = async (req, res) => {
     const response = await pool.query('SELECT * FROM comercios');
     console.log(response.rows);
     res.status(200).json(response.rows);
 };
-
 
 const deleteComercio = async (req, res) => {
     const id = req.params.id;
@@ -514,7 +522,6 @@ const check_user_unique_mail = async (req, res) => {
     res.status(200).json(response.rows);
 };
 
-
 const generate_password = (length) => {
     var result = '';
     var characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -532,12 +539,15 @@ const createUsuario = async (req, res) => {
         password
     } = req.body;
 
-    const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol, paseador, paseador_habilitado) VALUES ($1, $2, $3, $4, $5, $6)', [nombre, mail, password, 2, 'false', 'false']);
+    var fecha = fecha_hoy();
+    
+    const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol, paseador, paseador_habilitado, fecha_alta_como_usuario) VALUES ($1, $2, $3, $4, $5, $6, $7)', [nombre, mail, password, 2, 'false', 'false', fecha]);
     console.log("respuesta", response);
     res.json({
         nombre,
         mail,
-        password
+        password,
+        fecha
     })
 
     var transporter = nodemailer.createTransport({
@@ -648,7 +658,7 @@ const update_paseador = async (req, res) => {
     const {
         paseador
     } = req.body;
-    const response = await pool.query('UPDATE usuarios SET paseador =$1 WHERE id_usuario = $2', [paseador, id]);
+    const response = await pool.query('UPDATE usuarios SET paseador =$1, paseador_habilitado = $2 WHERE id_usuario = $3', [paseador, false, id]);
     console.log(response);
     res.json(`Usuario se ha actualizado`);
 };
@@ -1018,7 +1028,6 @@ const create_usuario_registrado_con_google = async (req, res) => {
     });
 }
 
-
 const reporte_uno = async (req, res) => {
     const {
         fecha
@@ -1047,9 +1056,38 @@ const reporte_cuatro = async (req, res) => {
     const {
         fecha
     } = req.body;
-    const response = await pool.query("SELECT nombre, fecha_alta_como_usuario FROM usuarios WHERE fecha_alta_como_usuario > $12", [fecha]);
+    const response = await pool.query("SELECT nombre, fecha_alta_como_usuario FROM usuarios WHERE fecha_alta_como_usuario > $1", [fecha]);
     console.log('GET REPORTE 4');
     res.status(200).json(response.rows);
+}
+
+const verifacar_ratoneada_paseador = async (req, res) => {
+    const {
+        id_usuario
+    } = req.body;
+    const response = await pool.query("SELECT id_paseador, fecha FROM paseo WHERE id_paseador = $1", [id_usuario]);
+    console.log('Verificando ratoneada');
+    res.status(200).json(response.rows); 
+}
+
+const verifacar_disponibilidad_del_turno = async (req, res) => {
+    const {
+        id_cancha,
+        horario,
+        fecha
+    } = req.body;
+    const response = await pool.query("SELECT * FROM alquiler_futbol WHERE horario = $1 AND fecha = $2 AND id_cancha = $3", [horario, fecha, id_cancha]);
+    console.log('Verificando libre turno');
+    res.status(200).json(response.rows); 
+}
+
+const check_vencimiento_plan = async (req, res) => {
+    const {
+        id_usuario
+    } = req.body;
+    const response = await pool.query("SELECT fecha_baja_plan FROM usuarios WHERE id_usuario = $1", [id_usuario]);
+    console.log('Verificando vencimiento plan');
+    res.status(200).json(response.rows); 
 }
 
 // GOOGLE //
@@ -1058,6 +1096,9 @@ const reporte_cuatro = async (req, res) => {
 
 
 module.exports = {
+    check_vencimiento_plan,
+    verifacar_disponibilidad_del_turno,
+    verifacar_ratoneada_paseador,
     check_user_unique_mail,
     reporte_uno, reporte_dos, reporte_tres, reporte_cuatro,
     create_usuario_registrado_con_google,

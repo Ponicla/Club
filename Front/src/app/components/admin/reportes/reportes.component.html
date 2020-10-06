@@ -43,11 +43,11 @@
                 <hr>
                 <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
             </div>
-            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_uno()">Reporte uno</button>
-            <input type="date" id="fecha_reporte_dos" class="form-control form-group" placeholder="Ingrese fecha">
+            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_dos()">Reporte dos</button>
+            <!-- <input type="date" id="fecha_reporte_dos" class="form-control form-group" placeholder="Ingrese fecha"> -->
 
             <br>
-                <table hidden id="tabla_reporte_uno" class="table display" style="text-transform: uppercase">
+                <table hidden id="tabla_reporte_dos" class="table display" style="text-transform: uppercase">
                 <thead class="thead-dark">
                     <tr>
                     <th>Nombre</th>
@@ -55,10 +55,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  mdbTableCol *ngFor="let rr1 of resultado_reporte_uno" >
+                    <tr  mdbTableCol *ngFor="let rr of resultado_reporte_dos" >
                     <!-- <tr mdbTableCol> -->
-                    <td>{{rr1.nombre}}</td>
-                    <td>{{rr1.mail}}</td>
+                    <td>{{rr.nombre}}</td>
+                    <td>{{rr.mail}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -77,11 +77,11 @@
                 <hr>
                 <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
             </div>
-            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_uno()">Reporte uno</button>
+            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_tres()">Reporte tres</button>
             <input type="date" id="fecha_reporte_tres" class="form-control form-group" placeholder="Ingrese fecha">
 
             <br>
-                <table hidden id="tabla_reporte_uno" class="table display" style="text-transform: uppercase">
+                <table hidden id="tabla_reporte_tres" class="table display" style="text-transform: uppercase">
                 <thead class="thead-dark">
                     <tr>
                     <th>Nombre</th>
@@ -89,10 +89,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  mdbTableCol *ngFor="let rr1 of resultado_reporte_uno" >
+                    <tr  mdbTableCol *ngFor="let rr of resultado_reporte_tres" >
                     <!-- <tr mdbTableCol> -->
-                    <td>{{rr1.nombre}}</td>
-                    <td>{{rr1.mail}}</td>
+                    <td>{{rr.nombre}}</td>
+                    <td>{{rr.fecha}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -109,25 +109,29 @@
                 <hr>
                 <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
             </div>
-            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_uno()">Reporte uno</button>
-            <input type="date" id="fecha_reporte_uno" class="form-control form-group" placeholder="Ingrese fecha">
-
+            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_cuatro()">Reporte cuatro</button>
+            <input type="date" id="fecha_reporte_cuatro" class="form-control form-group" placeholder="Ingrese fecha">
+            <br>
+            <div class="alert alert-primary" role="alert">
+                <p id="cantidad_en_r4"></p>
+              </div>
             <br>
                 <table hidden id="tabla_reporte_cuatro" class="table display" style="text-transform: uppercase">
                 <thead class="thead-dark">
                     <tr>
                     <th>Nombre</th>
-                    <th>Mail</th>
+                    <th>Registrado el</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  mdbTableCol *ngFor="let rr1 of resultado_reporte_uno" >
+                    <tr  mdbTableCol *ngFor="let rr of resultado_reporte_cuatro" >
                     <!-- <tr mdbTableCol> -->
-                    <td>{{rr1.nombre}}</td>
-                    <td>{{rr1.mail}}</td>
+                    <td>{{rr.nombre}}</td>
+                    <td>{{rr.fecha_alta_como_usuario}}</td>
                     </tr>
                 </tbody>
                 </table>
+                
             <br>
         </div>
     </div>

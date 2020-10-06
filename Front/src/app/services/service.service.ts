@@ -299,4 +299,33 @@ export class ServiceService {
     return this.consulta.post(url, fecha).pipe(map(data  => data));
   }
 
+  reporte_dos(){
+    const url = `http://localhost:3000/reporte_dos`;
+    return this.consulta.get(url).pipe(map(data  => data));
+  }
+
+  reporte_tres(fecha){
+    const url = `http://localhost:3000/reporte_tres`;
+    return this.consulta.post(url, fecha).pipe(map(data  => data));
+  }
+
+  reporte_cuatro(fecha){
+    const url = `http://localhost:3000/reporte_cuatro`;
+    return this.consulta.post(url, fecha).pipe(map(data  => data));
+  }
+
+  verifacar_ratoneada_paseador(id_usuario_rata){
+    const url = `http://localhost:3000/verifacar_ratoneada_paseador`;
+    return this.consulta.post(url, id_usuario_rata).pipe(map(data  => data));
+  }
+
+  verifacar_disponibilidad_del_turno(objeto_no_pisar_otro_turno){
+    const url = `http://localhost:3000/verifacar_disponibilidad_del_turno`;
+    return this.consulta.post(url, objeto_no_pisar_otro_turno).pipe(map(data  => data));
+  }
+
+  check_vencimiento_plan(id_usuario){
+    const url = `http://localhost:3000/check_vencimiento_plan`;
+    return this.consulta.post(url, id_usuario).pipe(map(data  => data));
+  }
 }

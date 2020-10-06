@@ -13,6 +13,9 @@ declare var $: any;
 })
 export class ReportesComponent implements OnInit {
   resultado_reporte_uno : [];
+  resultado_reporte_dos : [];
+  resultado_reporte_tres : [];
+  resultado_reporte_cuatro : [];
 
   constructor(
     private router: Router,
@@ -21,10 +24,10 @@ export class ReportesComponent implements OnInit {
   ) { }
 
   ngOnInit(){
-    // $('#tabla_reporte_uno').hide();
     this.resultado_reporte_uno = [];
-    
-  
+    this.resultado_reporte_dos = [];
+    this.resultado_reporte_tres = [];
+    this.resultado_reporte_cuatro = [];
   }
 
   funcion_reporte_uno(){
@@ -93,7 +96,223 @@ export class ReportesComponent implements OnInit {
     ]
         });
       });
-    }, 25);
+    }, 250);
+  }
+
+  funcion_reporte_dos(){
+
+    this.servicio.reporte_dos().subscribe( (data: any) => {
+      this.resultado_reporte_dos = data;
+      console.log(this.resultado_reporte_dos);
+      $("#tabla_reporte_dos").dataTable().fnDestroy();
+      $('#tabla_reporte_dos').attr("hidden", false);
+      
+    });
+    setTimeout(function () {
+      $(function () {
+        $("#tabla_reporte_dos").DataTable({
+          "language": {
+            sProcessing: "Procesando...",
+            sLengthMenu: "Mostrar _MENU_ registros",
+            sZeroRecords: "No se encontraron resultados",
+            sEmptyTable: "Ningún dato disponible en esta tabla",
+            sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+            sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+            sInfoPostFix: "",
+            sSearch: "Buscar:",
+            sUrl: "",
+            sInfoThousands: ",",
+            sLoadingRecords: "Cargando...",
+            oPaginate: {
+              sFirst: "Primero",
+              sLast: "Último",
+              sNext: "Siguiente",
+              sPrevious: "Anterior",
+            },
+            oAria: {
+              sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+              sSortDescending: ": Activar para ordenar la columna de manera descendente",
+            }
+        },
+        responsive: "true",
+        dom: 'Bfrtilp',       
+        buttons:[ 
+      {
+        extend:    'excelHtml5',
+        text:      '<i class="fas fa-file-excel"></i> ',
+        titleAttr: 'Exportar a Excel',
+        className: 'btn btn-success'
+      },
+      {
+        extend:    'pdfHtml5',
+        text:      '<i class="fas fa-file-pdf"></i> ',
+        titleAttr: 'Exportar a PDF',
+        className: 'btn btn-danger'
+      },
+      {
+        extend:    'print',
+        text:      '<i class="fa fa-print"></i> ',
+        titleAttr: 'Imprimir',
+        className: 'btn btn-info',
+        title: 'Reporte de paseadores activos ' 
+      },
+    ]
+        });
+      });
+    }, 250);
+  }
+
+  funcion_reporte_tres(){
+    var fecha_reporte_tres = $('#fecha_reporte_tres').val();
+    console.log(fecha_reporte_tres);
+    var fecha_r3 = {
+      fecha: fecha_reporte_tres
+    }
+    
+    this.servicio.reporte_tres(fecha_r3).subscribe( (data: any) => {
+      this.resultado_reporte_tres = data;
+      // console.log(this.resultado_reporte_tres);
+
+      for (let i = 0; i < data.length; i++) {
+        const element = data[i].nombre;
+        console.log(element);
+
+        // if (){
+
+        // }
+        // if(){
+
+        // }
+      }
+
+      $("#tabla_reporte_tres").dataTable().fnDestroy();
+      $('#tabla_reporte_tres').attr("hidden", false);
+      
+    });
+    setTimeout(function () {
+      $(function () {
+        $("#tabla_reporte_tres").DataTable({
+          "language": {
+            sProcessing: "Procesando...",
+            sLengthMenu: "Mostrar _MENU_ registros",
+            sZeroRecords: "No se encontraron resultados",
+            sEmptyTable: "Ningún dato disponible en esta tabla",
+            sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+            sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+            sInfoPostFix: "",
+            sSearch: "Buscar:",
+            sUrl: "",
+            sInfoThousands: ",",
+            sLoadingRecords: "Cargando...",
+            oPaginate: {
+              sFirst: "Primero",
+              sLast: "Último",
+              sNext: "Siguiente",
+              sPrevious: "Anterior",
+            },
+            oAria: {
+              sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+              sSortDescending: ": Activar para ordenar la columna de manera descendente",
+            }
+        },
+        responsive: "true",
+        dom: 'Bfrtilp',       
+        buttons:[ 
+      {
+        extend:    'excelHtml5',
+        text:      '<i class="fas fa-file-excel"></i> ',
+        titleAttr: 'Exportar a Excel',
+        className: 'btn btn-success'
+      },
+      {
+        extend:    'pdfHtml5',
+        text:      '<i class="fas fa-file-pdf"></i> ',
+        titleAttr: 'Exportar a PDF',
+        className: 'btn btn-danger'
+      },
+      {
+        extend:    'print',
+        text:      '<i class="fa fa-print"></i> ',
+        titleAttr: 'Imprimir',
+        className: 'btn btn-info',
+        title: 'Cantidad de alquileres que se registraron para las canchas a parti del ' + fecha_r3.fecha 
+      },
+    ]
+        });
+      });
+    }, 250);
+  }
+  
+  funcion_reporte_cuatro(){
+    var fecha_reporte_cuatro = $('#fecha_reporte_cuatro').val();
+    console.log(fecha_reporte_cuatro);
+    var fecha_r4 = {
+      fecha: fecha_reporte_cuatro
+    }
+    
+    this.servicio.reporte_cuatro(fecha_r4).subscribe( (data: any) => {
+      this.resultado_reporte_cuatro = data;
+      console.log(this.resultado_reporte_cuatro);
+      $("#tabla_reporte_cuatro").dataTable().fnDestroy();
+      $('#tabla_reporte_cuatro').attr("hidden", false);
+      $('#cantidad_en_r4').text('Se registraron ' + data.length + ' usuarios desde la fecha dada');
+      console.log(data.length);
+    });
+    setTimeout(function () {
+      $(function () {
+        $("#tabla_reporte_cuatro").DataTable({
+          "language": {
+            sProcessing: "Procesando...",
+            sLengthMenu: "Mostrar _MENU_ registros",
+            sZeroRecords: "No se encontraron resultados",
+            sEmptyTable: "Ningún dato disponible en esta tabla",
+            sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+            sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+            sInfoPostFix: "",
+            sSearch: "Buscar:",
+            sUrl: "",
+            sInfoThousands: ",",
+            sLoadingRecords: "Cargando...",
+            oPaginate: {
+              sFirst: "Primero",
+              sLast: "Último",
+              sNext: "Siguiente",
+              sPrevious: "Anterior",
+            },
+            oAria: {
+              sSortAscending: ": Activar para ordenar la columna de manera ascendente",
+              sSortDescending: ": Activar para ordenar la columna de manera descendente",
+            }
+        },
+        responsive: "true",
+        dom: 'Bfrtilp',       
+        buttons:[ 
+      {
+        extend:    'excelHtml5',
+        text:      '<i class="fas fa-file-excel"></i> ',
+        titleAttr: 'Exportar a Excel',
+        className: 'btn btn-success'
+      },
+      {
+        extend:    'pdfHtml5',
+        text:      '<i class="fas fa-file-pdf"></i> ',
+        titleAttr: 'Exportar a PDF',
+        className: 'btn btn-danger'
+      },
+      {
+        extend:    'print',
+        text:      '<i class="fa fa-print"></i> ',
+        titleAttr: 'Imprimir',
+        className: 'btn btn-info',
+        title: 'Reporte alta de usuarios en la pagina a partir del ' + fecha_r4.fecha 
+      },
+    ]
+        });
+      });
+    }, 250);
   }
 
 }

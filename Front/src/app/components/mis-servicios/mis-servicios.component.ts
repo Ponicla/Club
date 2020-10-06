@@ -13,8 +13,8 @@ import $ from "jquery";
   styleUrls: ["./mis-servicios.component.css"],
 })
 export class MisServiciosComponent implements OnInit {
-  servicios_del_usuario: any[];
   user: usuariointerface;
+  servicios_del_usuario: any[];
   servicios_cancha: any[] = [];
   servicios_paseo: any[] = [];
   cantidad: number;
@@ -37,8 +37,7 @@ export class MisServiciosComponent implements OnInit {
       id_usuario: this.user.id_usuario,
     };
     this.servicio
-      .servicios_plan_del_usuario(objeto_spu)
-      .subscribe((data: any) => {
+      .servicios_plan_del_usuario(objeto_spu).subscribe((data: any) => {
         this.servicios_del_usuario = data;
         var cantidad = this.servicios_del_usuario.length;
 

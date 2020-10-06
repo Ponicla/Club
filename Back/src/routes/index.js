@@ -59,7 +59,10 @@ const {
     obtener_user_para_local_storage,
     create_usuario_registrado_con_google,
     reporte_uno, reporte_dos, reporte_tres, reporte_cuatro,
-    check_user_unique_mail
+    check_user_unique_mail,
+    verifacar_ratoneada_paseador,
+    verifacar_disponibilidad_del_turno,
+    check_vencimiento_plan
  
 } = require('../controllers/index.controller');
 
@@ -77,6 +80,9 @@ router.post('/reporte_tres', reporte_tres);
 router.post('/reporte_cuatro', reporte_cuatro);
 // REPORTES
 
+router.post('/check_vencimiento_plan', check_vencimiento_plan); 
+router.post('/verifacar_disponibilidad_del_turno', verifacar_disponibilidad_del_turno); 
+router.post('/verifacar_ratoneada_paseador', verifacar_ratoneada_paseador);
 
 router.post('/payment', pagar);
 router.post('/plan_usuario', get_plan_usuario);

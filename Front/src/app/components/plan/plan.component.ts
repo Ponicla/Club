@@ -24,6 +24,7 @@ export class PlanComponent implements OnInit {
 
     this.user = this.authService.getCurrentUser();
     this.loadingPlan = false;
+    this.user.id_plan;
     this.router.params.subscribe((params) => {
       this.servicio.obtenerPlaneById(params.id).subscribe((data) => {
         this.plan = data;
@@ -32,8 +33,91 @@ export class PlanComponent implements OnInit {
     });
   }
   contratar_plan() {
+
+    if(this.user.id_plan == null){
+      console.log('sin plan');
+      Swal.fire({
+        title: "ESTA POR CONTRATAR EL PLAN " + this.plan[0].nombre.toUpperCase(),
+        text: "Revise su pedido",
+        width: 600,
+        padding: "3em",
+        background: "#fff url(./assets/dido2.jpg)",
+        backdrop: `
+        rgba(0, 96, 255, 0.4)
+          url("https://downloadwap.com/thumbs3/screensavers/d/new/misc/dancing_dinosaur-324067.gif")
+          bottom
+          no-repeat
+        `,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirmar",
+      }).then((result) => {
+        if (result.value) {
+  
+          let objeto_pagar = {
+            precio: parseInt(this.plan[0].costo),
+            nombre: "PLAN " + this.plan[0].nombre.toUpperCase() + " CLUB NICETO",
+            cantidad: 1,
+          };
+          localStorage.setItem("reset_id_plan",this.plan[0].id_plan);
+           this.servicio.pagar(objeto_pagar).subscribe((data) => {
+             console.log(data);
+             var url = data.toString();
+             window.open(url, '_blank');
+           });
+          
+        }
+      });
+    }else{
+      console.log('con plan');
+      Swal.fire({
+        title: 'Escuchame una cosa',
+        text: "Ya tienes un plan. Quieres contratar otro? Esto anulará tu plan actual.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si contratar otro plan '
+      }).then((result) => {
+
+        Swal.fire({
+          title: "ESTA POR CONTRATAR EL PLAN " + this.plan[0].nombre.toUpperCase(),
+          text: "Revise su pedido",
+          width: 600,
+          padding: "3em",
+          background: "#fff url(./assets/dido2.jpg)",
+          backdrop: `
+          rgba(0, 96, 255, 0.4)
+            url("https://downloadwap.com/thumbs3/screensavers/d/new/misc/dancing_dinosaur-324067.gif")
+            bottom
+            no-repeat
+          `,
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Confirmar",
+        }).then((result) => {
+          if (result.value) {
     
-    Swal.fire({
+            let objeto_pagar = {
+              precio: parseInt(this.plan[0].costo),
+              nombre: "PLAN " + this.plan[0].nombre.toUpperCase() + " CLUB NICETO",
+              cantidad: 1,
+            };
+            localStorage.setItem("reset_id_plan",this.plan[0].id_plan);
+             this.servicio.pagar(objeto_pagar).subscribe((data) => {
+               console.log(data);
+               var url = data.toString();
+               window.open(url, '_blank');
+             });
+            
+          }
+        });
+      });
+    }
+    
+    /* Swal.fire({
       title: "ESTA POR CONTRATAR EL PLAN " + this.plan[0].nombre.toUpperCase(),
       text: "Revise su pedido",
       width: 600,
@@ -65,6 +149,6 @@ export class PlanComponent implements OnInit {
          });
         
       }
-    });
+    }); */
   }
 }
