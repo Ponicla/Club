@@ -62,7 +62,8 @@ const {
     check_user_unique_mail,
     verifacar_ratoneada_paseador,
     verifacar_disponibilidad_del_turno,
-    check_vencimiento_plan
+    check_vencimiento_plan,
+    cantidad_alquileres_por_cancha
  
 } = require('../controllers/index.controller');
 
@@ -80,6 +81,8 @@ router.post('/reporte_tres', reporte_tres);
 router.post('/reporte_cuatro', reporte_cuatro);
 // REPORTES
 
+
+router.post('/cantidad_alquileres_por_cancha', cantidad_alquileres_por_cancha); 
 router.post('/check_vencimiento_plan', check_vencimiento_plan); 
 router.post('/verifacar_disponibilidad_del_turno', verifacar_disponibilidad_del_turno); 
 router.post('/verifacar_ratoneada_paseador', verifacar_ratoneada_paseador);

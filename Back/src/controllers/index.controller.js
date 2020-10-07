@@ -278,9 +278,15 @@ const dar_de_baja_el_plan = async (id) => {
     
 }
 
+const dar_de_baja_alquiler = async (id) => {
+    const response = await pool.query('UPDATE alquiler_futbol SET estado = false WHERE id_alquiler =  $1', [id]);
+    console.log('Tunro dado de baja, referencia: ', id);
+    
+}
+
 
 lanzarSiempreALaHora(20, 53, tarea);
-
+lanzarSiempreALaHora(21, 38, tarea_turnos);
 
 const plan_vence = async (req, res) => {
     const response = await pool.query('SELECT id_usuario, mail, fecha_aviso_plan, fecha_ultimo_aviso_plan, fecha_baja_plan FROM usuarios');
@@ -290,11 +296,11 @@ const plan_vence = async (req, res) => {
             let mu = 1;
         } else {
             if (element.fecha_aviso_plan.toLocaleDateString('fr-CA') == fecha_hoy()) {
-                // mail_primero_aviso(element.mail);
+                mail_primero_aviso(element.mail);
             } else if (element.fecha_ultimo_aviso_plan.toLocaleDateString('fr-CA') == fecha_hoy()) {
-                // mail_ultimo_aviso(element.mail);
+                mail_ultimo_aviso(element.mail);
             } else if (element.fecha_baja_plan.toLocaleDateString('fr-CA') == fecha_hoy()) {
-                // mail_baja(element.mail);
+                mail_baja(element.mail);
                 dar_de_baja_el_plan(element.id_usuario);
             }
         }
@@ -302,9 +308,28 @@ const plan_vence = async (req, res) => {
     console.log('SUCCESS SEMD MAIL');
 };
 
+const finaliza_turno = async (req, res) => {
+    const response = await pool.query('SELECT id_alquiler, fecha, estado FROM alquiler_futbol');
+    response.rows.forEach(element => {
+        if (element.fecha == null) {
+            let mu = 1;
+        } else {
+            if (element.fecha.toLocaleDateString('fr-CA') == fecha_hoy()) {
+                dar_de_baja_alquiler(element.id_alquiler);
+            }
+        }
+    });
+    console.log('SUCCESS FINALIZA TURNOS');
+};
+
 function tarea() {
     console.log('Lanzando');
     plan_vence();
+}
+
+function tarea_turnos() {
+    console.log('Lanzando');
+    finaliza_turno();
 }
 
 function lanzarSiempreALaHora(hora, minutos, tarea) {
@@ -357,6 +382,8 @@ const pagar = async (req, res) => {
     });
 
 };
+
+
 /* MERCADO PAGO */
 
 
@@ -959,7 +986,7 @@ const get_servicios_contratados = async (req, res) => {
     const {
         id_usuario
     } = req.body;
-    const response = await pool.query('SELECT a.id_alquiler AS IDENTIDAD, a.horario AS HORA, a.fecha as FECHA, a.id_cancha as ID_LUGAR_O_PASEADOR, c.nombre as NOMBRE_PASEADOR_O_CANCHA, 0 as CANTIDAD, 1 as TIPO_SERVICIO FROM alquiler_futbol as a, cancha as c WHERE a.fk_id_usuario = $1 AND a.id_cancha = c.id_cancha UNION SELECT p.id_paseo AS IDENTIDAD, p.id_rango_h AS HORA, p.fecha as FECHA, p.id_paseador as ID_LUGAR_O_PASEADOR, ux.nombre as NOMBRE_PASEADOR_O_CANCHA, p.cantidad as CANTIDAD, 2 as TIPO_SERVICIO FROM paseo as p, usuarios as ux WHERE p.fk_id_usuario = $1 AND ux.paseador = true AND ux.paseador_habilitado = true AND p.id_paseador = ux.id_usuario ', [id_usuario]);
+    const response = await pool.query('SELECT a.id_alquiler AS IDENTIDAD, a.horario AS HORA, a.fecha as FECHA, a.id_cancha as ID_LUGAR_O_PASEADOR, c.nombre as NOMBRE_PASEADOR_O_CANCHA, 0 as CANTIDAD, 1 as TIPO_SERVICIO FROM alquiler_futbol as a, cancha as c WHERE a.fk_id_usuario = $1 AND a.id_cancha = c.id_cancha AND a.estado = true UNION SELECT p.id_paseo AS IDENTIDAD, p.id_rango_h AS HORA, p.fecha as FECHA, p.id_paseador as ID_LUGAR_O_PASEADOR, ux.nombre as NOMBRE_PASEADOR_O_CANCHA, p.cantidad as CANTIDAD, 2 as TIPO_SERVICIO FROM paseo as p, usuarios as ux WHERE p.fk_id_usuario = $1 AND ux.paseador = true AND ux.paseador_habilitado = true AND p.id_paseador = ux.id_usuario ', [id_usuario]);
     console.log(response);
     res.status(200).json(response.rows);
 };
@@ -1090,12 +1117,23 @@ const check_vencimiento_plan = async (req, res) => {
     res.status(200).json(response.rows); 
 }
 
+const cantidad_alquileres_por_cancha = async (req, res) => {
+    const {
+        id_cancha
+    } = req.body;
+    const response = await pool.query("SELECT COUNT(*) FROM alquiler_futbol WHERE id_cancha = $1", [id_cancha]);
+    console.log('cantidad_alquileres_por_cancha');
+    res.status(200).json(response.rows); 
+}
+
+
 // GOOGLE //
 
 
 
 
 module.exports = {
+    cantidad_alquileres_por_cancha,
     check_vencimiento_plan,
     verifacar_disponibilidad_del_turno,
     verifacar_ratoneada_paseador,

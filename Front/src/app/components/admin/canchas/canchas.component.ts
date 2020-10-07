@@ -45,23 +45,40 @@ export class CanchasComponent implements OnInit {
 
   cambio_estado(id_estado, id_cancha, evento, id_fila){
     let estado = evento.target.options[evento.target.options.selectedIndex].text;
-    // console.log('ID FILA: ', id_fila);
-    // console.log('ESTADO: ', estado);
-    // console.log('ID ESTADO: ', id_estado);
-    // console.log('ID CANCHA: ', id_cancha);
-      // console.log('ID ', parseInt(id_estado));
-      // console.log('ID CANCHA ', parseInt(id_cancha));
-
+ 
+    if(id_estado == 2 || id_estado == 3){
+      var obj_id_cancha = {
+        id_cancha: parseInt(id_cancha)
+      }
+  
+      this.servicio.cantidad_alquileres_por_cancha(obj_id_cancha).subscribe( (data : any ) => {
+        let count = data[0].count;
+        if( count == 0){
+          var objeto_estado_cancha = {
+            id_cancha: parseInt(id_cancha),
+            estado: parseInt(id_estado)
+          }
+           this.servicio.actualizar_estado_cancha(objeto_estado_cancha).subscribe(data => {
+            let i_f = parseInt(id_fila);                          
+            $("#tabla_cancha").find("tr:eq("+i_f+")").find("td:eq(1)").html(estado);
+           });
+        }else{
+          Swal.fire({
+            icon: 'warning',
+            text: 'No puedes dar de baja por que tiene partidos por jugar'
+          });
+        }
+      });
+    }else{
       var objeto_estado_cancha = {
         id_cancha: parseInt(id_cancha),
         estado: parseInt(id_estado)
       }
-      // console.log(objeto_estado_cancha);
-
        this.servicio.actualizar_estado_cancha(objeto_estado_cancha).subscribe(data => {
         let i_f = parseInt(id_fila);                          
         $("#tabla_cancha").find("tr:eq("+i_f+")").find("td:eq(1)").html(estado);
        });
+    }
        
   }
 

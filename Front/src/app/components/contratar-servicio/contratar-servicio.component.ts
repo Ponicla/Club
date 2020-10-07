@@ -118,7 +118,7 @@ export class ContratarServicioComponent implements OnInit {
                       confirmButtonText: 'Pagar para alquilar',
                       cancelButtonText: 'Volver'
                     }).then((result) => {
-                      if (result == true){
+                      if (result.value == true){
                         this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);
                       }
                     });
@@ -154,7 +154,7 @@ export class ContratarServicioComponent implements OnInit {
                           confirmButtonText: 'Pagar para alquilar',
                           cancelButtonText: 'Volver'
                         }).then((result) => {
-                          if (result == true){
+                          if (result.value == true){
                             this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);
                           }
                         });
@@ -194,7 +194,8 @@ export class ContratarServicioComponent implements OnInit {
             confirmButtonText: 'Pagar para alquilar',
             cancelButtonText: 'Volver'
           }).then((result) => {
-            if (result == true) {
+            if (result.value == true) {
+              console.log('TEST');
               let nombre_cancha = $("#select_cancha option:selected").text();
                 this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);       
             }

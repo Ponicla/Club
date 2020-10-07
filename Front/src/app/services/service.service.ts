@@ -328,4 +328,9 @@ export class ServiceService {
     const url = `http://localhost:3000/check_vencimiento_plan`;
     return this.consulta.post(url, id_usuario).pipe(map(data  => data));
   }
+
+  cantidad_alquileres_por_cancha(id_cancha){
+    const url = `http://localhost:3000/cantidad_alquileres_por_cancha`;
+    return this.consulta.post(url, id_cancha).pipe(map(data  => data));
+  }
 }
