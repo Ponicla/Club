@@ -383,6 +383,39 @@ const pagar = async (req, res) => {
 
 };
 
+const pagar_cancha_sin_plan = async (req, res) => {
+    const {
+        precio,
+        nombre,
+        cantidad
+    } = req.body;
+
+
+    let preference = {
+
+        items: [{
+            title: nombre,
+            unit_price: precio,
+            quantity: cantidad,
+        }],
+        "back_urls": {
+            "success": "http://localhost:4200/user/pago_c",
+            "failure": "http://localhost:4200/",
+            "pending": "http://localhost:4200/"
+        },
+        "auto_return": "approved"
+    };
+    const response = mercadopago.preferences.create(preference).then(function (response) {
+        global.init_point = response.body.init_point;
+        res.json(
+            global.init_point
+        );
+    }).catch(function (error) {
+        console.log(error);
+    });
+
+};
+
 
 /* MERCADO PAGO */
 
@@ -931,7 +964,7 @@ const createAlquilerCancha = async (req, res) => {
         id_cancha
     } = req.body;
 
-    const response = await pool.query('INSERT INTO alquiler_futbol (horario, fecha, fk_id_usuario, id_cancha) VALUES ($1, $2, $3, $4)', [horario, fecha, fk_id_usuario, id_cancha]);
+    const response = await pool.query('INSERT INTO alquiler_futbol (horario, fecha, fk_id_usuario, id_cancha, estado) VALUES ($1, $2, $3, $4, $5)', [horario, fecha, fk_id_usuario, id_cancha, true]);
     console.log(response);
     res.json({
         Message: 'ALQUILER DE CANCHA F5 ADD CORRECTAMENTE',
@@ -1133,6 +1166,7 @@ const cantidad_alquileres_por_cancha = async (req, res) => {
 
 
 module.exports = {
+    pagar_cancha_sin_plan,
     cantidad_alquileres_por_cancha,
     check_vencimiento_plan,
     verifacar_disponibilidad_del_turno,

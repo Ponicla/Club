@@ -35,6 +35,7 @@ import { ModalNewUseradminComponent } from './components/modal/modal-new-useradm
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import 'firebase/auth';
 import { ReportesComponent } from './components/admin/reportes/reportes.component';
+import { DevolucionPagoServicioComponent } from './components/devolucion-pago-servicio/devolucion-pago-servicio.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ReportesComponent } from './components/admin/reportes/reportes.componen
     DevolucionPagoComponent,
     MisServiciosComponent,
     ModalNewUseradminComponent,
-    ReportesComponent
+    ReportesComponent,
+    DevolucionPagoServicioComponent
   ],
   imports: [
     BrowserModule,

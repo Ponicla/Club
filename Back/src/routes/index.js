@@ -63,7 +63,8 @@ const {
     verifacar_ratoneada_paseador,
     verifacar_disponibilidad_del_turno,
     check_vencimiento_plan,
-    cantidad_alquileres_por_cancha
+    cantidad_alquileres_por_cancha,
+    pagar_cancha_sin_plan
  
 } = require('../controllers/index.controller');
 
@@ -87,7 +88,11 @@ router.post('/check_vencimiento_plan', check_vencimiento_plan);
 router.post('/verifacar_disponibilidad_del_turno', verifacar_disponibilidad_del_turno); 
 router.post('/verifacar_ratoneada_paseador', verifacar_ratoneada_paseador);
 
+// MERCADO PAGO
 router.post('/payment', pagar);
+router.post('/payment_cancha', pagar_cancha_sin_plan);
+// MERCADO PAGO
+
 router.post('/plan_usuario', get_plan_usuario);
 router.post('/servicios_del_usuarios', get_servicios_contratados);
 

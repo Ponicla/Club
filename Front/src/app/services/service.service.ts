@@ -261,6 +261,11 @@ export class ServiceService {
     return this.consulta.post(url, objeto_pagar).pipe(map(data  => data));
   }
 
+  pagar_cancha(objeto_pagar){
+    const url = `http://localhost:3000/payment_cancha`;
+    return this.consulta.post(url, objeto_pagar).pipe(map(data  => data));
+  }
+
   servicios_plan_del_usuario(objeto_spu){
     const url = `http://localhost:3000/servicios_del_usuarios`;
     return this.consulta.post(url, objeto_spu).pipe(map(data  => data));

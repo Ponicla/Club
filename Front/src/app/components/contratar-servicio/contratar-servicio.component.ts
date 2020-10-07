@@ -119,6 +119,7 @@ export class ContratarServicioComponent implements OnInit {
                       cancelButtonText: 'Volver'
                     }).then((result) => {
                       if (result.value == true){
+                        this.set_local($("#select_fecha_turno_cancha").val(), $("#select_hora_turno_cancha :selected").text(), this.user.id_usuario, $("#select_cancha").val());
                         this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);
                       }
                     });
@@ -155,6 +156,7 @@ export class ContratarServicioComponent implements OnInit {
                           cancelButtonText: 'Volver'
                         }).then((result) => {
                           if (result.value == true){
+                            this.set_local($("#select_fecha_turno_cancha").val(), $("#select_hora_turno_cancha :selected").text(), this.user.id_usuario, $("#select_cancha").val());
                             this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);
                           }
                         });
@@ -195,7 +197,7 @@ export class ContratarServicioComponent implements OnInit {
             cancelButtonText: 'Volver'
           }).then((result) => {
             if (result.value == true) {
-              console.log('TEST');
+              this.set_local($("#select_fecha_turno_cancha").val(), $("#select_hora_turno_cancha :selected").text(), this.user.id_usuario, $("#select_cancha").val());
               let nombre_cancha = $("#select_cancha option:selected").text();
                 this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);       
             }
@@ -206,6 +208,12 @@ export class ContratarServicioComponent implements OnInit {
     }
   }
 
+  set_local(fecha, horario, id_usuario, id_cancha,){
+    localStorage.setItem("reset_fecha", fecha);
+    localStorage.setItem("reset_horario", horario);
+    localStorage.setItem("reset_fk_id_usuario", id_usuario);
+    localStorage.setItem("reset_id_cancha", id_cancha);
+  }
 
   ir_mp_pagar(precio, nombre, cantidad){
     let objeto_pagar = {
@@ -214,7 +222,7 @@ export class ContratarServicioComponent implements OnInit {
       cantidad: cantidad,
     };
     /* localStorage.setItem("reset_id_plan",this.plan[0].id_plan); */
-     this.service.pagar(objeto_pagar).subscribe((data) => {
+     this.service.pagar_cancha(objeto_pagar).subscribe((data) => {
        console.log(data);
        var url = data.toString();
        window.open(url, '_blank');
