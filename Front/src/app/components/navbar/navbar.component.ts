@@ -16,6 +16,8 @@ export class NavbarComponent implements OnInit {
   rol: number;
   servicios_del_usuario: any[];
   cantidad: number;
+  paseador : boolean;
+  fecha: string;
 
   constructor(
     private router : Router,
@@ -26,9 +28,41 @@ export class NavbarComponent implements OnInit {
   public app_name = "Club";
 
   ngOnInit() {
+    this.fecha = null;
+    this.paseador = null;
     this.user = this.authService.getCurrentUser();
     this.rol = this.user['rol'];
     this.obtener_servicios_plan_usuario();
+    this.es_paseador();
+    this.informe_de_vencimiento();
+  }
+
+  informe_de_vencimiento(){
+    let obj_id_usuario = {
+      'id_usuario' : this.user['id_usuario']
+    }
+    this.servicio.informe_de_vencimiento(obj_id_usuario).subscribe((data : any) => {
+      // console.log('informe ', data);
+      if(data.length > 0){
+        // console.log(data[0]['fecha_baja_plan']);
+        let n = new Date(data[0]['fecha_baja_plan']);
+        let fechita = n.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: '2-digit' });
+        this.fecha = fechita;
+      }else{
+        console.log('no');
+      }
+
+    });
+  }
+
+  es_paseador(){
+    this.servicio.reporte_dos().subscribe( (data : any) => {
+      data.forEach(element => {
+        if(element['id_usuario'] == this.user['id_usuario']){
+          this.paseador = true;
+        }
+      });
+    })
   }
 
   onLogout(){

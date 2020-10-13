@@ -275,13 +275,13 @@ const dar_de_baja_el_plan = async (id) => {
 
     const respuesta = await pool.query('SELECT * FROM usuarios');
     console.log(respuesta.rows);
-    
+
 }
 
 const dar_de_baja_alquiler = async (id) => {
     const response = await pool.query('UPDATE alquiler_futbol SET estado = false WHERE id_alquiler =  $1', [id]);
     console.log('Tunro dado de baja, referencia: ', id);
-    
+
 }
 
 
@@ -384,6 +384,40 @@ const pagar = async (req, res) => {
 };
 
 const pagar_cancha_sin_plan = async (req, res) => {
+    const {
+        precio,
+        nombre,
+        cantidad
+    } = req.body;
+
+
+    let preference = {
+
+        items: [{
+            title: nombre,
+            unit_price: precio,
+            quantity: cantidad,
+        }],
+        "back_urls": {
+            "success": "http://localhost:4200/user/pago_c",
+            "failure": "http://localhost:4200/",
+            "pending": "http://localhost:4200/"
+        },
+        "auto_return": "approved"
+    };
+    const response = mercadopago.preferences.create(preference).then(function (response) {
+        global.init_point = response.body.init_point;
+        res.json(
+            global.init_point
+        );
+    }).catch(function (error) {
+        console.log(error);
+    });
+
+};
+
+
+const pagar_paseo_sin_plan = async (req, res) => {
     const {
         precio,
         nombre,
@@ -600,7 +634,7 @@ const createUsuario = async (req, res) => {
     } = req.body;
 
     var fecha = fecha_hoy();
-    
+
     const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol, paseador, paseador_habilitado, fecha_alta_como_usuario) VALUES ($1, $2, $3, $4, $5, $6, $7)', [nombre, mail, password, 2, 'false', 'false', fecha]);
     console.log("respuesta", response);
     res.json({
@@ -675,28 +709,28 @@ const createUsuarioAdmin = async (req, res) => {
         password
     })
 
-     var transporter = nodemailer.createTransport({
-         service: 'gmail',
-         auth: {
-             user: 'clubniceto@gmail.com',
-             pass: 'sagueros2'
-         }
-     });
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'clubniceto@gmail.com',
+            pass: 'sagueros2'
+        }
+    });
 
-     const mailOptions = {
-         from: 'clubniceto@gmail.com',
-         to: mail,
-         subject: 'Eres un admin de club niceto',
-         html: `<h4 class="text-center">Bienvenido</h4><p>Registraron una cuenta administrado para ti</p> <br> <br> <span>Sabemos que daras lo mejor de ti, para crecer junto con club niceto</span>  <br> <br> <span>Nombre de usuario asignado: ${nombre}</span> <br> <span> Contraseña asignada: ${password}</span> </span> <br> <br> <span> - Club niceto -</span>`
-     }
+    const mailOptions = {
+        from: 'clubniceto@gmail.com',
+        to: mail,
+        subject: 'Eres un admin de club niceto',
+        html: `<h4 class="text-center">Bienvenido</h4><p>Registraron una cuenta administrado para ti</p> <br> <br> <span>Sabemos que daras lo mejor de ti, para crecer junto con club niceto</span>  <br> <br> <span>Nombre de usuario asignado: ${nombre}</span> <br> <span> Contraseña asignada: ${password}</span> </span> <br> <br> <span> - Club niceto -</span>`
+    }
 
-     transporter.sendMail(mailOptions, function (err, info) {
-         if (err) {
-             console.log(err);
-         } else {
-             console.log(info);
-         }
-     });
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(info);
+        }
+    });
 }
 
 const getUsuarioAdmin = async (req, res) => {
@@ -1042,14 +1076,18 @@ const cancelar_cancha = async (req, res) => {
 
 // GOOGLE //
 const check_user_mail_google = async (req, res) => {
-    const { id } = req.body;
+    const {
+        id
+    } = req.body;
     const response = await pool.query('SELECT id_usuario, mail, cuenta_g FROM usuarios');
     console.log(response.rows);
     res.status(200).json(response.rows);
 }
 
 const obtener_user_para_local_storage = async (req, res) => {
-    const { id } = req.body;
+    const {
+        id
+    } = req.body;
     const response = await pool.query('SELECT id_usuario, nombre, mail, rol, fk_id_plan FROM usuarios WHERE id_usuario = $1', [id]);
     console.log('Obtenido para local G');
     res.status(200).json(response.rows);
@@ -1098,7 +1136,7 @@ const reporte_uno = async (req, res) => {
 }
 
 const reporte_dos = async (req, res) => {
-    const response = await pool.query("SELECT public.usuarios.nombre, public.usuarios.mail FROM public.usuarios WHERE public.usuarios.paseador = TRUE AND public.usuarios.paseador_habilitado = TRUE");
+    const response = await pool.query("SELECT public.usuarios.id_usuario, public.usuarios.nombre, public.usuarios.mail FROM public.usuarios WHERE public.usuarios.paseador = TRUE AND public.usuarios.paseador_habilitado = TRUE");
     console.log('GET REPORTE 2');
     res.status(200).json(response.rows);
 }
@@ -1127,7 +1165,7 @@ const verifacar_ratoneada_paseador = async (req, res) => {
     } = req.body;
     const response = await pool.query("SELECT id_paseador, fecha FROM paseo WHERE id_paseador = $1", [id_usuario]);
     console.log('Verificando ratoneada');
-    res.status(200).json(response.rows); 
+    res.status(200).json(response.rows);
 }
 
 const verifacar_disponibilidad_del_turno = async (req, res) => {
@@ -1138,7 +1176,7 @@ const verifacar_disponibilidad_del_turno = async (req, res) => {
     } = req.body;
     const response = await pool.query("SELECT * FROM alquiler_futbol WHERE horario = $1 AND fecha = $2 AND id_cancha = $3", [horario, fecha, id_cancha]);
     console.log('Verificando libre turno');
-    res.status(200).json(response.rows); 
+    res.status(200).json(response.rows);
 }
 
 const check_vencimiento_plan = async (req, res) => {
@@ -1147,7 +1185,7 @@ const check_vencimiento_plan = async (req, res) => {
     } = req.body;
     const response = await pool.query("SELECT fecha_baja_plan FROM usuarios WHERE id_usuario = $1", [id_usuario]);
     console.log('Verificando vencimiento plan');
-    res.status(200).json(response.rows); 
+    res.status(200).json(response.rows);
 }
 
 const cantidad_alquileres_por_cancha = async (req, res) => {
@@ -1156,7 +1194,50 @@ const cantidad_alquileres_por_cancha = async (req, res) => {
     } = req.body;
     const response = await pool.query("SELECT COUNT(*) FROM alquiler_futbol WHERE id_cancha = $1", [id_cancha]);
     console.log('cantidad_alquileres_por_cancha');
-    res.status(200).json(response.rows); 
+    res.status(200).json(response.rows);
+}
+
+
+// paseos pendientes para un paseador //
+const paseos_pendientes_por_paseador = async (req, res) => {
+    const {
+        id_paseador
+    } = req.body;
+    const response = await pool.query("SELECT * FROM paseo WHERE id_paseador = $1", [id_paseador]);
+    console.log('paseos_pendientes_por_paseador');
+    res.status(200).json(response.rows);
+}
+
+const informe_de_vencimiento = async (req, res) => {
+    try {
+        const {
+            id_usuario
+        } = req.body;
+        const response = await pool.query("SELECT fecha_baja_plan, fecha_inicio_plan, id_usuario "+
+        "FROM usuarios "+
+        "WHERE fk_id_plan IS NOT NULL AND id_usuario  = $1", [id_usuario]);
+        res.status(200).json(response.rows);
+    } catch {
+        res.send(null);
+        console.log('FALLO INFORME DE VENCIMIENTO');
+        
+    }
+}
+
+const verifacar_disponibilidad_del_paseos = async (req, res) => {
+    try {
+        const {
+            id_paseador,
+            id_rango_h,
+            fecha
+        } = req.body;
+        const response = await pool.query("SELECT * FROM paseo WHERE id_rango_h = $1 AND fecha = $2 AND id_paseador = $3", [id_rango_h, fecha, id_paseador]);
+        console.log('Verificando paseo libre');
+        res.status(200).json(response.rows);
+    } catch {
+        res.send(null);
+        console.log('FALLO ALGO EN DISPONIBILIDAD DE PASEOS');
+    }
 }
 
 
@@ -1166,13 +1247,20 @@ const cantidad_alquileres_por_cancha = async (req, res) => {
 
 
 module.exports = {
+    verifacar_disponibilidad_del_paseos,
+    informe_de_vencimiento,
+    paseos_pendientes_por_paseador,
     pagar_cancha_sin_plan,
+    pagar_paseo_sin_plan,
     cantidad_alquileres_por_cancha,
     check_vencimiento_plan,
     verifacar_disponibilidad_del_turno,
     verifacar_ratoneada_paseador,
     check_user_unique_mail,
-    reporte_uno, reporte_dos, reporte_tres, reporte_cuatro,
+    reporte_uno,
+    reporte_dos,
+    reporte_tres,
+    reporte_cuatro,
     create_usuario_registrado_con_google,
     obtener_user_para_local_storage,
     check_user_mail_google,

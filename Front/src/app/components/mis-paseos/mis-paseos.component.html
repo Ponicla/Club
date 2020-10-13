@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+<br><br><br>
+<div class="container mt-4">
+
+    <p class="text-center p-3 mb-2 bg-dark text-white" style="border-radius: 5px;">Paseos de mascotas pendientes</p>
+
+    <div class="row card-group">
+        <div class="col-4 mb-4 index_card_paseo" *ngFor="let el of paseos_del_usuario; let i = index" id="{{i}}">
+          <div  class="card text-white bg-primary" style="width: 20.5rem; text-transform: uppercase;">
+            <div class="card-body text-white bg-primary">
+              <h5 class="card-title" style="text-transform: uppercase;">Paseo</h5>
+              <p class="card-text" style="font-size: small; text-transform: initial;">Detalles del paseo</p>
+            </div>
+    
+            <p class="list-group-item text-white bg-primary">Dia de paseo: {{el.fecha}}</p>
+            <p class="list-group-item text-white bg-primary">Entre las: {{el.id_rango_h}}</p>
+            <p class="list-group-item text-white bg-primary">La direccion es: {{el.direccion}}</p>
+            <p class="list-group-item text-white bg-primary">Cantidad de perros: {{el.cantidad}}</p>
+
+           <!--  <div class="card-body text-white bg-primary">
+              <button class=" btn btn-light btn-block card-link" (click)="cancelar_paseo(el.identidad, i)" style="color: #0275d8">Cancelarlo</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+</div>

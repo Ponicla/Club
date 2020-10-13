@@ -64,7 +64,11 @@ const {
     verifacar_disponibilidad_del_turno,
     check_vencimiento_plan,
     cantidad_alquileres_por_cancha,
-    pagar_cancha_sin_plan
+    pagar_cancha_sin_plan,
+    paseos_pendientes_por_paseador,
+    informe_de_vencimiento,
+    verifacar_disponibilidad_del_paseos,
+    pagar_paseo_sin_plan
  
 } = require('../controllers/index.controller');
 
@@ -86,11 +90,13 @@ router.post('/reporte_cuatro', reporte_cuatro);
 router.post('/cantidad_alquileres_por_cancha', cantidad_alquileres_por_cancha); 
 router.post('/check_vencimiento_plan', check_vencimiento_plan); 
 router.post('/verifacar_disponibilidad_del_turno', verifacar_disponibilidad_del_turno); 
+router.post('/verifacar_disponibilidad_del_paseos', verifacar_disponibilidad_del_paseos);
 router.post('/verifacar_ratoneada_paseador', verifacar_ratoneada_paseador);
 
 // MERCADO PAGO
 router.post('/payment', pagar);
 router.post('/payment_cancha', pagar_cancha_sin_plan);
+router.post('/payment_paseo', pagar_paseo_sin_plan);
 // MERCADO PAGO
 
 router.post('/plan_usuario', get_plan_usuario);
@@ -157,6 +163,11 @@ router.get('/obtener_usuario_normal', getUsuarioNormal);
 router.put('/usuario_paseador/:id', update_paseador);
 router.get('/usuario_paseador/:id', get_estado_paseador);
 router.put('/usuario_paseador_h/:id', update_habilitacion_paseador);
+
+router.post('/paseos_pendientes_por_paseador', paseos_pendientes_por_paseador);
+router.post('/informe_de_vencimiento', informe_de_vencimiento);
+
+
 
 // router.get('/users', getUser);
 

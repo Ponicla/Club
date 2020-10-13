@@ -265,6 +265,12 @@ export class ServiceService {
     const url = `http://localhost:3000/payment_cancha`;
     return this.consulta.post(url, objeto_pagar).pipe(map(data  => data));
   }
+  pagar_paseo(objeto_pagar){
+    const url = `http://localhost:3000/payment_paseo`;
+    return this.consulta.post(url, objeto_pagar).pipe(map(data  => data));
+  }
+
+  
 
   servicios_plan_del_usuario(objeto_spu){
     const url = `http://localhost:3000/servicios_del_usuarios`;
@@ -338,4 +344,22 @@ export class ServiceService {
     const url = `http://localhost:3000/cantidad_alquileres_por_cancha`;
     return this.consulta.post(url, id_cancha).pipe(map(data  => data));
   }
+
+  paseos_pendientes_por_paseador(fk_id_usuario){
+    const url = `http://localhost:3000/paseos_pendientes_por_paseador`;
+    return this.consulta.post(url, fk_id_usuario).pipe(map(data  => data));
+  }
+
+  informe_de_vencimiento(id_usuario){
+    const url = `http://localhost:3000/informe_de_vencimiento`;
+    return this.consulta.post(url, id_usuario).pipe(map(data  => data));
+  }
+
+  verifacar_disponibilidad_del_paseos(objeto_no_pisar_otro_vpaseo){
+    const url = `http://localhost:3000/verifacar_disponibilidad_del_paseos`;
+    return this.consulta.post(url, objeto_no_pisar_otro_vpaseo).pipe(map(data  => data));
+  }
+  
+
+  
 }

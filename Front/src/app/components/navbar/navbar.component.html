@@ -48,6 +48,24 @@
           </a>
         </li> -->
 
+        <!-- <p *ngIf="fecha">Su plan vence el {{fecha}}</p>  
+        <a *ngIf="!fecha" >    </a>  -->
+        <li class="nav-item" *ngIf="fecha">
+          <a class="nav-link" style="color: red"> <span class="badge badge-light"><small style="text-transform: uppercase;" >plan vence el {{fecha}}</small> </span>  
+          </a>
+        </li> 
+
+<li class="nav-item" *ngIf="!fecha">
+  <a class="nav-link" style="color: RED"><span class="badge badge-light"><small >Puede contratar un plan</small> </span>
+  </a>
+</li> 
+
+        <li class="nav-item" *ngIf="!isLogged && paseador">
+          <a class="nav-link" routerLink="/user/mis_paseos">Mis paseos
+          </a>
+        </li> 
+
+
         <li class="nav-item" *ngIf="!isLogged">
           <a class="nav-link" routerLink="/user/mis_servicios">Mis servicios <span class="badge badge-light">{{cantidad}}</span>
           </a>
