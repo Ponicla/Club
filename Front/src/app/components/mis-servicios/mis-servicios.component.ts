@@ -113,6 +113,7 @@ export class MisServiciosComponent implements OnInit {
       }
     });   
   }
+  
   ir_alquiler(id){
     this.router2.navigate(["/user/contratar-servicio", id]);
   }

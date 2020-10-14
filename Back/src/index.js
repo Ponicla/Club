@@ -22,4 +22,7 @@ app.use(function(req, res, next){
 app.use(require('./routes/index'));
 
 app.listen(3000);
-console.log('Servidor en puerto 3000');
+var n = new Date();
+var options2 = {dataStyle: 'full'}; 
+var l = n.toLocaleString("es-AR", options2);
+console.log('SERVER RUN ' + l); 

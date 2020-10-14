@@ -37,6 +37,7 @@ import 'firebase/auth';
 import { ReportesComponent } from './components/admin/reportes/reportes.component';
 import { DevolucionPagoServicioComponent } from './components/devolucion-pago-servicio/devolucion-pago-servicio.component';
 import { MisPaseosComponent } from './components/mis-paseos/mis-paseos.component';
+import { DevolucionPagoPaseoComponent } from './components/devolucion-pago-paseo/devolucion-pago-paseo.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { MisPaseosComponent } from './components/mis-paseos/mis-paseos.component
     ModalNewUseradminComponent,
     ReportesComponent,
     DevolucionPagoServicioComponent,
-    MisPaseosComponent
+    MisPaseosComponent,
+    DevolucionPagoPaseoComponent
   ],
   imports: [
     BrowserModule,

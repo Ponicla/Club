@@ -19,6 +19,7 @@ mercadopago.configure({
     sandbox: true
 });
 
+
 const fecha_hoy = () => {
     var fs = new Date();
     var ds = fs.getDate();
@@ -281,12 +282,18 @@ const dar_de_baja_el_plan = async (id) => {
 const dar_de_baja_alquiler = async (id) => {
     const response = await pool.query('UPDATE alquiler_futbol SET estado = false WHERE id_alquiler =  $1', [id]);
     console.log('Tunro dado de baja, referencia: ', id);
+}
 
+const dar_de_baja_paseo = async (id) => {
+    const response = await pool.query('UPDATE paseo SET estado = false WHERE id_paseo =  $1', [id]);
+    console.log('Paseo dado de baja, referencia: ', id);
 }
 
 
-lanzarSiempreALaHora(20, 53, tarea);
-lanzarSiempreALaHora(21, 38, tarea_turnos);
+lanzarSiempreALaHora(20, 53, tarea, 'CORREO');
+lanzarSiempreALaHora(21, 38, tarea_turnos, 'TURNOS');
+lanzarSiempreALaHora(21, 37, tarea_paseos, 'PASEOS');
+
 
 const plan_vence = async (req, res) => {
     const response = await pool.query('SELECT id_usuario, mail, fecha_aviso_plan, fecha_ultimo_aviso_plan, fecha_baja_plan FROM usuarios');
@@ -322,20 +329,41 @@ const finaliza_turno = async (req, res) => {
     console.log('SUCCESS FINALIZA TURNOS');
 };
 
+const finaliza_paseo = async (req, res) => {
+    const response = await pool.query('SELECT id_paseo, fecha, estado FROM paseo');
+    response.rows.forEach(element => {
+        if (element.fecha == null) {
+            let mu = 1;
+        } else {
+            if (element.fecha.toLocaleDateString('fr-CA') == fecha_hoy()) {
+                dar_de_baja_paseo(element.id_paseo);
+            }
+        } 
+    });
+    console.log('SUCCESS FINALIZA PASEOS');
+};
+
 function tarea() {
-    console.log('Lanzando');
+    console.log('LANZANDO TAREA SOLO');
     plan_vence();
 }
 
 function tarea_turnos() {
-    console.log('Lanzando');
+    console.log('LAZANDO TAREA TURNOS');
     finaliza_turno();
 }
 
-function lanzarSiempreALaHora(hora, minutos, tarea) {
+function tarea_paseos() {
+    console.log('LAZANDO TAREA PASEOS');
+    finaliza_paseo();
+}
+
+function lanzarSiempreALaHora(hora, minutos, tarea, comentario) {
     var ahora = new Date();
     // console.log('lanzado',ahora);
-    console.log('Programado para lanzar');
+    console.log('-------------------------------------');
+    console.log('PROGRAMADO PARA LANZAR ' + comentario );
+    console.log('-------------------------------------');
     var momento = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate(), hora, minutos);
     if (momento <= ahora) {
         momento = new Date(momento.getTime() + 1000 * 60 * 60 * 24);
@@ -416,7 +444,6 @@ const pagar_cancha_sin_plan = async (req, res) => {
 
 };
 
-
 const pagar_paseo_sin_plan = async (req, res) => {
     const {
         precio,
@@ -433,7 +460,7 @@ const pagar_paseo_sin_plan = async (req, res) => {
             quantity: cantidad,
         }],
         "back_urls": {
-            "success": "http://localhost:4200/user/pago_c",
+            "success": "http://localhost:4200/user/pago_p",
             "failure": "http://localhost:4200/",
             "pending": "http://localhost:4200/"
         },
@@ -449,8 +476,6 @@ const pagar_paseo_sin_plan = async (req, res) => {
     });
 
 };
-
-
 /* MERCADO PAGO */
 
 
@@ -1053,7 +1078,7 @@ const get_servicios_contratados = async (req, res) => {
     const {
         id_usuario
     } = req.body;
-    const response = await pool.query('SELECT a.id_alquiler AS IDENTIDAD, a.horario AS HORA, a.fecha as FECHA, a.id_cancha as ID_LUGAR_O_PASEADOR, c.nombre as NOMBRE_PASEADOR_O_CANCHA, 0 as CANTIDAD, 1 as TIPO_SERVICIO FROM alquiler_futbol as a, cancha as c WHERE a.fk_id_usuario = $1 AND a.id_cancha = c.id_cancha AND a.estado = true UNION SELECT p.id_paseo AS IDENTIDAD, p.id_rango_h AS HORA, p.fecha as FECHA, p.id_paseador as ID_LUGAR_O_PASEADOR, ux.nombre as NOMBRE_PASEADOR_O_CANCHA, p.cantidad as CANTIDAD, 2 as TIPO_SERVICIO FROM paseo as p, usuarios as ux WHERE p.fk_id_usuario = $1 AND ux.paseador = true AND ux.paseador_habilitado = true AND p.id_paseador = ux.id_usuario ', [id_usuario]);
+    const response = await pool.query('SELECT a.id_alquiler AS IDENTIDAD, a.horario AS HORA, a.fecha as FECHA, a.id_cancha as ID_LUGAR_O_PASEADOR, c.nombre as NOMBRE_PASEADOR_O_CANCHA, 0 as CANTIDAD, 1 as TIPO_SERVICIO FROM alquiler_futbol as a, cancha as c WHERE a.fk_id_usuario = $1 AND a.id_cancha = c.id_cancha AND a.estado = true UNION SELECT p.id_paseo AS IDENTIDAD, p.id_rango_h AS HORA, p.fecha as FECHA, p.id_paseador as ID_LUGAR_O_PASEADOR, ux.nombre as NOMBRE_PASEADOR_O_CANCHA, p.cantidad as CANTIDAD, 2 as TIPO_SERVICIO FROM paseo as p, usuarios as ux WHERE p.fk_id_usuario = $1 AND ux.paseador = true AND ux.paseador_habilitado = true AND p.id_paseador = ux.id_usuario AND p.estado = TRUE', [id_usuario]);
     console.log(response);
     res.status(200).json(response.rows);
 };
@@ -1203,7 +1228,7 @@ const paseos_pendientes_por_paseador = async (req, res) => {
     const {
         id_paseador
     } = req.body;
-    const response = await pool.query("SELECT * FROM paseo WHERE id_paseador = $1", [id_paseador]);
+    const response = await pool.query("SELECT * FROM paseo WHERE id_paseador = $1 WHERE estado = true", [id_paseador]);
     console.log('paseos_pendientes_por_paseador');
     res.status(200).json(response.rows);
 }

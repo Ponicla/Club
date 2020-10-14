@@ -52,8 +52,12 @@ export class ContratarServicioComponent implements OnInit {
     this.obtener_lista_canchas_habilitadas();
 
     $('#cantidad').on('input', function (tecla) { 
-      if(tecla.charCode != 49 || tecla.charCode != 50 ) return false;
-      this.value = this.value.replace(/[^0-2]/g,'');
+      if(tecla.charCode != 49 || tecla.charCode != 50 ){
+        return false;
+      }else{
+        return true;
+      } 
+      // this.value = this.value.replace(/[^0-2]/g,'');
     }); 
 
   }
@@ -194,8 +198,6 @@ export class ContratarServicioComponent implements OnInit {
                 });
               }
             });  
-            
-
         }else{//sino, mp raton
           // Cobrarle el turno
           Swal.fire({
@@ -208,14 +210,53 @@ export class ContratarServicioComponent implements OnInit {
             cancelButtonText: 'Volver'
           }).then((result) => {
             if (result.value == true) {
-              this.set_local($("#select_fecha_turno_cancha").val(), $("#select_hora_turno_cancha :selected").text(), this.user.id_usuario, $("#select_cancha").val());
-              let nombre_cancha = $("#select_cancha option:selected").text();
-                this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);       
+              let objeto_no_pisar_otro_turno = {
+                id_cancha: $("#select_cancha").val(),
+                horario: $("#select_hora_turno_cancha :selected").text(),
+                fecha: $("#select_fecha_turno_cancha").val(),
+              };
+
+              this.service.verifacar_disponibilidad_del_turno(objeto_no_pisar_otro_turno).subscribe((data_2 : any) => {
+                if(data_2.length > 0){
+                  //negar alquiler
+                  Swal.fire({
+                    text: "El turno esta ocupado, seleccione otro",
+                    icon: 'warning',
+                  });
+                }else{// si no está ocupado, verifica que no se pase de su fecha de baja del plan
+                  this.service.check_vencimiento_plan(objeto_spu).subscribe( (data3 : any ) => {
+                    console.log(data3[0].fecha_baja_plan);
+                    console.log($("#select_fecha_turno_cancha").val());
+
+                    if($("#select_fecha_turno_cancha").val() > data3[0].fecha_baja_plan){
+                      let nombre_cancha = $("#select_cancha option:selected").text();
+
+                      Swal.fire({
+                        text: "Tu plan estara vencido en la fecha seleccionada, selecciona otra, o elige pagar para jugar si quieres ese turno cabron",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Pagar para alquilar',
+                        cancelButtonText: 'Volver'
+                      }).then((result) => {
+                        if (result.value == true){
+                          this.set_local($("#select_fecha_turno_cancha").val(), $("#select_hora_turno_cancha :selected").text(), this.user.id_usuario, $("#select_cancha").val());
+                          this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);
+                        }
+                      });
+                    }else{
+                      this.set_local($("#select_fecha_turno_cancha").val(), $("#select_hora_turno_cancha :selected").text(), this.user.id_usuario, $("#select_cancha").val());
+                      let nombre_cancha = $("#select_cancha option:selected").text();
+                      this.ir_mp_pagar(1500, 'Alquiler ' + nombre_cancha + ' en club niceto ', 1);       
+                    }
+                  });
+                }
+              });
             }
           });
         }
       });
-
     }
   }
 
@@ -337,7 +378,8 @@ export class ContratarServicioComponent implements OnInit {
                     cancelButtonText: 'Volver'
                   });
                 }else{
-                  if($("#cantidad").val() > 2 ){
+                  console.log($("#cantidad").val());
+                  if($("#cantidad").val() > 2 ){ 
                     Swal.fire({
                       text: "Solo hasta 2 mascotas",
                       icon: 'warning',
@@ -424,9 +466,66 @@ export class ContratarServicioComponent implements OnInit {
             cancelButtonText: 'Volver'
           }).then((result) => {
             if (result.value == true) {
-              this.set_local_para_paseo($("#cantidad").val(), $("#select_paseador").val(), $("#select_fecha").val(), $("#direccion").val(), this.user.id_usuario, $("#select_hora :selected").text());
-              // let nombre_cancha = $("#select_cancha option:selected").text();
-                this.ir_mp_pagar_paseo(500, 'Paseo de mascotas en club niceto ', 1);       
+              
+              let objeto_no_pisar_otro_paseo = {
+                id_paseador: parseInt($("#select_paseador").val()),
+                id_rango_h: $("#select_hora :selected").text(),
+                fecha: $("#select_fecha").val(),
+              };
+              this.service.verifacar_disponibilidad_del_paseos(objeto_no_pisar_otro_paseo).subscribe( (data_2 : any) => {
+                console.log(data_2);
+                if(data_2.length > 0){
+                  var canti = parseInt(data_2[0]['cantidad']);
+                  // console.log('dsadsadasdsadasdasdsa');
+                }else{
+                  var canti = 0;
+                }
+
+                if( canti >= 5 ){
+                  // let diferencia = 5 - data_2[0]['cantidad'];
+                  Swal.fire({
+                    text: "Este paseador en esta fecha y este horario esta completo, pruebe otra",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Pagar por el paseo',
+                    cancelButtonText: 'Volver'
+                  });
+                }else{
+                  console.log($("#cantidad").val());
+                  if($("#cantidad").val() > 2 ){ 
+                    Swal.fire({
+                      text: "Solo hasta 2 mascotas",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      showConfirmButton: false,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      cancelButtonText: 'Volver'
+                    });
+                  }else{
+                    let diferencia = 5 - canti;
+                    if($("#cantidad").val() > diferencia ) {
+                      Swal.fire({
+                        text: "Este paseador en esta fecha y este horario tiene " + diferencia + " lugares para mascotas, intente con menos u otra fecha u horario",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        showConfirmButton: false,
+                        cancelButtonText: 'Volver'
+                      });
+                    }else{
+
+                      this.set_local_para_paseo($("#cantidad").val(), $("#select_paseador").val(), $("#select_fecha").val(), $("#direccion").val(), this.user.id_usuario, $("#select_hora :selected").text());
+                      // let nombre_cancha = $("#select_cancha option:selected").text();
+                        this.ir_mp_pagar_paseo(500, 'Paseo de mascotas en club niceto ', 1);       
+                    }
+                  }
+                }
+              });
+
             }
           })
         }
