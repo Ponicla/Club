@@ -3,7 +3,7 @@
 <div class="container">
   <p class="text-center p-3 mb-2 bg-info text-white">ADMINISTRACION PASEOS </p>
   <h1> Paseadores</h1>
-  <table class="table">
+  <table class="table" id="tabla_paseadores">
     <thead class="thead-dark">
       <tr>
         <th hidden># </th>
@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr mdbTableCol *ngFor="let usr of usuarios_si">
+      <tr mdbTableCol *ngFor="let usr of usuarios_si; let i= index">
         <th hidden scope="row">{{usr.id_usuario}}</th>
         <td style="text-transform: uppercase">{{usr.nombre}}</td>
         <td *ngIf="usr.paseador == true" class="text-info">Solicita ser paseador</td>
@@ -23,10 +23,10 @@
         <td id="celdaT" *ngIf="usr.paseador_habilitado == true" class="text-success">Paseador activo</td>
         <td id="celdaF" *ngIf="usr.paseador_habilitado == false" class="text-danger">No es paseador</td>
         <td>
-          <button type="button" class="btn btn-warning text-white" (click)="baja_paseador(usr.id_usuario)">Baja</button>
+          <button type="button" class="btn btn-warning text-white" (click)="baja_paseador(usr.id_usuario, i+1)">Baja</button>
         </td>
         <td>
-          <button class="btn btn-info" (click)="alta_paseador(usr.id_usuario)">Habilitar</button>
+          <button class="btn btn-info" (click)="alta_paseador(usr.id_usuario, i+1)">Habilitar</button>
         </td>
       </tr>
     </tbody>

@@ -20,6 +20,7 @@ import { ReportesComponent } from './components/admin/reportes/reportes.componen
 import { DevolucionPagoServicioComponent } from './components/devolucion-pago-servicio/devolucion-pago-servicio.component';
 import { MisPaseosComponent } from './components/mis-paseos/mis-paseos.component';
 import { DevolucionPagoPaseoComponent } from './components/devolucion-pago-paseo/devolucion-pago-paseo.component';
+import { DevolucionPagoErrorComponent } from './components/devolucion-pago-error/devolucion-pago-error.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent, canActivate: [AuthGuard]},
@@ -40,7 +41,8 @@ const routes: Routes = [
   {path: "user/mis_servicios", component: MisServiciosComponent , canActivate: [AuthGuard] },
   {path: "admin/reportes", component: ReportesComponent , canActivate: [AuthGuard] },
   {path: "user/mis_paseos", component: MisPaseosComponent , canActivate: [AuthGuard] },
-  {path: "user/pago_p", component: DevolucionPagoPaseoComponent , canActivate: [AuthGuard] }
+  {path: "user/pago_p", component: DevolucionPagoPaseoComponent , canActivate: [AuthGuard] },
+  {path: "user/pago_fail", component: DevolucionPagoErrorComponent , canActivate: [AuthGuard] }
 ];
 
 @NgModule({

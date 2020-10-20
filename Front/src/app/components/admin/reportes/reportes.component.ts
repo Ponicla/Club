@@ -15,7 +15,8 @@ export class ReportesComponent implements OnInit {
   resultado_reporte_uno : [];
   resultado_reporte_dos : [];
   resultado_reporte_tres : [];
-  resultado_reporte_cuatro : [];
+  resultado_reporte_cuatro : any[];
+  repetidos = [];
 
   constructor(
     private router: Router,
@@ -96,7 +97,7 @@ export class ReportesComponent implements OnInit {
     ]
         });
       });
-    }, 250);
+    }, 500);
   }
 
   funcion_reporte_dos(){
@@ -165,26 +166,24 @@ export class ReportesComponent implements OnInit {
 
   funcion_reporte_tres(){
     var fecha_reporte_tres = $('#fecha_reporte_tres').val();
-    console.log(fecha_reporte_tres);
+    // console.log(fecha_reporte_tres);
     var fecha_r3 = {
       fecha: fecha_reporte_tres
     }
     
     this.servicio.reporte_tres(fecha_r3).subscribe( (data: any) => {
       this.resultado_reporte_tres = data;
-      // console.log(this.resultado_reporte_tres);
+      var repetidos = {};
 
-      for (let i = 0; i < data.length; i++) {
-        const element = data[i].nombre;
-        console.log(element);
-
-        // if (){
-
-        // }
-        // if(){
-
-        // }
-      }
+      data.forEach(function(registro) { 
+          var cantidad = registro["nombre"];
+          repetidos[cantidad] = repetidos[cantidad] ? (repetidos[cantidad] + 1) : 1;
+      });
+      
+      this.repetidos = Object.keys(repetidos).map(function(cantidad) {
+        
+        return { NOMBRE: cantidad, CANTIDAD: repetidos[cantidad] };
+      });
 
       $("#tabla_reporte_tres").dataTable().fnDestroy();
       $('#tabla_reporte_tres').attr("hidden", false);
@@ -255,6 +254,13 @@ export class ReportesComponent implements OnInit {
     this.servicio.reporte_cuatro(fecha_r4).subscribe( (data: any) => {
       this.resultado_reporte_cuatro = data;
       console.log(this.resultado_reporte_cuatro);
+
+      
+      this.resultado_reporte_cuatro.forEach((element) => {
+          element.fecha_alta_como_usuario = this.transofrmar_fecha(element.fecha_alta_como_usuario);
+      });
+
+
       $("#tabla_reporte_cuatro").dataTable().fnDestroy();
       $('#tabla_reporte_cuatro').attr("hidden", false);
       $('#cantidad_en_r4').text('Se registraron ' + data.length + ' usuarios desde la fecha dada');
@@ -313,6 +319,15 @@ export class ReportesComponent implements OnInit {
         });
       });
     }, 250);
+  }
+
+  transofrmar_fecha(fecha_recibida) {
+    var fs = new Date(fecha_recibida);
+    var ds = fs.getDate();
+    var ms = fs.getMonth() + 1;
+    var ys = fs.getFullYear();
+    var fecha_transformada = ds + "-" + ms + "-" + ys;
+    return fecha_transformada;
   }
 
 }

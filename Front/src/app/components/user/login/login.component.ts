@@ -46,8 +46,10 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(){
-    return this.authService.loginUser(this.user.nombre, this.user.password).subscribe(user =>{ 
+    return this.authService.loginUser(this.user.nombre, this.user.password).subscribe(user =>{
+      console.log('RESPUESTA DE BASE DE DATOS', user); 
       if(user[0] != undefined){
+        //SETEAR EN LOCALSTORAGE
         this.authService.setUser(user[0]);
         Swal.fire({
           icon: 'success',

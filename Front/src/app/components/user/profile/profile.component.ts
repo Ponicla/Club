@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
   user: usuariointerface;
   persona: boolean;
   paseador_bool: boolean;
+  telefono: string;
 
   constructor(
     private authService : AuthService,
@@ -78,13 +79,15 @@ export class ProfileComponent implements OnInit {
     this.id_gfamiliar = (<HTMLInputElement>document.getElementById("id_gfamiliar")).value;
     this.id_usuario = (<HTMLInputElement>document.getElementById("id_usuario")).value;
     this.dni = (<HTMLInputElement>document.getElementById("dni")).value;
+    this.telefono = (<HTMLInputElement>document.getElementById("telefono")).value;
 
     this.personaParaEnviar = {
       nombre: this.nombre, 
       apellido: this.apellido,
       id_usuario: this.id_usuario,
       id_gfamiliar: this.id_gfamiliar,
-      dni: this.dni
+      dni: this.dni,
+      telefono: this.telefono
     }
 
     this.servicio.agregarPersona(this.personaParaEnviar).subscribe(persona => location.reload());

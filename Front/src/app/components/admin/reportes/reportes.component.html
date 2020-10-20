@@ -4,14 +4,14 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="alert alert-info" role="alert">
                 <h4 class="alert-heading">Info del reporte 1 </h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                <p>Obtener los usuarios que no registran contratación de algun plan desde una fecha elegida</p>
                 <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                <p class="mb-0">Por favor seleccione una fecha</p>
             </div>
-            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_uno()">Reporte uno</button>
+            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_uno()">Obtener resultados</button>
             <input type="date" id="fecha_reporte_uno" class="form-control form-group" placeholder="Ingrese fecha">
 
             <br>
@@ -19,46 +19,18 @@
                 <thead class="thead-dark">
                     <tr>
                     <th>Nombre</th>
+                    <th>Apellido</th>
                     <th>Mail</th>
+                    <th>Teléfono</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr  mdbTableCol *ngFor="let rr1 of resultado_reporte_uno" >
                     <!-- <tr mdbTableCol> -->
                     <td>{{rr1.nombre}}</td>
+                    <td>{{rr1.apellido}}</td>
                     <td>{{rr1.mail}}</td>
-                    </tr>
-                </tbody>
-                </table>
-            <br>
-        </div>
-
-
-
-
-        <div class="col-md-6">
-            <div class="alert alert-danger" role="alert">
-                <h4 class="alert-heading">Info del reporte 2 </h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-            </div>
-            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_dos()">Reporte dos</button>
-            <!-- <input type="date" id="fecha_reporte_dos" class="form-control form-group" placeholder="Ingrese fecha"> -->
-
-            <br>
-                <table hidden id="tabla_reporte_dos" class="table display" style="text-transform: uppercase">
-                <thead class="thead-dark">
-                    <tr>
-                    <th>Nombre</th>
-                    <th>Mail</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr  mdbTableCol *ngFor="let rr of resultado_reporte_dos" >
-                    <!-- <tr mdbTableCol> -->
-                    <td>{{rr.nombre}}</td>
-                    <td>{{rr.mail}}</td>
+                    <td>{{rr1.telefono}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -67,17 +39,52 @@
     </div>
 
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">Info del reporte 2 </h4>
+                <p>Obtiene los paseadores activos al dia de hoy</p>
+                <hr>
+            </div>
+            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_dos()">Obtener resultados</button>
+            <!-- <input type="date" id="fecha_reporte_dos" class="form-control form-group" placeholder="Ingrese fecha"> -->
+
+            <br>
+                <table hidden id="tabla_reporte_dos" class="table display" style="text-transform: uppercase">
+                <thead class="thead-dark">
+                    <tr>
+                    <th>Usuario</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Mail</th>
+                    <th>Teléfono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr  mdbTableCol *ngFor="let rr of resultado_reporte_dos" >
+                    <!-- <tr mdbTableCol> -->
+                    <td>{{rr.usuario}}</td>
+                    <td>{{rr.nombre}}</td>
+                    <td>{{rr.apellido}}</td>
+                    <td>{{rr.mail}}</td>
+                    <td>{{rr.telefono}}</td>
+                    </tr>
+                </tbody>
+                </table>
+            <br>
+        </div>
+    </div>
 
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="alert alert-warning" role="alert">
                 <h4 class="alert-heading">Info del reporte 3 </h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                <p>Cantidades de los alquileres que se registrarón para cada cancha desde una fecha</p>
                 <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                <p class="mb-0">Seleccione una fecha para obtener el reporte</p>
             </div>
-            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_tres()">Reporte tres</button>
+            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_tres()">Obtener resultados</button>
             <input type="date" id="fecha_reporte_tres" class="form-control form-group" placeholder="Ingrese fecha">
 
             <br>
@@ -85,31 +92,31 @@
                 <thead class="thead-dark">
                     <tr>
                     <th>Nombre</th>
-                    <th>Mail</th>
+                    <th>Cantidad de alquileres</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr  mdbTableCol *ngFor="let rr of resultado_reporte_tres" >
+                    <tr  mdbTableCol *ngFor="let rr of repetidos" >
                     <!-- <tr mdbTableCol> -->
-                    <td>{{rr.nombre}}</td>
-                    <td>{{rr.fecha}}</td>
+                    <td>{{rr.NOMBRE}}</td>
+                    <td>{{rr.CANTIDAD}}</td>
                     </tr>
                 </tbody>
                 </table>
             <br>
         </div>
+    </div>
 
 
-
-
-        <div class="col-md-6">
+    <div class="row">
+        <div class="col-md-12">
             <div class="alert alert-success" role="alert">
                 <h4 class="alert-heading">Info del reporte 4 </h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                <p>Obtiene un listado de personas que se registraron desde una fecha dada</p>
                 <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                <p class="mb-0">Seleccione una fecha</p>
             </div>
-            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_cuatro()">Reporte cuatro</button>
+            <button class="btn btn-primary btn-sm form-group" (click)="funcion_reporte_cuatro()">Obtener resultados</button>
             <input type="date" id="fecha_reporte_cuatro" class="form-control form-group" placeholder="Ingrese fecha">
             <br>
             <div class="alert alert-primary" role="alert">
@@ -119,15 +126,23 @@
                 <table hidden id="tabla_reporte_cuatro" class="table display" style="text-transform: uppercase">
                 <thead class="thead-dark">
                     <tr>
+                    <th>Usuario</th>
                     <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Mail</th>
                     <th>Registrado el</th>
+                    <th>Teléfono</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr  mdbTableCol *ngFor="let rr of resultado_reporte_cuatro" >
                     <!-- <tr mdbTableCol> -->
+                    <td>{{rr.usuario}}</td>
                     <td>{{rr.nombre}}</td>
+                    <td>{{rr.apellido}}</td>
+                    <td>{{rr.mail}}</td>
                     <td>{{rr.fecha_alta_como_usuario}}</td>
+                    <td>{{rr.telefono}}</td>
                     </tr>
                 </tbody>
                 </table>

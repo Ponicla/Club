@@ -35,12 +35,18 @@
         </div>
 
         <div class="form-group">
+            <label for="">Número de teléfono</label>
+            <input type="text" class="form-control" id="telefono" name="telefo" placeholder="Número de teléfo">
+        </div>
+
+        <div class="form-group">
             <label for="">Grupo familiar</label>
             <select class="form-control" name="id_gfamiliar" name="id_gfamiliar" id="id_gfamiliar">
                 <option value="1">Si</option>
                 <option value="2">No</option>
             </select>
         </div>
+
 
         <button class="btn btn-primary float-right" (click)="guardar()">Cargar</button>
     </form>

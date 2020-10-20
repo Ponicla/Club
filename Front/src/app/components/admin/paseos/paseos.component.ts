@@ -5,6 +5,7 @@ import { ServiceService } from 'src/app/services/service.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { usuariointerface } from 'src/app/models/usuario-interface';
 import Swal from 'sweetalert2';
+import $ from "jquery";
 
 @Component({
   selector: 'app-paseos',
@@ -34,7 +35,7 @@ export class PaseosComponent implements OnInit {
 
     if(this.rol != 1){
       Swal.fire({
-        title: 'Forro',
+        title: 'Epa',
         text: 'Por que quiere meter tus putas narices aqui, vete a la verga',
         icon: 'question',
         confirmButtonText: 'Decido marcharme'
@@ -67,24 +68,30 @@ export class PaseosComponent implements OnInit {
   }
 
 
-  alta_paseador(id){
+  alta_paseador(id, id_fila){
     console.log('ALTA', id);
     this.paseador_bool = true;
     var objeto_booleano_paseador_h = {
       paseador_habilitado: this.paseador_bool
     }
-    this.servicio.update_paseador_h(objeto_booleano_paseador_h, id).subscribe();
+    this.servicio.update_paseador_h(objeto_booleano_paseador_h, id).subscribe(() => {
+      let i_f = parseInt(id_fila);                          
+      $("#tabla_paseadores").find("tr:eq("+i_f+")").find("td:eq(2)").html('<p style="color:green">Paseador activo<p>');
+    });
       
     
   }
 
-  baja_paseador(id){
+  baja_paseador(id, id_fila){
     console.log('BAJA', id);
-    this.paseador_bool = false;
+    this.paseador_bool = false; 
     var objeto_booleano_paseador_h = {
       paseador_habilitado: this.paseador_bool
     }
-    this.servicio.update_paseador_h(objeto_booleano_paseador_h, id).subscribe();
+    this.servicio.update_paseador_h(objeto_booleano_paseador_h, id).subscribe( () => {
+      let i_f = parseInt(id_fila);                          
+      $("#tabla_paseadores").find("tr:eq("+i_f+")").find("td:eq(2)").html('<p style="color:red">No es paseador<p>');
+    });
     
   }
 

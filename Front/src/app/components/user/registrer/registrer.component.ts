@@ -47,6 +47,7 @@ export class RegistrerComponent implements OnInit {
       }
       if(count == false){ 
           this.authService.registerUser(this.user.nombre, this.user.mail, this.user.password).subscribe((user) => {
+            console.log(user);
               this.authService.setUser(user);
               Swal.fire({
                 icon: "success",

@@ -20,7 +20,7 @@ export class AuthService {
     private http: HttpClient,
     public afAuth: AngularFireAuth,
     private router: Router
-    ) { }
+  ) { }
 
   headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/JSON"
@@ -46,14 +46,10 @@ export class AuthService {
     return this.http.post(url, mail_objeto, {headers: this.headers}).pipe(map(data => data));
   }
 
-
-  
   check_user_unique_mail(){
     const url = `http://localhost:3000/check_user_unique_mail`;
     return this.http.get(url).pipe(map(data  => data));
   }
-
-
 
   loginUser(nombre: string, password: string): Observable<any> {
     
@@ -63,17 +59,15 @@ export class AuthService {
 
   setUser(user):void { 
     let user_local = {
-
-      "id_usuario":user.id_usuario,
-      "nombre":user.nombre,
-      "mail":user.mail,
-      "rol":user.rol,
+      "id_usuario" : user.id_usuario,
+      "nombre" : user.nombre,
+      "mail" : user.mail,
+      "rol" : user.rol,
       "id_plan" : user.fk_id_plan
     }
     
     localStorage.setItem("currentUser",JSON.stringify(user_local));
   }
-
 
   setToken(token):void {
     localStorage.setItem("accessToken", token);
@@ -84,19 +78,19 @@ export class AuthService {
   }
 
   getCurrentUser(){
-    // console.log(this.afAuth.authState.pipe(first()).toPromise());
-    let user_string = localStorage.getItem("currentUser");
-    if (!isNullOrUndefined(user_string)){
-      let user = JSON.parse(user_string);
-      return user;
-  }else{
-    return null;
+      // console.log(this.afAuth.authState.pipe(first()).toPromise());
+      let user_string = localStorage.getItem("currentUser");
+      if (!isNullOrUndefined(user_string)){
+        let user = JSON.parse(user_string);
+        return user;
+    }else{
+      return null;
+    }
   }
-}
 
-logoutUser(){
-  localStorage.removeItem("currentUser");
-}
+  logoutUser(){
+    localStorage.removeItem("currentUser");
+  }
 
   logoutUser2(){
     let accessToken = localStorage.getItem("accessToken")

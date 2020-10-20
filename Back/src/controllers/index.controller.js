@@ -3,7 +3,6 @@ const {
 } = require('pg');
 const nodemailer = require('nodemailer');
 
-
 const mercadopago = require('mercadopago');
 
 const pool = new Pool({
@@ -274,6 +273,8 @@ const dar_de_baja_el_plan = async (id) => {
     const response = await pool.query('UPDATE usuarios SET fk_id_plan = null, fecha_inicio_plan = null, fecha_fin_plan = null, fecha_aviso_plan = null, fecha_ultimo_aviso_plan = null WHERE id_usuario =  $1', [id]);
     console.log('Plan dado de baja para el usario con ID numero: ', id);
 
+    
+    
     const respuesta = await pool.query('SELECT * FROM usuarios');
     console.log(respuesta.rows);
 
@@ -290,9 +291,9 @@ const dar_de_baja_paseo = async (id) => {
 }
 
 
-lanzarSiempreALaHora(20, 53, tarea, 'CORREO');
-lanzarSiempreALaHora(21, 38, tarea_turnos, 'TURNOS');
-lanzarSiempreALaHora(21, 37, tarea_paseos, 'PASEOS');
+lanzarSiempreALaHora(23, 59, tarea);
+lanzarSiempreALaHora(0, 0, tarea_turnos);
+lanzarSiempreALaHora(0, 1, tarea_paseos);
 
 
 const plan_vence = async (req, res) => {
@@ -312,7 +313,8 @@ const plan_vence = async (req, res) => {
             }
         }
     });
-    console.log('SUCCESS SEMD MAIL');
+    console.log('SUCCESS FINAL SEND MAIL');
+    console.log('-----------------------');
 };
 
 const finaliza_turno = async (req, res) => {
@@ -327,6 +329,7 @@ const finaliza_turno = async (req, res) => {
         }
     });
     console.log('SUCCESS FINALIZA TURNOS');
+    console.log('-----------------------');
 };
 
 const finaliza_paseo = async (req, res) => {
@@ -341,40 +344,43 @@ const finaliza_paseo = async (req, res) => {
         } 
     });
     console.log('SUCCESS FINALIZA PASEOS');
+    console.log('-----------------------');
 };
 
 function tarea() {
-    console.log('LANZANDO TAREA SOLO');
+    console.log('--------------------');
+    console.log('LANZANDO TAREA CORREO');
     plan_vence();
 }
 
 function tarea_turnos() {
+    console.log('--------------------');
     console.log('LAZANDO TAREA TURNOS');
     finaliza_turno();
 }
 
 function tarea_paseos() {
+    console.log('--------------------');
     console.log('LAZANDO TAREA PASEOS');
     finaliza_paseo();
 }
 
-function lanzarSiempreALaHora(hora, minutos, tarea, comentario) {
+function lanzarSiempreALaHora(hora, minutos, tarea) {
+    //OBTENER FECHA HOY ESTE PRECISO MOMENTO
     var ahora = new Date();
-    // console.log('lanzado',ahora);
-    console.log('-------------------------------------');
-    console.log('PROGRAMADO PARA LANZAR ' + comentario );
-    console.log('-------------------------------------');
+    //CREAR UNA FECHA DE HOY CON LA HORA Y MINUTOS DADOS
     var momento = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate(), hora, minutos);
+    //FECHA DE HOY CON LA HORA Y MINUTOS DADOS SI ES MENOR A FECHA HOY ESTE PRECISO MOMENTO
     if (momento <= ahora) {
+        //SUMA UN DIA PARA QUE EL SET TIME OUT SE SETEE DENTRO DE 24 HORAS
         momento = new Date(momento.getTime() + 1000 * 60 * 60 * 24);
     }
-    // console.log('para ser ejecutado en',momento,momento.getTime()-ahora.getTime());
+    //EJECUTA UNA FUNCION EN BASE AL TIEMPO QUE LE FALTA PARA LLEGAR AL MOMENTO DADO
     setTimeout(function () {
         tarea();
         lanzarSiempreALaHora(hora, minutos, tarea);
     }, momento.getTime() - ahora.getTime());
 }
-
 
 
 /* MERCADO PAGO */
@@ -394,11 +400,11 @@ const pagar = async (req, res) => {
             quantity: cantidad,
         }],
         "back_urls": {
-            "success": "http://localhost:4200/user/pago_s",
-            "failure": "http://localhost:4200/",
-            "pending": "http://localhost:4200/"
+            "success": "http://localhost:4200/user/pago_p",
+            "failure": "http://localhost:4200/user/pago_fail",
+            "pending": "http://localhost:4200"
         },
-        "auto_return": "approved"
+        "auto_return": "all"
     };
     const response = mercadopago.preferences.create(preference).then(function (response) {
         global.init_point = response.body.init_point;
@@ -427,11 +433,11 @@ const pagar_cancha_sin_plan = async (req, res) => {
             quantity: cantidad,
         }],
         "back_urls": {
-            "success": "http://localhost:4200/user/pago_c",
-            "failure": "http://localhost:4200/",
-            "pending": "http://localhost:4200/"
+            "success": "http://localhost:4200/user/pago_p",
+            "failure": "http://localhost:4200/user/pago_fail",
+            "pending": "http://localhost:4200"
         },
-        "auto_return": "approved"
+        "auto_return": "all"
     };
     const response = mercadopago.preferences.create(preference).then(function (response) {
         global.init_point = response.body.init_point;
@@ -461,10 +467,12 @@ const pagar_paseo_sin_plan = async (req, res) => {
         }],
         "back_urls": {
             "success": "http://localhost:4200/user/pago_p",
-            "failure": "http://localhost:4200/",
-            "pending": "http://localhost:4200/"
+            "failure": "http://localhost:4200/user/pago_fail",
+            "pending": "http://localhost:4200"
         },
-        "auto_return": "approved"
+        "auto_return": "all"
+    
+
     };
     const response = mercadopago.preferences.create(preference).then(function (response) {
         global.init_point = response.body.init_point;
@@ -657,7 +665,7 @@ const createUsuario = async (req, res) => {
         mail,
         password
     } = req.body;
-
+    
     var fecha = fecha_hoy();
 
     const response = await pool.query('INSERT INTO usuarios (nombre, mail, password, rol, paseador, paseador_habilitado, fecha_alta_como_usuario) VALUES ($1, $2, $3, $4, $5, $6, $7)', [nombre, mail, password, 2, 'false', 'false', fecha]);
@@ -667,7 +675,7 @@ const createUsuario = async (req, res) => {
         mail,
         password,
         fecha
-    })
+    });
 
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -840,9 +848,10 @@ const createPersona = async (req, res) => {
         dni,
         id_gfamiliar,
         id_usuario,
+        telefono
     } = req.body;
 
-    const response = await pool.query('INSERT INTO personas (nombre, apellido, dni, id_gfamiliar, id_usuario) VALUES ($1, $2, $3, $4, $5)', [nombre, apellido, dni, id_gfamiliar, id_usuario]);
+    const response = await pool.query('INSERT INTO personas (nombre, apellido, dni, id_gfamiliar, id_usuario, telefono) VALUES ($1, $2, $3, $4, $5, $6)', [nombre, apellido, dni, id_gfamiliar, id_usuario, telefono]);
     console.log(response);
     res.json(
         `${nombre.toUpperCase()} ${apellido.toUpperCase()} ALTA CORRECTA`
@@ -1155,13 +1164,24 @@ const reporte_uno = async (req, res) => {
     const {
         fecha
     } = req.body;
-    const response = await pool.query("SELECT public.usuarios.nombre, public.usuarios.mail FROM public.usuarios WHERE public.usuarios.fecha_baja_plan < $1 OR public.usuarios.fecha_baja_plan IS NULL", [fecha]);
+    const response = await pool.query(
+        "SELECT "+
+            "usuarios.fecha_alta_como_usuario, "+
+            "usuarios.mail, "+
+            "usuarios.id_usuario, "+
+            "personas.nombre,"+
+            "personas.apellido, "+
+            "personas.telefono "+
+        "FROM usuarios "+
+        "LEFT JOIN personas "+
+	    "ON usuarios.id_usuario = personas.id_usuario "+
+        "WHERE usuarios.fecha_baja_plan < $1 OR usuarios.fecha_baja_plan IS NULL", [fecha]);
     console.log('GET REPORTE 1');
     res.status(200).json(response.rows);
 }
 
 const reporte_dos = async (req, res) => {
-    const response = await pool.query("SELECT public.usuarios.id_usuario, public.usuarios.nombre, public.usuarios.mail FROM public.usuarios WHERE public.usuarios.paseador = TRUE AND public.usuarios.paseador_habilitado = TRUE");
+    const response = await pool.query("SELECT public.personas.telefono, public.personas.nombre, public.personas.apellido, public.personas.id_usuario, public.usuarios.nombre as usuario, public.usuarios.mail FROM public.usuarios INNER JOIN public.personas ON public.usuarios.id_usuario = public.personas.id_usuario WHERE public.usuarios.paseador = TRUE AND public.usuarios.paseador_habilitado = TRUE");
     console.log('GET REPORTE 2');
     res.status(200).json(response.rows);
 }
@@ -1170,7 +1190,7 @@ const reporte_tres = async (req, res) => {
     const {
         fecha
     } = req.body;
-    const response = await pool.query("SELECT public.alquiler_futbol.fecha, public.cancha.nombre FROM public.cancha INNER JOIN public.alquiler_futbol ON public.cancha.id_cancha = public.alquiler_futbol.id_cancha WHERE public.alquiler_futbol.fecha > $1 ORDER BY nombre", [fecha]);
+    const response = await pool.query("SELECT public.cancha.nombre FROM public.cancha INNER JOIN public.alquiler_futbol ON public.cancha.id_cancha = public.alquiler_futbol.id_cancha WHERE public.alquiler_futbol.fecha > $1 ORDER BY nombre", [fecha]);
     console.log('GET REPORTE 3');
     res.status(200).json(response.rows);
 }
@@ -1179,7 +1199,7 @@ const reporte_cuatro = async (req, res) => {
     const {
         fecha
     } = req.body;
-    const response = await pool.query("SELECT nombre, fecha_alta_como_usuario FROM usuarios WHERE fecha_alta_como_usuario > $1", [fecha]);
+    const response = await pool.query("SELECT usuarios.fecha_alta_como_usuario, usuarios.nombre as usuario, usuarios.mail, personas.telefono, personas.nombre, personas.apellido, usuarios.id_usuario FROM public.usuarios LEFT JOIN public.personas ON usuarios.id_usuario = personas.id_usuario WHERE usuarios.fecha_alta_como_usuario > $1", [fecha]);
     console.log('GET REPORTE 4');
     res.status(200).json(response.rows);
 }
