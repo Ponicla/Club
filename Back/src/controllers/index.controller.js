@@ -363,7 +363,8 @@ function tarea_paseos() {
     console.log('--------------------');
     console.log('LAZANDO TAREA PASEOS');
     finaliza_paseo();
-}
+} 
+//test
 
 function lanzarSiempreALaHora(hora, minutos, tarea) {
     //OBTENER FECHA HOY ESTE PRECISO MOMENTO
