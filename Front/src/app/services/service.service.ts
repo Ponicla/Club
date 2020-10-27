@@ -359,6 +359,11 @@ export class ServiceService {
     const url = `http://localhost:3000/verifacar_disponibilidad_del_paseos`;
     return this.consulta.post(url, objeto_no_pisar_otro_vpaseo).pipe(map(data  => data));
   }
+
+  plan_para_perfil(objeto){
+    const url = `http://localhost:3000/plan_para_perfil`;
+    return this.consulta.post(url, objeto).pipe(map(data  => data));
+  }
   
 
   

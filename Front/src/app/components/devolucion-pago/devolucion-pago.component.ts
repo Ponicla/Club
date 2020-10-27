@@ -70,6 +70,14 @@ export class DevolucionPagoComponent implements OnInit {
 
       };
     this.servicio.contratar_plan(objeto_contratar).subscribe();
+
+
+    
+    var user = this.authService.getCurrentUser();
+    user.id_plan = plan_recuperado;
+
+    localStorage.removeItem("currentUser");
+    localStorage.setItem("currentUser",JSON.stringify(user));
     localStorage.removeItem("reset_id_plan");
   }
 }

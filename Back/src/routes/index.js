@@ -68,7 +68,8 @@ const {
     paseos_pendientes_por_paseador,
     informe_de_vencimiento,
     verifacar_disponibilidad_del_paseos,
-    pagar_paseo_sin_plan
+    pagar_paseo_sin_plan,
+    plan_para_perfil
  
 } = require('../controllers/index.controller');
 
@@ -101,6 +102,7 @@ router.post('/payment_paseo', pagar_paseo_sin_plan);
 
 router.post('/plan_usuario', get_plan_usuario);
 router.post('/servicios_del_usuarios', get_servicios_contratados);
+router.post('/plan_para_perfil', plan_para_perfil);
 
 router.get('/comercios', getComercio);
 router.post('/comercios', createComercio);

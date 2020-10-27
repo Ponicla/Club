@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
   }
 
   async onLoginGoogle(){
-    
     try{
      await this.authService.login_google();
      await this.authService.getCurrentUserGoogle();
@@ -42,7 +41,6 @@ export class LoginComponent implements OnInit {
     catch(error){
       console.log(error);
     }
-    
   }
 
   onLogin(){

@@ -24,6 +24,13 @@ export class ProfileComponent implements OnInit {
   paseador_bool: boolean;
   telefono: string;
 
+  fecha_vencimiento_plan: string;
+  fecha_contratacion_plan: string;
+  nombre_plan: string;
+  precio_plan : string;
+
+
+
   constructor(
     private authService : AuthService,
     private servicio: ServiceService
@@ -32,11 +39,38 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.persona = false;
     this.user = this.authService.getCurrentUser();
-    console.log(this.user);
+    /* console.log(this.user); */
+    let objet_plan_perfil = {
+      "id_usuario" : this.user.id_usuario
+    }
+
+    this.servicio.plan_para_perfil(objet_plan_perfil).subscribe( (data_8 : any ) => {
+      // console.log(data_8); 
+      if(data_8.length > 0){
+
+        let n1 = new Date(data_8[0]['fecha_fin_plan']);
+        let fechita1 = n1.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: '2-digit' });
+       
+
+        let n2 = new Date(data_8[0]['fecha_inicio_plan']);
+        let fechita2 = n2.toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: '2-digit' });
+
+
+        this.fecha_vencimiento_plan = fechita1;
+        this.fecha_contratacion_plan = fechita2;
+        this.nombre_plan = data_8[0]['nombre'];
+        this.precio_plan = data_8[0]['costo'];
+      }else{
+        this.fecha_vencimiento_plan = '';
+        this.fecha_contratacion_plan = '';
+        this.nombre_plan = 'No registra plan actualmente';
+        this.precio_plan = '';
+      }
+    });
     
     
     this.servicio.obtenerPersonaById(this.user.id_usuario).subscribe(data  =>  {  
-      console.log(data);
+      // console.log(data);
       this.controlador = data;
 
       if(this.controlador == ''){

@@ -273,6 +273,7 @@ export class ContratarServicioComponent implements OnInit {
       nombre: nombre,
       cantidad: cantidad,
     };
+    
     /* localStorage.setItem("reset_id_plan",this.plan[0].id_plan); */
      this.service.pagar_cancha(objeto_pagar).subscribe((data) => {
        console.log(data);
@@ -301,235 +302,253 @@ export class ContratarServicioComponent implements OnInit {
       });
     } else {
 
-      var objeto_id_plan = {
-        id_plan: this.user.id_plan, 
-      };
+      if($("#select_paseador").val() == this.user.id_usuario ){
+        Swal.fire({
+          icon: 'error',
+          text: 'No puedes contratarte un paseo a ti mismo'
+        });
+      }else{
 
-      //Funcion que trae los servicios que tiene el plan del usuario
-      this.service.obtener_servicios_plan_usuario(objeto_id_plan).subscribe((data: any) => {
-        let contador_si_tiene = 0;
-        this.plan_servicios_user = data;
-        console.log('Console.log de servicios del plan lado paseo', data);
-        //recorre el arreglo y controla si f5 está
-        this.plan_servicios_user.forEach(element => {
-          console.log('Tiene: ', (element.nombre).toUpperCase());
-          if((element.nombre).toUpperCase() == "PASEOS"){
-            contador_si_tiene  =+ 1;
+
+        var objeto_id_plan = {
+          id_plan: this.user.id_plan, 
+        };
+        console.log('debug 1');
+        //Funcion que trae los servicios que tiene el plan del usuario
+        this.service.obtener_servicios_plan_usuario(objeto_id_plan).subscribe((data: any) => {
+          let contador_si_tiene = 0;
+          console.log('debug 2');
+          this.plan_servicios_user = data;
+          console.log('Console.log de servicios del plan lado paseo', data);
+          //recorre el arreglo y controla si f5 está
+          this.plan_servicios_user.forEach(element => {
+            
+            console.log('Tiene: ', (element.nombre).toUpperCase());
+            if((element.nombre).toUpperCase() == "PASEOS"){
+              contador_si_tiene  =+ 1;
+              
+            }
+            console.log(contador_si_tiene);
+          });
+  
+          if(contador_si_tiene >= 1){
+            console.log('DAR PASEO');
+            
+            var objeto_spu = {
+              id_usuario: this.user.id_usuario,
+            };
+  
+            this.service.servicios_plan_del_usuario(objeto_spu).subscribe((data: any) => {
+              this.servicios_del_usuario = data;
+              this.servicios_del_usuario.forEach((element) => {
+                
+                 if (element.tipo_servicio == 2) {
+                  this.servicios_paseos.push(element);
+                } 
+              });
+              console.log(this.servicios_paseos.length);
+              if(this.servicios_paseos.length >= 8){
+                Swal.fire({
+                  text: "Ha superado su cuota de paseos gratis",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Pagar por el paseo',
+                  cancelButtonText: 'Volver'
+                }).then((result) => {
+                  if (result.value == true) {
+                    this.set_local_para_paseo($("#cantidad").val(), $("#select_paseador").val(), $("#select_fecha").val(), $("#direccion").val(), this.user.id_usuario, $("#select_hora :selected").text());
+                    // let nombre_cancha = $("#select_cancha option:selected").text();
+                      this.ir_mp_pagar_paseo(500, 'Paseo de mascotas en club niceto ', 1);       
+                  }
+                });
+              }else{
+  
+                let objeto_no_pisar_otro_paseo = {
+                  id_paseador: parseInt($("#select_paseador").val()),
+                  id_rango_h: $("#select_hora :selected").text(),
+                  fecha: $("#select_fecha").val(),
+                };
+                this.service.verifacar_disponibilidad_del_paseos(objeto_no_pisar_otro_paseo).subscribe( (data_2 : any) => {
+                  console.log(data_2);
+                  if(data_2.length > 0){
+                    var canti = parseInt(data_2[0]['cantidad']);
+                    // console.log('dsadsadasdsadasdasdsa');
+                  }else{
+                    var canti = 0;
+                  }
+  
+                  if( canti >= 5 ){
+                    // let diferencia = 5 - data_2[0]['cantidad'];
+                    Swal.fire({
+                      text: "Este paseador en esta fecha y este horario esta completo, pruebe otra",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Pagar por el paseo',
+                      cancelButtonText: 'Volver'
+                    });
+                  }else{
+                    console.log($("#cantidad").val());
+                    if($("#cantidad").val() > 2 ){ 
+                      Swal.fire({
+                        text: "Solo hasta 2 mascotas",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Volver'
+                      });
+                    }else{
+                      let diferencia = 5 - canti;
+                      if($("#cantidad").val() > diferencia ) {
+                        Swal.fire({
+                          text: "Este paseador en esta fecha y este horario tiene " + diferencia + " lugares para mascotas, intente con menos u otra fecha u horario",
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          confirmButtonText: 'Pagar por el paseo',
+                          cancelButtonText: 'Volver'
+                        });
+                      }else{
+                        this.service.check_vencimiento_plan(objeto_spu).subscribe( (data3 : any ) => {
+                          console.log(data3[0].fecha_baja_plan);
+                          $("#select_fecha").val();
+    
+                          if($("#select_fecha").val() > data3[0].fecha_baja_plan){
+                            Swal.fire({
+                              text: "Tu plan estara vencido en la fecha seleccionada, selecciona otra, o elige pagar para tener este turno de paseo",
+                              icon: 'warning',
+                              showCancelButton: true,
+                              confirmButtonColor: '#3085d6',
+                              cancelButtonColor: '#d33',
+                              confirmButtonText: 'Pagar por el paseo',
+                              cancelButtonText: 'Volver'
+                            }).then((result) => {
+                              if (result.value == true) {
+                                this.set_local_para_paseo($("#cantidad").val(), $("#select_paseador").val(), $("#select_fecha").val(), $("#direccion").val(), this.user.id_usuario, $("#select_hora :selected").text());
+                                // let nombre_cancha = $("#select_cancha option:selected").text();
+                                  this.ir_mp_pagar_paseo(500, 'Paseo de mascotas en club niceto ', 1);       
+                              }
+                            });
+                          }else{
+                            let objeto_paseo = {
+                              id_paseador: $("#select_paseador").val(),
+                              cantidad: $("#cantidad").val(),
+                              fecha: $("#select_fecha").val(),
+                              id_rango_h: $("#select_hora :selected").text(),
+                              direccion: $("#direccion").val(),
+                              fk_id_usuario: this.user.id_usuario,
+                            };
+                            console.log(objeto_paseo);
+                            this.service.agregar_paseo(objeto_paseo).subscribe();
+                            Swal.fire({
+                              icon: "success",
+                              title: "Genial",
+                              text: "El paseador ira a divertir a sus mascotas",
+                            });
+  
+                            $("#cantidad").val("");
+                            $("#select_fecha").val("");
+                            $("#select_hora").val("0");
+                            $("#select_paseador").val("0");
+                            $("#direccion").val("");
+                          }
+  
+                        })
+                      }
+                    }
+                    
+                  }
+                   
+                });
+              }
+            });
+          }else{
+            Swal.fire({
+              text: "Si quieres este paseo deberas pagarlo, tu plan no tiene el servicio incluido",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Pagar por el paseo',
+              cancelButtonText: 'Volver'
+            }).then((result) => {
+              if (result.value == true) {
+                
+                let objeto_no_pisar_otro_paseo = {
+                  id_paseador: parseInt($("#select_paseador").val()),
+                  id_rango_h: $("#select_hora :selected").text(),
+                  fecha: $("#select_fecha").val(),
+                };
+                this.service.verifacar_disponibilidad_del_paseos(objeto_no_pisar_otro_paseo).subscribe( (data_2 : any) => {
+                  console.log(data_2);
+                  if(data_2.length > 0){
+                    var canti = parseInt(data_2[0]['cantidad']);
+                    // console.log('dsadsadasdsadasdasdsa');
+                  }else{
+                    var canti = 0;
+                  }
+  
+                  if( canti >= 5 ){
+                    // let diferencia = 5 - data_2[0]['cantidad'];
+                    Swal.fire({
+                      text: "Este paseador en esta fecha y este horario esta completo, pruebe otra",
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Pagar por el paseo',
+                      cancelButtonText: 'Volver'
+                    });
+                  }else{
+                    console.log($("#cantidad").val());
+                    if($("#cantidad").val() > 2 ){ 
+                      Swal.fire({
+                        text: "Solo hasta 2 mascotas",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        cancelButtonText: 'Volver'
+                      });
+                    }else{
+                      let diferencia = 5 - canti;
+                      if($("#cantidad").val() > diferencia ) {
+                        Swal.fire({
+                          text: "Este paseador en esta fecha y este horario tiene " + diferencia + " lugares para mascotas, intente con menos u otra fecha u horario",
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#3085d6',
+                          cancelButtonColor: '#d33',
+                          showConfirmButton: false,
+                          cancelButtonText: 'Volver'
+                        });
+                      }else{
+  
+                        this.set_local_para_paseo($("#cantidad").val(), $("#select_paseador").val(), $("#select_fecha").val(), $("#direccion").val(), this.user.id_usuario, $("#select_hora :selected").text());
+                        // let nombre_cancha = $("#select_cancha option:selected").text();
+                          this.ir_mp_pagar_paseo(500, 'Paseo de mascotas en club niceto ', 1);       
+                      }
+                    }
+                  }
+                });
+  
+              }
+            })
           }
         });
 
-        if(contador_si_tiene >= 1){
-          console.log('DAR PASEO');
-          
-          var objeto_spu = {
-            id_usuario: this.user.id_usuario,
-          };
 
-          this.service.servicios_plan_del_usuario(objeto_spu).subscribe((data: any) => {
-            this.servicios_del_usuario = data;
-            this.servicios_del_usuario.forEach((element) => {
-              
-               if (element.tipo_servicio == 2) {
-                this.servicios_paseos.push(element);
-              } 
-            });
-            console.log(this.servicios_paseos.length);
-            if(this.servicios_paseos.length >= 8){
-              Swal.fire({
-                text: "Ha superado su cuota de paseos gratis",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Pagar por el paseo',
-                cancelButtonText: 'Volver'
-              }).then((result) => {
-                if (result.value == true) {
-                  this.set_local_para_paseo($("#cantidad").val(), $("#select_paseador").val(), $("#select_fecha").val(), $("#direccion").val(), this.user.id_usuario, $("#select_hora :selected").text());
-                  // let nombre_cancha = $("#select_cancha option:selected").text();
-                    this.ir_mp_pagar_paseo(500, 'Paseo de mascotas en club niceto ', 1);       
-                }
-              });
-            }else{
 
-              let objeto_no_pisar_otro_paseo = {
-                id_paseador: parseInt($("#select_paseador").val()),
-                id_rango_h: $("#select_hora :selected").text(),
-                fecha: $("#select_fecha").val(),
-              };
-              this.service.verifacar_disponibilidad_del_paseos(objeto_no_pisar_otro_paseo).subscribe( (data_2 : any) => {
-                console.log(data_2);
-                if(data_2.length > 0){
-                  var canti = parseInt(data_2[0]['cantidad']);
-                  // console.log('dsadsadasdsadasdasdsa');
-                }else{
-                  var canti = 0;
-                }
+      }
 
-                if( canti >= 5 ){
-                  // let diferencia = 5 - data_2[0]['cantidad'];
-                  Swal.fire({
-                    text: "Este paseador en esta fecha y este horario esta completo, pruebe otra",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Pagar por el paseo',
-                    cancelButtonText: 'Volver'
-                  });
-                }else{
-                  console.log($("#cantidad").val());
-                  if($("#cantidad").val() > 2 ){ 
-                    Swal.fire({
-                      text: "Solo hasta 2 mascotas",
-                      icon: 'warning',
-                      showCancelButton: true,
-                      showConfirmButton: false,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      cancelButtonText: 'Volver'
-                    });
-                  }else{
-                    let diferencia = 5 - canti;
-                    if($("#cantidad").val() > diferencia ) {
-                      Swal.fire({
-                        text: "Este paseador en esta fecha y este horario tiene " + diferencia + " lugares para mascotas, intente con menos u otra fecha u horario",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Pagar por el paseo',
-                        cancelButtonText: 'Volver'
-                      });
-                    }else{
-                      this.service.check_vencimiento_plan(objeto_spu).subscribe( (data3 : any ) => {
-                        console.log(data3[0].fecha_baja_plan);
-                        $("#select_fecha").val();
-  
-                        if($("#select_fecha").val() > data3[0].fecha_baja_plan){
-                          Swal.fire({
-                            text: "Tu plan estara vencido en la fecha seleccionada, selecciona otra, o elige pagar para tener este turno de paseo",
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Pagar por el paseo',
-                            cancelButtonText: 'Volver'
-                          }).then((result) => {
-                            if (result.value == true) {
-                              this.set_local_para_paseo($("#cantidad").val(), $("#select_paseador").val(), $("#select_fecha").val(), $("#direccion").val(), this.user.id_usuario, $("#select_hora :selected").text());
-                              // let nombre_cancha = $("#select_cancha option:selected").text();
-                                this.ir_mp_pagar_paseo(500, 'Paseo de mascotas en club niceto ', 1);       
-                            }
-                          });
-                        }else{
-                          let objeto_paseo = {
-                            id_paseador: $("#select_paseador").val(),
-                            cantidad: $("#cantidad").val(),
-                            fecha: $("#select_fecha").val(),
-                            id_rango_h: $("#select_hora :selected").text(),
-                            direccion: $("#direccion").val(),
-                            fk_id_usuario: this.user.id_usuario,
-                          };
-                          console.log(objeto_paseo);
-                          this.service.agregar_paseo(objeto_paseo).subscribe();
-                          Swal.fire({
-                            icon: "success",
-                            title: "Genial",
-                            text: "El paseador ira a divertir a sus mascotas",
-                          });
-
-                          $("#cantidad").val("");
-                          $("#select_fecha").val("");
-                          $("#select_hora").val("0");
-                          $("#select_paseador").val("0");
-                          $("#direccion").val("");
-                        }
-
-                      })
-                    }
-                  }
-                  
-                }
-                 
-              });
-            }
-          });
-        }else{
-          Swal.fire({
-            text: "Si quieres este paseo deberas pagarlo, tu plan no tiene el servicio incluido",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Pagar por el paseo',
-            cancelButtonText: 'Volver'
-          }).then((result) => {
-            if (result.value == true) {
-              
-              let objeto_no_pisar_otro_paseo = {
-                id_paseador: parseInt($("#select_paseador").val()),
-                id_rango_h: $("#select_hora :selected").text(),
-                fecha: $("#select_fecha").val(),
-              };
-              this.service.verifacar_disponibilidad_del_paseos(objeto_no_pisar_otro_paseo).subscribe( (data_2 : any) => {
-                console.log(data_2);
-                if(data_2.length > 0){
-                  var canti = parseInt(data_2[0]['cantidad']);
-                  // console.log('dsadsadasdsadasdasdsa');
-                }else{
-                  var canti = 0;
-                }
-
-                if( canti >= 5 ){
-                  // let diferencia = 5 - data_2[0]['cantidad'];
-                  Swal.fire({
-                    text: "Este paseador en esta fecha y este horario esta completo, pruebe otra",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Pagar por el paseo',
-                    cancelButtonText: 'Volver'
-                  });
-                }else{
-                  console.log($("#cantidad").val());
-                  if($("#cantidad").val() > 2 ){ 
-                    Swal.fire({
-                      text: "Solo hasta 2 mascotas",
-                      icon: 'warning',
-                      showCancelButton: true,
-                      showConfirmButton: false,
-                      confirmButtonColor: '#3085d6',
-                      cancelButtonColor: '#d33',
-                      cancelButtonText: 'Volver'
-                    });
-                  }else{
-                    let diferencia = 5 - canti;
-                    if($("#cantidad").val() > diferencia ) {
-                      Swal.fire({
-                        text: "Este paseador en esta fecha y este horario tiene " + diferencia + " lugares para mascotas, intente con menos u otra fecha u horario",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        showConfirmButton: false,
-                        cancelButtonText: 'Volver'
-                      });
-                    }else{
-
-                      this.set_local_para_paseo($("#cantidad").val(), $("#select_paseador").val(), $("#select_fecha").val(), $("#direccion").val(), this.user.id_usuario, $("#select_hora :selected").text());
-                      // let nombre_cancha = $("#select_cancha option:selected").text();
-                        this.ir_mp_pagar_paseo(500, 'Paseo de mascotas en club niceto ', 1);       
-                    }
-                  }
-                }
-              });
-
-            }
-          })
-        }
-      });
+      
     }
   }
 

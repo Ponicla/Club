@@ -110,6 +110,7 @@ export class AuthService {
     var regis = true;
     try {
       let correo = ((await this.afAuth.authState.pipe(first()).toPromise()).email);
+      // console.log('CHORIZO',await this.afAuth.authState.pipe(first()).toPromise());
       var objeto_mail = {
         mail : correo
       };
@@ -166,8 +167,8 @@ export class AuthService {
             mail: correo
           }
           this.registrar_usuario_google(objeto_mail).subscribe((data: any) => {
+            
             let user_local = {
-
               "id_usuario":data[0].id_usuario,
               "nombre":data[0].nombre,
               "mail":data[0].mail,

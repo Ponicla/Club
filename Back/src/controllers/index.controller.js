@@ -1,8 +1,5 @@
-const {
-    Pool
-} = require('pg');
+const { Pool } = require('pg');
 const nodemailer = require('nodemailer');
-
 const mercadopago = require('mercadopago');
 
 const pool = new Pool({
@@ -10,7 +7,7 @@ const pool = new Pool({
     user: 'postgres',
     password: '1234',
     database: 'club',
-    port: '5432'
+    port: '5432'  
 });
 
 mercadopago.configure({
@@ -364,7 +361,7 @@ function tarea_paseos() {
     console.log('LAZANDO TAREA PASEOS');
     finaliza_paseo();
 } 
-//test
+
 
 function lanzarSiempreALaHora(hora, minutos, tarea) {
     //OBTENER FECHA HOY ESTE PRECISO MOMENTO
@@ -401,7 +398,7 @@ const pagar = async (req, res) => {
             quantity: cantidad,
         }],
         "back_urls": {
-            "success": "http://localhost:4200/user/pago_p",
+            "success": "http://localhost:4200/user/pago_s",
             "failure": "http://localhost:4200/user/pago_fail",
             "pending": "http://localhost:4200"
         },
@@ -413,11 +410,11 @@ const pagar = async (req, res) => {
             global.init_point
         );
     }).catch(function (error) {
-        console.log(error);
+        console.log('error en pagar solo');
     });
 
 };
-
+///HOLA PONICLA =)
 const pagar_cancha_sin_plan = async (req, res) => {
     const {
         precio,
@@ -434,7 +431,7 @@ const pagar_cancha_sin_plan = async (req, res) => {
             quantity: cantidad,
         }],
         "back_urls": {
-            "success": "http://localhost:4200/user/pago_p",
+            "success": "http://localhost:4200/user/pago_c",
             "failure": "http://localhost:4200/user/pago_fail",
             "pending": "http://localhost:4200"
         },
@@ -446,7 +443,7 @@ const pagar_cancha_sin_plan = async (req, res) => {
             global.init_point
         );
     }).catch(function (error) {
-        console.log(error);
+        console.log('eerro en pagar cancha sin plan');
     });
 
 };
@@ -458,9 +455,7 @@ const pagar_paseo_sin_plan = async (req, res) => {
         cantidad
     } = req.body;
 
-
     let preference = {
-
         items: [{
             title: nombre,
             unit_price: precio,
@@ -472,16 +467,15 @@ const pagar_paseo_sin_plan = async (req, res) => {
             "pending": "http://localhost:4200"
         },
         "auto_return": "all"
-    
-
     };
+
     const response = mercadopago.preferences.create(preference).then(function (response) {
         global.init_point = response.body.init_point;
         res.json(
             global.init_point
         );
     }).catch(function (error) {
-        console.log(error);
+        console.log('error en pagar paseo sin plan');
     });
 
 };
@@ -901,24 +895,29 @@ const updatePersona = async (req, res) => {
 
 // PASEO //
 const createPaseo = async (req, res) => {
-    const {
-        cantidad,
-        id_paseador,
-        id_rango_h,
-        fecha,
-        direccion,
-        fk_id_usuario
-    } = req.body;
-    const response = await pool.query('INSERT INTO paseo (cantidad, id_paseador, id_rango_h, fecha, direccion, fk_id_usuario) VALUES ($1, $2, $3, $4, $5, $6)', [cantidad, id_paseador, id_rango_h, fecha, direccion, fk_id_usuario]);
-    console.log(response);
-    res.json({
-        Message: 'PASEO ADD CORRECTO',
-        body: {
-            comercio: {
-                cantidad
+    /* try{ */
+        const {
+            cantidad,
+            id_paseador,
+            id_rango_h,
+            fecha,
+            direccion,
+            fk_id_usuario
+        } = req.body;
+        const response = await pool.query('INSERT INTO paseo (cantidad, id_paseador, id_rango_h, fecha, direccion, fk_id_usuario, estado) VALUES ($1, $2, $3, $4, $5, $6, $7)', [cantidad, id_paseador, id_rango_h, fecha, direccion, fk_id_usuario, true]);
+        console.log(response);
+        res.json({
+            Message: 'PASEO ADD CORRECTO',
+            body: {
+                comercio: {
+                    cantidad
+                }
             }
-        }
-    })
+        });
+    /* }catch{
+        console.log('error insert paseo');
+    } */
+    
 };
 
 const getPaseo = async (req, res) => {
@@ -1255,7 +1254,7 @@ const paseos_pendientes_por_paseador = async (req, res) => {
 }
 
 const informe_de_vencimiento = async (req, res) => {
-    try {
+    /* try { */
         const {
             id_usuario
         } = req.body;
@@ -1263,15 +1262,15 @@ const informe_de_vencimiento = async (req, res) => {
         "FROM usuarios "+
         "WHERE fk_id_plan IS NOT NULL AND id_usuario  = $1", [id_usuario]);
         res.status(200).json(response.rows);
-    } catch {
+    /* } catch {
         res.send(null);
         console.log('FALLO INFORME DE VENCIMIENTO');
         
-    }
+    } */
 }
 
 const verifacar_disponibilidad_del_paseos = async (req, res) => {
-    try {
+    /* try { */
         const {
             id_paseador,
             id_rango_h,
@@ -1280,19 +1279,35 @@ const verifacar_disponibilidad_del_paseos = async (req, res) => {
         const response = await pool.query("SELECT * FROM paseo WHERE id_rango_h = $1 AND fecha = $2 AND id_paseador = $3", [id_rango_h, fecha, id_paseador]);
         console.log('Verificando paseo libre');
         res.status(200).json(response.rows);
-    } catch {
+    /* } catch {
         res.send(null);
         console.log('FALLO ALGO EN DISPONIBILIDAD DE PASEOS');
+    } */
+}
+
+const plan_para_perfil = async (req, res) => {
+     try {
+        const {
+            id_usuario
+        } = req.body;
+        const response = await pool.query("SELECT public.usuarios.id_usuario, public.usuarios.fecha_inicio_plan, public.usuarios.fecha_fin_plan, public.planes.costo, public.planes.nombre FROM public.usuarios, public.planes WHERE public.usuarios.fk_id_plan = public.planes.id_plan AND public.usuarios.id_usuario = $1", [id_usuario]);
+        res.status(200).json(response.rows);
+     } catch {
+        res.send(null);
+        console.log('FALLO ALGO EN OBTENER DATOS PARA PLAN DEL PERFIL');
     }
 }
 
 
-// GOOGLE //
+
+
+
 
 
 
 
 module.exports = {
+    plan_para_perfil,
     verifacar_disponibilidad_del_paseos,
     informe_de_vencimiento,
     paseos_pendientes_por_paseador,

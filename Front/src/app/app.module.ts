@@ -39,6 +39,7 @@ import { DevolucionPagoServicioComponent } from './components/devolucion-pago-se
 import { MisPaseosComponent } from './components/mis-paseos/mis-paseos.component';
 import { DevolucionPagoPaseoComponent } from './components/devolucion-pago-paseo/devolucion-pago-paseo.component';
 import { DevolucionPagoErrorComponent } from './components/devolucion-pago-error/devolucion-pago-error.component';
+import { PieComponent } from './components/pie/pie.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { DevolucionPagoErrorComponent } from './components/devolucion-pago-error
     DevolucionPagoServicioComponent,
     MisPaseosComponent,
     DevolucionPagoPaseoComponent,
-    DevolucionPagoErrorComponent
+    DevolucionPagoErrorComponent,
+    PieComponent
   ],
   imports: [
     BrowserModule,

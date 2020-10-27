@@ -106,7 +106,7 @@
                                     <label>Plan</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <p>ORO</p>
+                                    <p>{{nombre_plan}}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -114,7 +114,7 @@
                                     <label>Adquirido el</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <p>05/05/2020</p>
+                                    <p>{{fecha_contratacion_plan}}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -122,7 +122,7 @@
                                     <label>Termina el </label>
                                 </div>
                                 <div class="col-md-6">
-                                    <p>05/06/2020</p>
+                                    <p>{{fecha_vencimiento_plan}}</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -130,9 +130,12 @@
                                     <label>Costo</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <p>$ 1000</p>
+                                    <p *ngIf = "precio_plan "><strong style="color: green;">$</strong>{{precio_plan}}</p>
+                                    <p *ngIf = "!precio_plan "> </p>
                                 </div>
                             </div>
+
+                            
 
                             
 
